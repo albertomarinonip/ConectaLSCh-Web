@@ -27,9 +27,13 @@
 </div>
 <div class="result">
 <small>Resultado LSCh</small>
-<div id="signResult">Esperando reconocimiento…</div>
+<div id="signResult">Esperando una seña…</div>
 </div>
-<p class="notice">Esta versión prepara la cámara. El reconocimiento automático de LSCh se incorporará con un modelo entrenado y validado con usuarios de LSCh.</p>
+<p class="notice">Primer laboratorio de reconocimiento LSCh. Trabajaremos con 5 clases iniciales: HOLA, GRACIAS, SÍ, NO y AYÚDAME. La cámara todavía no debe inventar una traducción: primero necesitamos entrenar y validar el modelo con las muestras.</p>
+<div class="labels">
+<span>HOLA</span><span>GRACIAS</span><span>SÍ</span><span>NO</span><span>AYÚDAME</span>
+</div>
+<button id="testSign" class="secondary">🧪 Probar interfaz de reconocimiento</button>
 </section>
 
 <section class="card">
@@ -45,7 +49,7 @@
 <button id="speak">🔊 Hablar</button>
 </section>
 
-<p class="foot">SeñaLink v0.4 · Cámara LSCh + subtítulos + voz</p>
+<p class="foot">SeñaLink v0.5 · Laboratorio LSCh + subtítulos + voz</p>
 </main>
 <script src="app.js"></script>
 </body></html>

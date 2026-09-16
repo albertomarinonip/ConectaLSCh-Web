@@ -1,12 +1,10 @@
-# SeñaLink PWA v0.4
+# SeñaLink PWA v0.5
 
-MVP de accesibilidad para iPhone.
+Primer laboratorio LSCh con 5 clases iniciales:
+HOLA, GRACIAS, SÍ, NO y AYÚDAME.
 
-## Funciones
-- Cámara frontal/trasera preparada para el futuro módulo de reconocimiento LSCh.
-- Voz en español de Chile → subtítulos.
-- Texto → voz.
-- Interfaz PWA instalable.
+Esta versión mantiene cámara, subtítulos y voz, y agrega la interfaz donde se conectará
+el clasificador real. No simula ni inventa reconocimiento de señas.
 
-## Importante
-La cámara todavía no traduce LSCh automáticamente. Para hacerlo correctamente se necesita integrar un modelo de visión entrenado con datos LSCh y validar los resultados con personas usuarias de LSCh.
+Siguiente etapa técnica: extraer secuencias de landmarks de manos/pose/cara de las muestras,
+entrenar y validar un clasificador temporal y conectarlo a `window.SeñaLinkLSCh.showPrediction`.

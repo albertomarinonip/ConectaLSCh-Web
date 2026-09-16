@@ -75,3 +75,36 @@ speak.onclick=()=>{
 };
 
 if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
+
+
+// LSCh v0.5 — interfaz segura para conectar el modelo entrenado.
+// No muestra una palabra como "reconocida" hasta que exista inferencia real.
+const signResult = $('#signResult');
+const testSign = $('#testSign');
+const LSCH_LABELS = ['HOLA','GRACIAS','SÍ','NO','AYÚDAME'];
+
+if(testSign){
+  testSign.onclick = () => {
+    if(!stream){
+      signResult.textContent = 'Primero abre la cámara 📷';
+      return;
+    }
+    signResult.textContent = 'Cámara lista ✅ · Falta conectar el modelo LSCh';
+    setTimeout(()=> {
+      signResult.textContent = 'Esperando una seña…';
+    }, 2500);
+  };
+}
+
+// Punto de conexión para el clasificador real.
+// Futuro resultado esperado: {label:'HOLA', confidence:0.92}
+window.SeñaLinkLSCh = {
+  labels: LSCH_LABELS,
+  showPrediction(label, confidence){
+    if(!LSCH_LABELS.includes(label)) return;
+    const pct = Math.round(Math.max(0,Math.min(1,confidence))*100);
+    signResult.textContent = confidence >= 0.75
+      ? `${label} · ${pct}%`
+      : `No estoy seguro · ${pct}%`;
+  }
+};
