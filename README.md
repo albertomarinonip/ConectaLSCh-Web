@@ -1,10 +1,12 @@
-# SeñaLink v0.7.2
+# SeñaLink v0.8 LSCh
 
-Corrección para GitHub Pages:
-- Las 75 imágenes de entrenamiento están empaquetadas dentro de UN solo archivo `training-data.js`.
-- Ya no existen rutas `training_frames/s01/f01.jpg`, etc.
-- Solo hay unos pocos archivos para subir a GitHub.
-- No usa MP4 para entrenar en iPhone.
-- 5 señas experimentales: HOLA, GRACIAS, SÍ, NO, AYÚDAME.
+Refuerzo del reconocimiento experimental con 15 videos nuevos:
+- HOLA: +5
+- GRACIAS: +5
+- SÍ: +5
+- NO y AYÚDAME: se conservan del conjunto anterior.
 
-Sube todos los archivos de esta carpeta a la raíz del repositorio.
+Las muestras visuales están empaquetadas en `training-data.js`, por lo que GitHub Pages
+no necesita carpetas de imágenes ni videos MP4.
+
+Al abrir v0.8, espera “Modelo listo”, abre cámara y pulsa “Iniciar reconocimiento”.
