@@ -1,133 +1,45 @@
 import { FilesetResolver, HandLandmarker } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22-rc.20250304/+esm";
+const $=s=>document.querySelector(s), camera=$("#camera"), resultEl=$("#signResult"), confEl=$("#confidence"), status=$("#modelStatus");
+let stream=null,facing="user",imageHands=null,videoHands=null,templates=[],recognizing=false,liveBuffer=[],lastVideoTime=-1;
 
-const $=s=>document.querySelector(s);
-const camera=$("#camera"), resultEl=$("#signResult"), confEl=$("#confidence"), trainStatus=$("#trainStatus");
-let stream=null, facing="user", handLandmarker=null, templates=[], recognizing=false, liveBuffer=[], lastVideoTime=-1;
+function feature(r){
+ if(!r.landmarks?.length)return null;
+ let hands=r.landmarks.map(lm=>{const w=lm[0];let sc=.001;for(const p of lm)sc=Math.max(sc,Math.hypot(p.x-w.x,p.y-w.y));let v=[];for(const p of lm)v.push((p.x-w.x)/sc,(p.y-w.y)/sc,(p.z-w.z)/sc);return{x:w.x,v}}).sort((a,b)=>a.x-b.x);
+ const z=new Array(63).fill(0);return [...(hands[0]?.v||z),...(hands[1]?.v||z)];
+}
+function resample(s,n=8){if(s.length<2)return s;return Array.from({length:n},(_,i)=>s[Math.round(i*(s.length-1)/(n-1))])}
+function d(a,b){let x=0;for(let i=0;i<a.length;i++){let q=a[i]-b[i];x+=q*q}return Math.sqrt(x/a.length)}
+function dtw(A,B){let n=A.length,m=B.length,D=Array.from({length:n+1},()=>new Float32Array(m+1).fill(Infinity));D[0][0]=0;for(let i=1;i<=n;i++)for(let j=1;j<=m;j++){let c=d(A[i-1],B[j-1]);D[i][j]=c+Math.min(D[i-1][j],D[i][j-1],D[i-1][j-1])}return D[n][m]/(n+m)}
+function loadImg(src){return new Promise((ok,no)=>{let im=new Image();im.onload=()=>ok(im);im.onerror=()=>no(new Error("No cargó "+src));im.src=src})}
+async function vision(){
+ const files=await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22-rc.20250304/wasm");
+ const base={baseOptions:{modelAssetPath:"https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task"},numHands:2,minHandDetectionConfidence:.4,minTrackingConfidence:.4};
+ imageHands=await HandLandmarker.createFromOptions(files,{...base,runningMode:"IMAGE"});
+ videoHands=await HandLandmarker.createFromOptions(files,{...base,runningMode:"VIDEO"});
+}
+async function prepare(){
+ try{
+   let saved=localStorage.getItem("senalink-v07-templates");
+   if(saved){templates=JSON.parse(saved);status.textContent=`✅ Modelo listo: ${templates.length} muestras`;resultEl.textContent="Listo 🤟";$("#startRecognition").disabled=false;return}
+   await vision();
+   const samples=await (await fetch("training_frames.json",{cache:"no-store"})).json();
+   let k=0;
+   for(const s of samples){let seq=[];status.textContent=`Preparando ${s.label}… ${++k}/${samples.length}`;
+     for(const f of s.frames){let im=await loadImg(f);let x=feature(imageHands.detect(im));if(x)seq.push(x)}
+     if(seq.length>=3)templates.push({label:s.label,seq:resample(seq)});
+     await new Promise(r=>setTimeout(r,0));
+   }
+   localStorage.setItem("senalink-v07-templates",JSON.stringify(templates));
+   status.textContent=`✅ Modelo listo: ${templates.length}/${samples.length} muestras útiles`;resultEl.textContent="Listo para reconocer 🤟";$("#startRecognition").disabled=templates.length<8;
+ }catch(e){console.error(e);status.textContent="❌ Error al cargar modelo: "+(e?.message||e);resultEl.textContent="Modelo no disponible"}
+}
+prepare();
 
-async function initHands(){
-  if(handLandmarker) return;
-  trainStatus.textContent="Cargando detector de manos…";
-  const vision=await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22-rc.20250304/wasm");
-  handLandmarker=await HandLandmarker.createFromOptions(vision,{
-    baseOptions:{modelAssetPath:"https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task"},
-    runningMode:"VIDEO",numHands:2,minHandDetectionConfidence:.45,minTrackingConfidence:.45
-  });
-}
+$("#openCamera").onclick=async()=>{try{if(stream)stream.getTracks().forEach(t=>t.stop());stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing},audio:false});camera.srcObject=stream;await camera.play();if(templates.length)resultEl.textContent="Cámara lista 🤟"}catch(e){resultEl.textContent="No pude abrir la cámara"}};
+$("#flipCamera").onclick=()=>{facing=facing==="user"?"environment":"user";$("#openCamera").click()};
+$("#startRecognition").onclick=async()=>{if(!stream){resultEl.textContent="Primero abre la cámara";return}if(!videoHands)await vision();recognizing=!recognizing;$("#startRecognition").textContent=recognizing?"⏹️ Parar reconocimiento":"🤟 Iniciar reconocimiento";liveBuffer=[];if(recognizing)requestAnimationFrame(loop)};
+function loop(){if(!recognizing)return;if(camera.readyState>=2&&camera.currentTime!==lastVideoTime){lastVideoTime=camera.currentTime;let f=feature(videoHands.detectForVideo(camera,performance.now()));if(f){liveBuffer.push(f);if(liveBuffer.length>18)liveBuffer.shift()}if(liveBuffer.length>=8){let q=resample(liveBuffer),best={d:1e9,label:""};for(const t of templates){let x=dtw(q,t.seq);if(x<best.d)best={d:x,label:t.label}}let c=Math.max(0,Math.min(99,Math.round(100*(1-best.d/.55))));if(c>=55){resultEl.textContent=best.label;confEl.textContent=`Confianza experimental: ${c}%`}else{resultEl.textContent="No estoy seguro";confEl.textContent="Haz la seña completa con las manos visibles"}}}requestAnimationFrame(loop)}
 
-function handFeature(r){
-  if(!r.landmarks || !r.landmarks.length) return null;
-  let hands=r.landmarks.map(lm=>{
-    const wrist=lm[0];
-    let scale=0;
-    for(const p of lm) scale=Math.max(scale,Math.hypot(p.x-wrist.x,p.y-wrist.y));
-    scale=Math.max(scale,.001);
-    const v=[];
-    for(const p of lm){v.push((p.x-wrist.x)/scale,(p.y-wrist.y)/scale,(p.z-wrist.z)/scale)}
-    return {x:wrist.x,v};
-  }).sort((a,b)=>a.x-b.x);
-  const z=new Array(63).fill(0);
-  return [...(hands[0]?.v||z),...(hands[1]?.v||z)];
-}
-function dist(a,b){let s=0;for(let i=0;i<a.length;i++){let d=a[i]-b[i];s+=d*d}return Math.sqrt(s/a.length)}
-function dtw(A,B){
-  const n=A.length,m=B.length, D=Array.from({length:n+1},()=>new Float32Array(m+1).fill(Infinity));D[0][0]=0;
-  for(let i=1;i<=n;i++)for(let j=1;j<=m;j++){let c=dist(A[i-1],B[j-1]);D[i][j]=c+Math.min(D[i-1][j],D[i][j-1],D[i-1][j-1])}
-  return D[n][m]/(n+m);
-}
-function resample(seq,n=18){
-  if(seq.length<=1)return seq;
-  return Array.from({length:n},(_,i)=>seq[Math.round(i*(seq.length-1)/(n-1))]);
-}
-function errText(e){
-  if(!e) return "Error desconocido";
-  return e.message || e.name || String(e);
-}
-function waitEvent(el, name, timeout=12000){
-  return new Promise((resolve,reject)=>{
-    let timer=setTimeout(()=>{cleanup();reject(new Error("Tiempo agotado esperando "+name))},timeout);
-    const ok=()=>{cleanup();resolve()};
-    const bad=()=>{cleanup();reject(new Error("Video no se pudo decodificar"))};
-    function cleanup(){clearTimeout(timer);el.removeEventListener(name,ok);el.removeEventListener("error",bad)}
-    el.addEventListener(name,ok,{once:true});el.addEventListener("error",bad,{once:true});
-  });
-}
-async function extractVideo(url){
-  const v=document.createElement("video");
-  v.muted=true; v.playsInline=true; v.setAttribute("playsinline","");
-  v.preload="auto"; v.crossOrigin="anonymous"; v.src=url;
-  if(v.readyState < 1) await waitEvent(v,"loadedmetadata");
-  if(!Number.isFinite(v.duration) || v.duration<=0) throw new Error("Duración inválida: "+url);
-  // iOS Safari is more reliable after a tiny play/pause initiated from the user's Train tap.
-  try { await v.play(); v.pause(); } catch(_){}
-  const seq=[], steps=18;
-  for(let i=0;i<steps;i++){
-    const target=(v.duration*.10)+(v.duration*.80*i/(steps-1));
-    if(Math.abs(v.currentTime-target)>.015){
-      v.currentTime=target;
-      await waitEvent(v,"seeked");
-    }
-    if(v.readyState<2) await waitEvent(v,"loadeddata");
-    const r=handLandmarker.detectForVideo(v, performance.now()+i*10);
-    const f=handFeature(r); if(f) seq.push(f);
-    await new Promise(r=>setTimeout(r,0));
-  }
-  v.pause();v.removeAttribute("src");v.load();v.remove();
-  return resample(seq);
-}
-$("#trainModel").onclick=async()=>{
-  try{
-    $("#trainModel").disabled=true; await initHands();
-    const items=await (await fetch("training.json",{cache:"no-store"})).json(); templates=[];
-    let done=0;
-    for(const it of items){
-      trainStatus.textContent=`Preparando ${it.label}… ${done+1}/${items.length}`;
-      const seq=await extractVideo(it.file);
-      if(seq.length>=6) templates.push({label:it.label,seq});
-      done++;
-    }
-    localStorage.setItem("senalinkTemplates",JSON.stringify(templates));
-    trainStatus.textContent=`✅ Modelo preparado: ${templates.length}/${items.length} muestras útiles`;
-    resultEl.textContent="Listo para reconocer 🤟"; $("#startRecognition").disabled=templates.length<10;
-  }catch(e){
-    console.error("SeñaLink training error",e);
-    trainStatus.textContent="❌ No pude preparar el modelo: "+errText(e);
-    $("#trainModel").disabled=false;
-  }
-};
-try{templates=JSON.parse(localStorage.getItem("senalinkTemplates")||"[]");if(templates.length){trainStatus.textContent=`✅ Modelo guardado: ${templates.length} muestras`;$("#startRecognition").disabled=false;resultEl.textContent="Modelo listo";}}catch{}
-
-$("#openCamera").onclick=async()=>{
-  if(stream)stream.getTracks().forEach(t=>t.stop());
-  stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing},audio:false});camera.srcObject=stream;await camera.play();resultEl.textContent="Cámara lista";
-};
-$("#flipCamera").onclick=async()=>{facing=facing==="user"?"environment":"user";$("#openCamera").click()};
-
-$("#startRecognition").onclick=async()=>{
-  if(!stream){resultEl.textContent="Primero abre la cámara";return}
-  await initHands();recognizing=!recognizing;$("#startRecognition").textContent=recognizing?"⏹️ Parar reconocimiento":"🤟 Iniciar reconocimiento";
-  liveBuffer=[];if(recognizing)requestAnimationFrame(loop);
-};
-function loop(){
-  if(!recognizing)return;
-  if(camera.readyState>=2 && camera.currentTime!==lastVideoTime){
-    lastVideoTime=camera.currentTime;
-    const r=handLandmarker.detectForVideo(camera,performance.now()), f=handFeature(r);
-    if(f){liveBuffer.push(f);if(liveBuffer.length>24)liveBuffer.shift()}
-    if(liveBuffer.length>=14 && templates.length){
-      const seq=resample(liveBuffer,18);let best={d:Infinity,label:""};
-      for(const t of templates){const d=dtw(seq,t.seq);if(d<best.d)best={d,label:t.label}}
-      // Empirical confidence: deliberately conservative.
-      const confidence=Math.max(0,Math.min(99,Math.round(100*(1-best.d/0.55))));
-      if(confidence>=58){resultEl.textContent=best.label;confEl.textContent=`Confianza experimental: ${confidence}%`}
-      else{resultEl.textContent="No estoy seguro";confEl.textContent="Haz la seña completa y mantén las manos visibles"}
-    }
-  }
-  requestAnimationFrame(loop);
-}
-
-// Speech to text
-const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null;
-if(SR){rec=new SR();rec.lang="es-CL";rec.continuous=true;rec.interimResults=true;rec.onresult=e=>{let s="";for(let i=e.resultIndex;i<e.results.length;i++)s+=e.results[i][0].transcript;$("#subtitles").textContent=s||"…"}}
-$("#startListening").onclick=()=>{if(rec)try{rec.start()}catch{}else $("#subtitles").textContent="Reconocimiento de voz no disponible"};
-$("#stopListening").onclick=()=>rec?.stop();
-$("#speakReply").onclick=()=>{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance($("#replyText").value);u.lang="es-CL";speechSynthesis.speak(u)};
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null;if(SR){rec=new SR();rec.lang="es-CL";rec.continuous=true;rec.interimResults=true;rec.onresult=e=>{let s="";for(let i=e.resultIndex;i<e.results.length;i++)s+=e.results[i][0].transcript;$("#subtitles").textContent=s||"…"}}
+$("#startListening").onclick=()=>{if(rec)try{rec.start()}catch{}else $("#subtitles").textContent="Reconocimiento de voz no disponible"};$("#stopListening").onclick=()=>rec?.stop();
+$("#speakReply").onclick=()=>{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance($("#replyText").value);u.lang="es-CL";speechSynthesis.speak(u)};

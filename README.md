@@ -1,7 +1,9 @@
-# SeñaLink v0.6.2 LSCh — iPhone fix
+# SeñaLink v0.7.1 — GitHub web upload
 
-Los 25 videos fueron recodificados a H.264 Baseline + yuv420p + faststart, sin audio,
-para máxima compatibilidad con Safari/iPhone. La app extrae las plantillas de manos una sola
-vez y las guarda localmente. Luego puede iniciar reconocimiento experimental en vivo.
+Versión reducida para poder subirla desde github.com:
+- 75 imágenes de entrenamiento (3 por cada una de las 25 muestras).
+- 5 clases: HOLA, GRACIAS, SÍ, NO, AYÚDAME.
+- No usa MP4 en Safari.
+- El paquete completo contiene menos de 100 archivos.
 
-Clases: HOLA, GRACIAS, SÍ, NO, AYÚDAME.
+Después de subir, espera a que aparezca “Modelo listo”, abre la cámara e inicia reconocimiento.
