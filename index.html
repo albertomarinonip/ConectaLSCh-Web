@@ -1,15 +1,13 @@
 <!doctype html><html lang="es"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b0f17"><meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="SeñaLink">
 <link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="style.css"><title>SeñaLink</title>
 </head><body><main>
 <header><h1>SeñaLink</h1><p>Comunicación más accesible</p></header>
-<section class="card"><h2>🗣️ Subtítulos en vivo</h2>
-<div id="captions" class="captions">La conversación aparecerá aquí…</div>
+<section class="card"><h2>🗣️ Subtítulos en vivo</h2><div id="captions" class="captions">La conversación aparecerá aquí…</div>
 <p id="status">Listo</p><button id="listen">🎙️ Escuchar</button></section>
-<section class="card"><h2>💬 Mi respuesta</h2>
-<textarea id="reply" placeholder="Escribe tu respuesta…"></textarea>
-<button id="speak" class="secondary">🔊 Hablar</button><p id="voiceStatus" class="small"></p></section>
-<p class="foot">SeñaLink v0.2 · Próximamente LSCh por cámara.</p>
+<section class="card"><h2>💬 Mi respuesta</h2><textarea id="reply" placeholder="Escribe tu respuesta…"></textarea>
+<button id="speak">🔊 Hablar</button><button id="test" class="secondary">🧪 Probar voz</button>
+<div class="diag"><b>Diagnóstico de voz</b><p id="diag">Cargando…</p></div></section>
+<p class="foot">SeñaLink v0.3 · diagnóstico de voz iPhone</p>
 </main><script src="app.js"></script></body></html>

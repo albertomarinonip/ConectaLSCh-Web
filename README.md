@@ -1,2 +1,2 @@
-# SeñaLink PWA v0.2
-Mejora de voz en iPhone/Safari, estado de reproducción y reducción de repeticiones en subtítulos.
+# SeñaLink PWA v0.3
+Diagnóstico visible de síntesis de voz para iPhone/Safari.
