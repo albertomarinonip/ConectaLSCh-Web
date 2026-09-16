@@ -1,9 +1,10 @@
-# SeñaLink v0.7.1 — GitHub web upload
+# SeñaLink v0.7.2
 
-Versión reducida para poder subirla desde github.com:
-- 75 imágenes de entrenamiento (3 por cada una de las 25 muestras).
-- 5 clases: HOLA, GRACIAS, SÍ, NO, AYÚDAME.
-- No usa MP4 en Safari.
-- El paquete completo contiene menos de 100 archivos.
+Corrección para GitHub Pages:
+- Las 75 imágenes de entrenamiento están empaquetadas dentro de UN solo archivo `training-data.js`.
+- Ya no existen rutas `training_frames/s01/f01.jpg`, etc.
+- Solo hay unos pocos archivos para subir a GitHub.
+- No usa MP4 para entrenar en iPhone.
+- 5 señas experimentales: HOLA, GRACIAS, SÍ, NO, AYÚDAME.
 
-Después de subir, espera a que aparezca “Modelo listo”, abre la cámara e inicia reconocimiento.
+Sube todos los archivos de esta carpeta a la raíz del repositorio.

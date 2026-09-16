@@ -1,3 +1,4 @@
+import { TRAINING_FRAMES } from "./training-data.js";
 import { FilesetResolver, HandLandmarker } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22-rc.20250304/+esm";
 const $=s=>document.querySelector(s), camera=$("#camera"), resultEl=$("#signResult"), confEl=$("#confidence"), status=$("#modelStatus");
 let stream=null,facing="user",imageHands=null,videoHands=null,templates=[],recognizing=false,liveBuffer=[],lastVideoTime=-1;
@@ -19,17 +20,17 @@ async function vision(){
 }
 async function prepare(){
  try{
-   let saved=localStorage.getItem("senalink-v07-templates");
+   let saved=localStorage.getItem("senalink-v072-templates");
    if(saved){templates=JSON.parse(saved);status.textContent=`✅ Modelo listo: ${templates.length} muestras`;resultEl.textContent="Listo 🤟";$("#startRecognition").disabled=false;return}
    await vision();
-   const samples=await (await fetch("training_frames.json",{cache:"no-store"})).json();
+   const samples=TRAINING_FRAMES;
    let k=0;
    for(const s of samples){let seq=[];status.textContent=`Preparando ${s.label}… ${++k}/${samples.length}`;
      for(const f of s.frames){let im=await loadImg(f);let x=feature(imageHands.detect(im));if(x)seq.push(x)}
      if(seq.length>=3)templates.push({label:s.label,seq:resample(seq)});
      await new Promise(r=>setTimeout(r,0));
    }
-   localStorage.setItem("senalink-v07-templates",JSON.stringify(templates));
+   localStorage.setItem("senalink-v072-templates",JSON.stringify(templates));
    status.textContent=`✅ Modelo listo: ${templates.length}/${samples.length} muestras útiles`;resultEl.textContent="Listo para reconocer 🤟";$("#startRecognition").disabled=templates.length<8;
  }catch(e){console.error(e);status.textContent="❌ Error al cargar modelo: "+(e?.message||e);resultEl.textContent="Modelo no disponible"}
 }
