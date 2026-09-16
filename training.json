@@ -1,102 +1,102 @@
 [
   {
     "label": "HOLA",
-    "file": "training_videos/CameraRecording-84896197-E47D-4B30-8481-AACAE4BE1EA5.mp4"
+    "file": "training_videos/sample_01.mp4"
   },
   {
     "label": "HOLA",
-    "file": "training_videos/CameraRecording-87765548-035C-4555-B354-F084BA27C94A.mp4"
+    "file": "training_videos/sample_02.mp4"
   },
   {
     "label": "HOLA",
-    "file": "training_videos/CameraRecording-DC7CDA97-1D82-4586-99D8-4FFF4620FE64.mp4"
+    "file": "training_videos/sample_03.mp4"
   },
   {
     "label": "HOLA",
-    "file": "training_videos/CameraRecording-A076B9F3-37A6-4664-A71D-35CB60946E18.mp4"
+    "file": "training_videos/sample_04.mp4"
   },
   {
     "label": "HOLA",
-    "file": "training_videos/CameraRecording-AF5B3D65-0EDC-41C5-A1D2-BD094CBD8444.mp4"
+    "file": "training_videos/sample_05.mp4"
   },
   {
     "label": "GRACIAS",
-    "file": "training_videos/CameraRecording-A8052F6C-8E3A-4982-AA96-C9663E9AFC1E.mp4"
+    "file": "training_videos/sample_06.mp4"
   },
   {
     "label": "GRACIAS",
-    "file": "training_videos/CameraRecording-00580F2B-0FDA-4156-829F-5D39F32320C8.mp4"
+    "file": "training_videos/sample_07.mp4"
   },
   {
     "label": "GRACIAS",
-    "file": "training_videos/IMG_4279.mp4"
+    "file": "training_videos/sample_08.mp4"
   },
   {
     "label": "GRACIAS",
-    "file": "training_videos/IMG_4280.mp4"
+    "file": "training_videos/sample_09.mp4"
   },
   {
     "label": "GRACIAS",
-    "file": "training_videos/IMG_4281.mp4"
+    "file": "training_videos/sample_10.mp4"
   },
   {
     "label": "SÍ",
-    "file": "training_videos/CameraRecording-F98E3691-D789-4C5A-AC5E-CD7E2953528D.mp4"
+    "file": "training_videos/sample_11.mp4"
   },
   {
     "label": "SÍ",
-    "file": "training_videos/CameraRecording-922411B6-563E-4689-A019-380671C5336F.mp4"
+    "file": "training_videos/sample_12.mp4"
   },
   {
     "label": "SÍ",
-    "file": "training_videos/CameraRecording-A6E1F52F-1A48-4C38-9B6C-7F71C3403E2E.mp4"
+    "file": "training_videos/sample_13.mp4"
   },
   {
     "label": "SÍ",
-    "file": "training_videos/CameraRecording-85F6E738-2F92-43B1-A351-56F08368C168.mp4"
+    "file": "training_videos/sample_14.mp4"
   },
   {
     "label": "NO",
-    "file": "training_videos/CameraRecording-5DDB74F2-372E-416A-B69F-1D664C5C90AD.mp4"
+    "file": "training_videos/sample_15.mp4"
   },
   {
     "label": "NO",
-    "file": "training_videos/CameraRecording-56241F2C-04DC-4039-915D-C312C88A8AAE.mp4"
+    "file": "training_videos/sample_16.mp4"
   },
   {
     "label": "NO",
-    "file": "training_videos/CameraRecording-DB0DEBEA-AF05-4E50-A3C0-0802D61A0654.mp4"
+    "file": "training_videos/sample_17.mp4"
   },
   {
     "label": "NO",
-    "file": "training_videos/CameraRecording-FA779ABE-A6D0-43DF-82E7-A58CC8FC0A2A.mp4"
+    "file": "training_videos/sample_18.mp4"
   },
   {
     "label": "NO",
-    "file": "training_videos/CameraRecording-49F02A9B-9CD5-49AD-8B08-62EC740C4516.mp4"
+    "file": "training_videos/sample_19.mp4"
   },
   {
     "label": "AYÚDAME",
-    "file": "training_videos/CameraRecording-AE6BDF79-E778-4D3E-9E12-2B8259E5D6CA.mp4"
+    "file": "training_videos/sample_20.mp4"
   },
   {
     "label": "AYÚDAME",
-    "file": "training_videos/CameraRecording-2DD44762-14A0-460E-9BE9-A93E6421610C.mp4"
+    "file": "training_videos/sample_21.mp4"
   },
   {
     "label": "AYÚDAME",
-    "file": "training_videos/CameraRecording-AE5E285C-514C-4910-922B-1A94242FBDD8.mp4"
+    "file": "training_videos/sample_22.mp4"
   },
   {
     "label": "AYÚDAME",
-    "file": "training_videos/CameraRecording-E286EAD3-8AF6-4E6B-A927-FD8D57C33D97.mp4"
+    "file": "training_videos/sample_23.mp4"
   },
   {
     "label": "AYÚDAME",
-    "file": "training_videos/CameraRecording-5437151B-5C97-471C-A900-C7E99C7C3FB9.mp4"
+    "file": "training_videos/sample_24.mp4"
   },
   {
     "label": "AYÚDAME",
-    "file": "training_videos/CameraRecording-A9A223E4-FB99-47E5-B6C9-E382B374B196.mp4"
+    "file": "training_videos/sample_25.mp4"
   }
 ]

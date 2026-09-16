@@ -80,7 +80,7 @@ $("#trainModel").onclick=async()=>{
     const items=await (await fetch("training.json",{cache:"no-store"})).json(); templates=[];
     let done=0;
     for(const it of items){
-      trainStatus.textContent=`Entrenando ${it.label}… ${done+1}/${items.length}`;
+      trainStatus.textContent=`Preparando ${it.label}… ${done+1}/${items.length}`;
       const seq=await extractVideo(it.file);
       if(seq.length>=6) templates.push({label:it.label,seq});
       done++;
@@ -90,7 +90,7 @@ $("#trainModel").onclick=async()=>{
     resultEl.textContent="Listo para reconocer 🤟"; $("#startRecognition").disabled=templates.length<10;
   }catch(e){
     console.error("SeñaLink training error",e);
-    trainStatus.textContent="❌ No pude entrenar: "+errText(e);
+    trainStatus.textContent="❌ No pude preparar el modelo: "+errText(e);
     $("#trainModel").disabled=false;
   }
 };

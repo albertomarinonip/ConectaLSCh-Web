@@ -1,15 +1,7 @@
-# SeñaLink PWA v0.6 — reconocimiento LSCh experimental
+# SeñaLink v0.6.2 LSCh — iPhone fix
 
-Incluye 25 videos de entrenamiento etiquetados por Alberto:
-HOLA (5), GRACIAS (5), SÍ (4), NO (5), AYÚDAME (6).
+Los 25 videos fueron recodificados a H.264 Baseline + yuv420p + faststart, sin audio,
+para máxima compatibilidad con Safari/iPhone. La app extrae las plantillas de manos una sola
+vez y las guarda localmente. Luego puede iniciar reconocimiento experimental en vivo.
 
-La app usa MediaPipe Hand Landmarker en el navegador para extraer secuencias de 21 puntos por mano.
-Al pulsar “Entrenar con mis 25 videos”, genera plantillas temporales y las guarda en el iPhone.
-El reconocimiento en vivo compara la secuencia de la cámara con esas plantillas usando DTW.
-
-IMPORTANTE: es un prototipo personalizado y experimental, no un traductor general de LSCh.
-Requiere internet la primera vez para cargar MediaPipe y su modelo.
-
-
-## v0.6.1
-Corrección de carga/seek/decodificación de videos para Safari/iPhone y mensajes de error detallados.
+Clases: HOLA, GRACIAS, SÍ, NO, AYÚDAME.
