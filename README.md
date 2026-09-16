@@ -9,3 +9,7 @@ El reconocimiento en vivo compara la secuencia de la cámara con esas plantillas
 
 IMPORTANTE: es un prototipo personalizado y experimental, no un traductor general de LSCh.
 Requiere internet la primera vez para cargar MediaPipe y su modelo.
+
+
+## v0.6.1
+Corrección de carga/seek/decodificación de videos para Safari/iPhone y mensajes de error detallados.

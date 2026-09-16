@@ -38,17 +38,41 @@ function resample(seq,n=18){
   if(seq.length<=1)return seq;
   return Array.from({length:n},(_,i)=>seq[Math.round(i*(seq.length-1)/(n-1))]);
 }
+function errText(e){
+  if(!e) return "Error desconocido";
+  return e.message || e.name || String(e);
+}
+function waitEvent(el, name, timeout=12000){
+  return new Promise((resolve,reject)=>{
+    let timer=setTimeout(()=>{cleanup();reject(new Error("Tiempo agotado esperando "+name))},timeout);
+    const ok=()=>{cleanup();resolve()};
+    const bad=()=>{cleanup();reject(new Error("Video no se pudo decodificar"))};
+    function cleanup(){clearTimeout(timer);el.removeEventListener(name,ok);el.removeEventListener("error",bad)}
+    el.addEventListener(name,ok,{once:true});el.addEventListener("error",bad,{once:true});
+  });
+}
 async function extractVideo(url){
-  const v=document.createElement("video");v.muted=true;v.playsInline=true;v.src=url;v.preload="auto";
-  await new Promise((ok,no)=>{v.onloadedmetadata=ok;v.onerror=no});
-  const seq=[], steps=22;
+  const v=document.createElement("video");
+  v.muted=true; v.playsInline=true; v.setAttribute("playsinline","");
+  v.preload="auto"; v.crossOrigin="anonymous"; v.src=url;
+  if(v.readyState < 1) await waitEvent(v,"loadedmetadata");
+  if(!Number.isFinite(v.duration) || v.duration<=0) throw new Error("Duración inválida: "+url);
+  // iOS Safari is more reliable after a tiny play/pause initiated from the user's Train tap.
+  try { await v.play(); v.pause(); } catch(_){}
+  const seq=[], steps=18;
   for(let i=0;i<steps;i++){
-    v.currentTime=(v.duration*.08)+(v.duration*.84*i/(steps-1));
-    await new Promise(ok=>v.onseeked=ok);
-    const r=handLandmarker.detectForVideo(v,performance.now()+i);
-    const f=handFeature(r);if(f)seq.push(f);
+    const target=(v.duration*.10)+(v.duration*.80*i/(steps-1));
+    if(Math.abs(v.currentTime-target)>.015){
+      v.currentTime=target;
+      await waitEvent(v,"seeked");
+    }
+    if(v.readyState<2) await waitEvent(v,"loadeddata");
+    const r=handLandmarker.detectForVideo(v, performance.now()+i*10);
+    const f=handFeature(r); if(f) seq.push(f);
+    await new Promise(r=>setTimeout(r,0));
   }
-  v.remove(); return resample(seq);
+  v.pause();v.removeAttribute("src");v.load();v.remove();
+  return resample(seq);
 }
 $("#trainModel").onclick=async()=>{
   try{
@@ -64,7 +88,11 @@ $("#trainModel").onclick=async()=>{
     localStorage.setItem("senalinkTemplates",JSON.stringify(templates));
     trainStatus.textContent=`✅ Modelo preparado: ${templates.length}/${items.length} muestras útiles`;
     resultEl.textContent="Listo para reconocer 🤟"; $("#startRecognition").disabled=templates.length<10;
-  }catch(e){trainStatus.textContent="❌ No pude entrenar: "+e.message;$("#trainModel").disabled=false}
+  }catch(e){
+    console.error("SeñaLink training error",e);
+    trainStatus.textContent="❌ No pude entrenar: "+errText(e);
+    $("#trainModel").disabled=false;
+  }
 };
 try{templates=JSON.parse(localStorage.getItem("senalinkTemplates")||"[]");if(templates.length){trainStatus.textContent=`✅ Modelo guardado: ${templates.length} muestras`;$("#startRecognition").disabled=false;resultEl.textContent="Modelo listo";}}catch{}
 
