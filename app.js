@@ -20,7 +20,7 @@ async function vision(){
 }
 async function prepare(){
  try{
-   let saved=localStorage.getItem("senalink-v09-templates");
+   let saved=localStorage.getItem("conectalsch-v10-templates") || localStorage.getItem("senalink-v09-templates");
    if(saved){templates=JSON.parse(saved);status.textContent=`✅ Modelo listo: ${templates.length} muestras`;resultEl.textContent="Listo 🤟";$("#startRecognition").disabled=false;return}
    await vision();
    const samples=TRAINING_FRAMES;
@@ -30,17 +30,31 @@ async function prepare(){
      if(seq.length>=2)templates.push({label:s.label,seq:resample(seq)});
      await new Promise(r=>setTimeout(r,0));
    }
-   localStorage.setItem("senalink-v09-templates",JSON.stringify(templates));
+   localStorage.setItem("conectalsch-v10-templates",JSON.stringify(templates));
    status.textContent=`✅ Modelo listo: ${templates.length}/${samples.length} muestras útiles`;resultEl.textContent="Listo para reconocer 🤟";$("#startRecognition").disabled=templates.length<8;
  }catch(e){console.error(e);status.textContent="❌ Error al cargar modelo: "+(e?.message||e);resultEl.textContent="Modelo no disponible"}
 }
 prepare();
 
-$("#openCamera").onclick=async()=>{try{if(stream)stream.getTracks().forEach(t=>t.stop());stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing},audio:false});camera.srcObject=stream;await camera.play();if(templates.length)resultEl.textContent="Cámara lista 🤟"}catch(e){resultEl.textContent="No pude abrir la cámara"}};
-$("#flipCamera").onclick=()=>{facing=facing==="user"?"environment":"user";$("#openCamera").click()};
-$("#startRecognition").onclick=async()=>{if(!stream){resultEl.textContent="Primero abre la cámara";return}if(!videoHands)await vision();recognizing=!recognizing;$("#startRecognition").textContent=recognizing?"⏹️ Parar reconocimiento":"🤟 Iniciar reconocimiento";liveBuffer=[];if(recognizing)requestAnimationFrame(loop)};
+const cameraBtn=$("#toggleCamera"), cameraStatus=$("#cameraStatus"), flipBtn=$("#flipCamera");
+function stopCamera(){
+ recognizing=false;liveBuffer=[];lastVideoTime=-1;
+ $("#startRecognition").textContent="🤟 Iniciar reconocimiento";
+ if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}
+ camera.srcObject=null;cameraBtn.textContent="📷 Activar cámara";cameraStatus.textContent="⚫ Cámara desactivada";flipBtn.disabled=true;
+ resultEl.textContent=templates.length?"Cámara desactivada":"Cargando modelo…";confEl.textContent="";
+}
+async function startCamera(){
+ try{if(stream)stream.getTracks().forEach(t=>t.stop());stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing},audio:false});camera.srcObject=stream;await camera.play();cameraBtn.textContent="⏹️ Desactivar cámara";cameraStatus.textContent="🟢 Cámara activa";flipBtn.disabled=false;if(templates.length)resultEl.textContent="Cámara lista 🤟"}
+ catch(e){stream=null;cameraBtn.textContent="📷 Activar cámara";cameraStatus.textContent="⚫ Cámara desactivada";flipBtn.disabled=true;resultEl.textContent="No pude activar la cámara"}
+}
+cameraBtn.onclick=()=>stream?stopCamera():startCamera();
+flipBtn.onclick=async()=>{if(!stream)return;facing=facing==="user"?"environment":"user";await startCamera()};
+$("#startRecognition").onclick=async()=>{if(!stream){resultEl.textContent="Primero activa la cámara";return}if(!videoHands)await vision();recognizing=!recognizing;$("#startRecognition").textContent=recognizing?"⏹️ Parar reconocimiento":"🤟 Iniciar reconocimiento";liveBuffer=[];if(recognizing)requestAnimationFrame(loop)};
 function loop(){if(!recognizing)return;if(camera.readyState>=2&&camera.currentTime!==lastVideoTime){lastVideoTime=camera.currentTime;let f=feature(videoHands.detectForVideo(camera,performance.now()));if(f){liveBuffer.push(f);if(liveBuffer.length>18)liveBuffer.shift()}if(liveBuffer.length>=8){let q=resample(liveBuffer),best={d:1e9,label:""};for(const t of templates){let x=dtw(q,t.seq);if(x<best.d)best={d:x,label:t.label}}let c=Math.max(0,Math.min(99,Math.round(100*(1-best.d/.55))));if(c>=55){resultEl.textContent=best.label;confEl.textContent=`Confianza experimental: ${c}%`}else{resultEl.textContent="No estoy seguro";confEl.textContent="Haz la seña completa con las manos visibles"}}}requestAnimationFrame(loop)}
 
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null;if(SR){rec=new SR();rec.lang="es-CL";rec.continuous=true;rec.interimResults=true;rec.onresult=e=>{let s="";for(let i=e.resultIndex;i<e.results.length;i++)s+=e.results[i][0].transcript;$("#subtitles").textContent=s||"…"}}
 $("#startListening").onclick=()=>{if(rec)try{rec.start()}catch{}else $("#subtitles").textContent="Reconocimiento de voz no disponible"};$("#stopListening").onclick=()=>rec?.stop();
 $("#speakReply").onclick=()=>{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance($("#replyText").value);u.lang="es-CL";speechSynthesis.speak(u)};
+
+if("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(()=>{});

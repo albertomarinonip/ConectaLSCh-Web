@@ -1,9 +1,9 @@
-# SeñaLink v0.9 LSCh
+# ConectaLSCh v1.0
 
-Mejora específica de GRACIAS usando 10 videos anteriores ya disponibles.
-- GRACIAS reconstruido con 9 fotogramas temporales por video.
-- HOLA, SÍ, NO y AYÚDAME se conservan desde v0.8.
-- Nuevo identificador de modelo para que el iPhone regenere las plantillas.
-- Solo 7 archivos para GitHub Pages.
+Prototipo PWA de comunicación accesible con reconocimiento experimental de 5 señas LSCh, subtítulos de voz y texto a voz.
 
-Objetivo: tolerar mejor cambios pequeños de posición y capturar mejor el movimiento de GRACIAS.
+## v1.0
+- Nueva identidad ConectaLSCh.
+- Cámara con botón Activar / Desactivar y estado visible.
+- Al desactivar la cámara se detiene realmente el stream y el reconocimiento.
+- Conserva las muestras y plantillas de reconocimiento de v0.9.

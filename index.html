@@ -1,15 +1,16 @@
 <!doctype html><html lang="es"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111827"><link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="style.css"><title>SeñaLink v0.9 LSCh</title></head><body>
-<main class="app"><header><h1>SeñaLink <small>v0.9</small></h1><p>Reconocimiento experimental LSCh</p></header>
+<link rel="stylesheet" href="style.css"><title>ConectaLSCh v1.0</title></head><body>
+<main class="app"><header><h1>ConectaLSCh <small>v1.0</small></h1><p>Comunicación accesible · Reconocimiento experimental LSCh</p></header>
 <section class="card"><h2>🤟 LSCh → texto</h2>
 <div class="videoWrap"><video id="camera" autoplay muted playsinline></video></div>
-<div class="row"><button id="openCamera">📷 Abrir cámara</button><button id="flipCamera" class="secondary">🔄 Girar</button></div>
+<div id="cameraStatus" class="status">⚫ Cámara desactivada</div>
+<div class="row"><button id="toggleCamera">📷 Activar cámara</button><button id="flipCamera" class="secondary" disabled>🔄 Girar</button></div>
 <div id="signResult" class="bigResult">Cargando modelo…</div><div id="confidence" class="muted"></div>
 <div id="modelStatus" class="status">Preparando automáticamente HOLA · GRACIAS · SÍ · NO · AYÚDAME…</div>
 <button id="startRecognition" disabled>🤟 Iniciar reconocimiento</button>
-<p class="notice">No necesitas entrenar videos en el iPhone. SeñaLink prepara automáticamente las muestras incluidas y luego reconoce en vivo. Prototipo personalizado de 5 señas, no traductor completo de LSCh.</p>
+<p class="notice">ConectaLSCh prepara automáticamente las muestras incluidas y luego reconoce en vivo. Prototipo personalizado de 5 señas; todavía no es un traductor completo de LSCh.</p>
 </section>
 <section class="card"><h2>🗣️ Voz → subtítulos</h2><div class="row"><button id="startListening">🎙️ Escuchar</button><button id="stopListening" class="secondary">⏹️ Parar</button></div><div id="subtitles" class="bigResult">Esperando voz…</div></section>
 <section class="card"><h2>⌨️ Texto → voz</h2><textarea id="replyText" rows="3" placeholder="Escribe tu respuesta…"></textarea><button id="speakReply">🔊 Hablar</button></section>
