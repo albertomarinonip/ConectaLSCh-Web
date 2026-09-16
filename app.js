@@ -2,6 +2,7 @@ import { TRAINING_FRAMES } from "./training-data.js";
 import { FilesetResolver, HandLandmarker } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22-rc.20250304/+esm";
 const $=s=>document.querySelector(s), camera=$("#camera"), resultEl=$("#signResult"), confEl=$("#confidence"), status=$("#modelStatus");
 let stream=null,facing="user",imageHands=null,videoHands=null,templates=[],recognizing=false,liveBuffer=[],lastVideoTime=-1;
+let signVoiceEnabled=true,lastSpokenSign="",stableLabel="",stableCount=0,lastSpokenAt=0;
 
 function feature(r){
  if(!r.landmarks?.length)return null;
@@ -37,8 +38,18 @@ async function prepare(){
 prepare();
 
 const cameraBtn=$("#toggleCamera"), cameraStatus=$("#cameraStatus"), flipBtn=$("#flipCamera");
+
+const signVoiceBtn=$("#toggleSignVoice"), signVoiceStatus=$("#signVoiceStatus");
+function setSignVoiceUI(){signVoiceBtn.textContent=signVoiceEnabled?"🔇 Desactivar voz de señas":"🔊 Activar voz de señas";signVoiceStatus.textContent=signVoiceEnabled?"🟢 Voz de señas activa":"⚫ Voz de señas desactivada"}
+function speakSign(label){
+ if(!signVoiceEnabled||!label||!('speechSynthesis' in window))return;
+ const now=Date.now(); if(label===lastSpokenSign&&now-lastSpokenAt<3500)return;
+ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(label.charAt(0)+label.slice(1).toLowerCase()); u.lang="es-CL"; speechSynthesis.speak(u); lastSpokenSign=label; lastSpokenAt=now;
+}
+signVoiceBtn.onclick=()=>{signVoiceEnabled=!signVoiceEnabled;if(!signVoiceEnabled)speechSynthesis.cancel();setSignVoiceUI()};setSignVoiceUI();
+
 function stopCamera(){
- recognizing=false;liveBuffer=[];lastVideoTime=-1;
+ recognizing=false;liveBuffer=[];lastVideoTime=-1;stableLabel="";stableCount=0;lastSpokenSign="";
  $("#startRecognition").textContent="🤟 Iniciar reconocimiento";
  if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}
  camera.srcObject=null;cameraBtn.textContent="📷 Activar cámara";cameraStatus.textContent="⚫ Cámara desactivada";flipBtn.disabled=true;
@@ -51,12 +62,17 @@ async function startCamera(){
 cameraBtn.onclick=()=>stream?stopCamera():startCamera();
 flipBtn.onclick=async()=>{if(!stream)return;facing=facing==="user"?"environment":"user";await startCamera()};
 $("#startRecognition").onclick=async()=>{if(!stream){resultEl.textContent="Primero activa la cámara";return}if(!videoHands)await vision();recognizing=!recognizing;$("#startRecognition").textContent=recognizing?"⏹️ Parar reconocimiento":"🤟 Iniciar reconocimiento";liveBuffer=[];if(recognizing)requestAnimationFrame(loop)};
-function loop(){if(!recognizing)return;if(camera.readyState>=2&&camera.currentTime!==lastVideoTime){lastVideoTime=camera.currentTime;let f=feature(videoHands.detectForVideo(camera,performance.now()));if(f){liveBuffer.push(f);if(liveBuffer.length>18)liveBuffer.shift()}if(liveBuffer.length>=8){let q=resample(liveBuffer),best={d:1e9,label:""};for(const t of templates){let x=dtw(q,t.seq);if(x<best.d)best={d:x,label:t.label}}let c=Math.max(0,Math.min(99,Math.round(100*(1-best.d/.55))));if(c>=55){resultEl.textContent=best.label;confEl.textContent=`Confianza experimental: ${c}%`}else{resultEl.textContent="No estoy seguro";confEl.textContent="Haz la seña completa con las manos visibles"}}}requestAnimationFrame(loop)}
+function loop(){if(!recognizing)return;if(camera.readyState>=2&&camera.currentTime!==lastVideoTime){lastVideoTime=camera.currentTime;let f=feature(videoHands.detectForVideo(camera,performance.now()));if(f){liveBuffer.push(f);if(liveBuffer.length>18)liveBuffer.shift()}if(liveBuffer.length>=8){let q=resample(liveBuffer),best={d:1e9,label:""};for(const t of templates){let x=dtw(q,t.seq);if(x<best.d)best={d:x,label:t.label}}let c=Math.max(0,Math.min(99,Math.round(100*(1-best.d/.55))));if(c>=55){resultEl.textContent=best.label;confEl.textContent=`Confianza experimental: ${c}%`;if(best.label===stableLabel)stableCount++;else{stableLabel=best.label;stableCount=1}if(stableCount>=3){speakSign(best.label);stableCount=0}}else{resultEl.textContent="No estoy seguro";confEl.textContent="Haz la seña completa con las manos visibles";stableLabel="";stableCount=0}}}requestAnimationFrame(loop)}
 
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null,listening=false;const listenBtn=$("#toggleListening"),listenStatus=$("#listeningStatus");
 function setListeningUI(on){listening=on;listenBtn.textContent=on?"⏹️ Desactivar escucha":"🎙️ Activar escucha";listenStatus.textContent=on?"🟢 Escucha activa":"⚫ Escucha desactivada"}
-if(SR){rec=new SR();rec.lang="es-CL";rec.continuous=true;rec.interimResults=true;rec.onstart=()=>setListeningUI(true);rec.onresult=e=>{let s="";for(let i=e.resultIndex;i<e.results.length;i++)s+=e.results[i][0].transcript;$("#subtitles").textContent=s||"…"};rec.onend=()=>{if(listening){try{rec.start()}catch{setListeningUI(false)}}else setListeningUI(false)};rec.onerror=e=>{if(e.error==="not-allowed"||e.error==="service-not-allowed"){setListeningUI(false);$("#subtitles").textContent="Permiso de micrófono no disponible"}}}
-listenBtn.onclick=()=>{if(!rec){$("#subtitles").textContent="Reconocimiento de voz no disponible";return}if(listening){listening=false;rec.stop();setListeningUI(false)}else{try{rec.start()}catch{}}};
+const subtitlePanel=$("#subtitles"), subtitleHistory=$("#subtitleHistory"), subtitleInterim=$("#subtitleInterim");
+let hasSubtitleHistory=false;
+function appendSubtitle(text){text=text.trim();if(!text)return;if(!hasSubtitleHistory){subtitleHistory.innerHTML="";hasSubtitleHistory=true}const line=document.createElement("span");line.className="subtitleLine";line.textContent=text;subtitleHistory.appendChild(line);subtitlePanel.scrollTop=subtitlePanel.scrollHeight}
+function showSubtitleMessage(text){if(!hasSubtitleHistory)subtitleHistory.innerHTML=`<span class="subtitlePlaceholder">${text}</span>`}
+if(SR){rec=new SR();rec.lang="es-CL";rec.continuous=true;rec.interimResults=true;rec.onstart=()=>setListeningUI(true);rec.onresult=e=>{let interim="";for(let i=e.resultIndex;i<e.results.length;i++){const text=e.results[i][0].transcript;if(e.results[i].isFinal)appendSubtitle(text);else interim+=text}subtitleInterim.textContent=interim;subtitlePanel.scrollTop=subtitlePanel.scrollHeight};rec.onend=()=>{subtitleInterim.textContent="";if(listening){try{rec.start()}catch{setListeningUI(false)}}else setListeningUI(false)};rec.onerror=e=>{if(e.error==="not-allowed"||e.error==="service-not-allowed"){setListeningUI(false);showSubtitleMessage("Permiso de micrófono no disponible")}}}
+listenBtn.onclick=()=>{if(!rec){showSubtitleMessage("Reconocimiento de voz no disponible");return}if(listening){listening=false;rec.stop();setListeningUI(false)}else{try{rec.start()}catch{}}};
+$("#clearSubtitles").onclick=()=>{hasSubtitleHistory=false;subtitleHistory.innerHTML='<span class="subtitlePlaceholder">Esperando voz…</span>';subtitleInterim.textContent="";subtitlePanel.scrollTop=0};
 $("#speakReply").onclick=()=>{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance($("#replyText").value);u.lang="es-CL";speechSynthesis.speak(u)};
 
 if("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(()=>{});
