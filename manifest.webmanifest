@@ -1,0 +1,5 @@
+{
+  "name":"SeñaLink","short_name":"SeñaLink","start_url":"./","display":"standalone",
+  "background_color":"#f4f6f8","theme_color":"#111827",
+  "description":"Accesibilidad: subtítulos y voz para facilitar la comunicación."
+}
