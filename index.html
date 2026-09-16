@@ -12,6 +12,6 @@
 <button id="startRecognition" disabled>🤟 Iniciar reconocimiento</button>
 <p class="notice">ConectaLSCh prepara automáticamente las muestras incluidas y luego reconoce en vivo. Prototipo personalizado de 5 señas; todavía no es un traductor completo de LSCh.</p>
 </section>
-<section class="card"><h2>🗣️ Voz → subtítulos</h2><div class="row"><button id="startListening">🎙️ Escuchar</button><button id="stopListening" class="secondary">⏹️ Parar</button></div><div id="subtitles" class="bigResult">Esperando voz…</div></section>
+<section class="card"><h2>🗣️ Voz → subtítulos</h2><div id="listeningStatus" class="status">⚫ Escucha desactivada</div><div class="row"><button id="toggleListening">🎙️ Activar escucha</button></div><div id="subtitles" class="bigResult">Esperando voz…</div></section>
 <section class="card"><h2>⌨️ Texto → voz</h2><textarea id="replyText" rows="3" placeholder="Escribe tu respuesta…"></textarea><button id="speakReply">🔊 Hablar</button></section>
 </main><script type="module" src="app.js"></script></body></html>
