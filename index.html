@@ -1,55 +1,37 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b0f17">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="SeñaLink">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="style.css">
-<title>SeñaLink</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827"><link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="style.css"><title>SeñaLink v0.6 LSCh</title>
 </head>
 <body>
-<main>
-<header><h1>SeñaLink</h1><p>Comunicación más accesible</p></header>
+<main class="app">
+<header><h1>SeñaLink <small>v0.6</small></h1><p>Primer reconocimiento experimental de LSCh</p></header>
 
 <section class="card">
-<h2>🤟 LSCh por cámara <span class="beta">BETA</span></h2>
-<div class="cameraBox">
-<video id="camera" playsinline muted></video>
-<div id="cameraPlaceholder">📷<br><span>Cámara lista para LSCh</span></div>
-</div>
-<p id="cameraStatus">Cámara detenida</p>
-<div class="row">
-<button id="cameraBtn">📷 Abrir cámara</button>
-<button id="flipBtn" class="secondary" disabled>🔄 Girar</button>
-</div>
-<div class="result">
-<small>Resultado LSCh</small>
-<div id="signResult">Esperando una seña…</div>
-</div>
-<p class="notice">Primer laboratorio de reconocimiento LSCh. Trabajaremos con 5 clases iniciales: HOLA, GRACIAS, SÍ, NO y AYÚDAME. La cámara todavía no debe inventar una traducción: primero necesitamos entrenar y validar el modelo con las muestras.</p>
-<div class="labels">
-<span>HOLA</span><span>GRACIAS</span><span>SÍ</span><span>NO</span><span>AYÚDAME</span>
-</div>
-<button id="testSign" class="secondary">🧪 Probar interfaz de reconocimiento</button>
+<h2>🤟 LSCh → texto</h2>
+<div class="videoWrap"><video id="camera" autoplay muted playsinline></video></div>
+<div class="row"><button id="openCamera">📷 Abrir cámara</button><button id="flipCamera" class="secondary">🔄 Girar</button></div>
+<div id="signResult" class="bigResult">Modelo sin entrenar</div>
+<div id="confidence" class="muted"></div>
+<button id="trainModel">🧠 Entrenar con mis 25 videos</button>
+<div id="trainStatus" class="status">Tus videos HOLA · GRACIAS · SÍ · NO · AYÚDAME vienen incluidos.</div>
+<button id="startRecognition" class="secondary" disabled>🤟 Iniciar reconocimiento</button>
+<p class="notice">Prototipo experimental: reconoce solo estas 5 señas y principalmente tus propias muestras. No es todavía un traductor completo de LSCh.</p>
 </section>
 
 <section class="card">
-<h2>🗣️ Subtítulos en vivo</h2>
-<div id="captions" class="captions">La conversación aparecerá aquí…</div>
-<p id="status">Listo</p>
-<button id="listen">🎙️ Escuchar</button>
+<h2>🗣️ Voz → subtítulos</h2>
+<div class="row"><button id="startListening">🎙️ Escuchar</button><button id="stopListening" class="secondary">⏹️ Parar</button></div>
+<div id="subtitles" class="bigResult">Esperando voz…</div>
 </section>
 
 <section class="card">
-<h2>💬 Mi respuesta</h2>
-<textarea id="reply" placeholder="Escribe tu respuesta…"></textarea>
-<button id="speak">🔊 Hablar</button>
+<h2>⌨️ Texto → voz</h2>
+<textarea id="replyText" rows="3" placeholder="Escribe tu respuesta…"></textarea>
+<button id="speakReply">🔊 Hablar</button>
 </section>
-
-<p class="foot">SeñaLink v0.5 · Laboratorio LSCh + subtítulos + voz</p>
 </main>
-<script src="app.js"></script>
+<script type="module" src="app.js"></script>
 </body></html>

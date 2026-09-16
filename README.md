@@ -1,10 +1,11 @@
-# SeñaLink PWA v0.5
+# SeñaLink PWA v0.6 — reconocimiento LSCh experimental
 
-Primer laboratorio LSCh con 5 clases iniciales:
-HOLA, GRACIAS, SÍ, NO y AYÚDAME.
+Incluye 25 videos de entrenamiento etiquetados por Alberto:
+HOLA (5), GRACIAS (5), SÍ (4), NO (5), AYÚDAME (6).
 
-Esta versión mantiene cámara, subtítulos y voz, y agrega la interfaz donde se conectará
-el clasificador real. No simula ni inventa reconocimiento de señas.
+La app usa MediaPipe Hand Landmarker en el navegador para extraer secuencias de 21 puntos por mano.
+Al pulsar “Entrenar con mis 25 videos”, genera plantillas temporales y las guarda en el iPhone.
+El reconocimiento en vivo compara la secuencia de la cámara con esas plantillas usando DTW.
 
-Siguiente etapa técnica: extraer secuencias de landmarks de manos/pose/cara de las muestras,
-entrenar y validar un clasificador temporal y conectarlo a `window.SeñaLinkLSCh.showPrediction`.
+IMPORTANTE: es un prototipo personalizado y experimental, no un traductor general de LSCh.
+Requiere internet la primera vez para cargar MediaPipe y su modelo.
