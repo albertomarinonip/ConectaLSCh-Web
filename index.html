@@ -1,8 +1,8 @@
 <!doctype html><html lang="es"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111827"><link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="style.css"><title>ConectaLSCh v1.1</title></head><body>
-<main class="app"><header><h1>ConectaLSCh <small>v1.1</small></h1><p>Comunicación accesible · Reconocimiento experimental LSCh</p></header>
+<link rel="stylesheet" href="style.css"><title>ConectaLSCh v1.1.1</title></head><body>
+<main class="app"><header><h1>ConectaLSCh <small>v1.1.1</small></h1><p>Comunicación accesible · Reconocimiento experimental LSCh</p></header>
 <section class="card"><h2>🤟 LSCh → texto + voz</h2>
 <div class="videoWrap"><video id="camera" autoplay muted playsinline></video></div>
 <div id="cameraStatus" class="status">⚫ Cámara desactivada</div>
@@ -22,7 +22,7 @@
 <button id="recordSample" disabled>Grabar ejemplo de seña</button><p id="trainingStatus" role="status" aria-live="polite">Esperando las muestras iniciales…</p>
 <div class="row"><button id="exportSamples" class="secondary">Descargar respaldo</button><button id="importSamples" class="secondary">Importar respaldo</button></div>
 <input id="samplesFile" type="file" accept="application/json,.json" hidden>
-<p class="muted">Los ejemplos se guardan en este navegador. Descarga un respaldo antes de borrar sus datos o cambiar de dispositivo. No se guardan videos.</p></section>
+<p class="muted">Los ejemplos se conservan al recargar y reabrir en este mismo navegador y dirección web. Descarga un respaldo antes de borrar sus datos o cambiar de dispositivo. No se guardan videos.</p></section>
 <section class="card"><h2>🗣️ Voz → subtítulos</h2><div id="listeningStatus" class="status">⚫ Escucha desactivada</div><div class="row"><button id="toggleListening">🎙️ Activar escucha</button><button id="clearSubtitles" class="secondary">🗑️ Limpiar</button></div><div id="subtitles" class="subtitlePanel"><div id="subtitleHistory" class="subtitleHistory"><span class="subtitlePlaceholder">Esperando voz…</span></div><div id="subtitleInterim" class="subtitleInterim"></div></div><p class="muted">Los subtítulos confirmados permanecen visibles hasta que pulses Limpiar.</p></section>
 <section class="card"><h2>⌨️ Texto → voz</h2><textarea id="replyText" rows="3" placeholder="Escribe tu respuesta…"></textarea><button id="speakReply">🔊 Hablar</button></section>
 </main><script type="module" src="app.js"></script></body></html>

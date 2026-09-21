@@ -1,1 +1,12 @@
-const C='conectalsch-v110';self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(['./','./index.html','./style.css','./app.js','./training-data.js','./manifest.webmanifest']))));self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x.startsWith('conectalsch-')&&x!==C).map(x=>caches.delete(x))))));self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).catch(()=>caches.match(e.request))));
+const CACHE='conectalsch-v111-'+encodeURIComponent(self.registration.scope);
+const CORE=['./','./index.html','./style.css','./app.js','./recognition-state.js','./sample-store.js','./training-data.js','./manifest.webmanifest','./icon.svg'];
+const urls=new Set(CORE.map(path=>new URL(path,self.registration.scope).href));
+self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE))));
+// Finish existing sessions before activating a complete new version.
+self.addEventListener('activate',event=>event.waitUntil(self.clients.claim()));
+self.addEventListener('fetch',event=>{
+ if(event.request.method!=='GET')return;
+ const url=new URL(event.request.url);url.search='';
+ if(!urls.has(url.href))return;
+ event.respondWith(caches.open(CACHE).then(async cache=>(await cache.match(url.href))||fetch(event.request)));
+});
