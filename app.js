@@ -35,7 +35,7 @@ async function prepare(){
    status.textContent=`✅ Modelo listo: ${templates.length}/${samples.length} muestras útiles`;resultEl.textContent="Listo para reconocer 🤟";$("#startRecognition").disabled=templates.length<8;
  }catch(e){console.error(e);status.textContent="❌ Error al cargar modelo: "+(e?.message||e);resultEl.textContent="Modelo no disponible"}
 }
-prepare();
+prepare().then(initTraining);
 
 const cameraBtn=$("#toggleCamera"), cameraStatus=$("#cameraStatus"), flipBtn=$("#flipCamera");
 
@@ -49,6 +49,7 @@ function speakSign(label){
 signVoiceBtn.onclick=()=>{signVoiceEnabled=!signVoiceEnabled;if(!signVoiceEnabled)speechSynthesis.cancel();setSignVoiceUI()};setSignVoiceUI();
 
 function stopCamera(){
+ cancelCapture();
  recognizing=false;liveBuffer=[];lastVideoTime=-1;stableLabel="";stableCount=0;lastSpokenSign="";
  $("#startRecognition").textContent="🤟 Iniciar reconocimiento";
  if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}
@@ -60,7 +61,7 @@ async function startCamera(){
  catch(e){stream=null;cameraBtn.textContent="📷 Activar cámara";cameraStatus.textContent="⚫ Cámara desactivada";flipBtn.disabled=true;resultEl.textContent="No pude activar la cámara"}
 }
 cameraBtn.onclick=()=>stream?stopCamera():startCamera();
-flipBtn.onclick=async()=>{if(!stream)return;facing=facing==="user"?"environment":"user";await startCamera()};
+flipBtn.onclick=async()=>{if(!stream)return;cancelCapture();facing=facing==="user"?"environment":"user";await startCamera()};
 $("#startRecognition").onclick=async()=>{if(!stream){resultEl.textContent="Primero activa la cámara";return}if(!videoHands)await vision();recognizing=!recognizing;$("#startRecognition").textContent=recognizing?"⏹️ Parar reconocimiento":"🤟 Iniciar reconocimiento";liveBuffer=[];if(recognizing)requestAnimationFrame(loop)};
 function loop(){if(!recognizing)return;if(camera.readyState>=2&&camera.currentTime!==lastVideoTime){lastVideoTime=camera.currentTime;let f=feature(videoHands.detectForVideo(camera,performance.now()));if(f){liveBuffer.push(f);if(liveBuffer.length>18)liveBuffer.shift()}if(liveBuffer.length>=8){let q=resample(liveBuffer),best={d:1e9,label:""};for(const t of templates){let x=dtw(q,t.seq);if(x<best.d)best={d:x,label:t.label}}let c=Math.max(0,Math.min(99,Math.round(100*(1-best.d/.55))));if(c>=55){resultEl.textContent=best.label;confEl.textContent=`Confianza experimental: ${c}%`;if(best.label===stableLabel)stableCount++;else{stableLabel=best.label;stableCount=1}if(stableCount>=3){speakSign(best.label);stableCount=0}}else{resultEl.textContent="No estoy seguro";confEl.textContent="Haz la seña completa con las manos visibles";stableLabel="";stableCount=0}}}requestAnimationFrame(loop)}
 
@@ -76,3 +77,85 @@ $("#clearSubtitles").onclick=()=>{hasSubtitleHistory=false;subtitleHistory.inner
 $("#speakReply").onclick=()=>{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance($("#replyText").value);u.lang="es-CL";speechSynthesis.speak(u)};
 
 if("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(()=>{});
+
+// Personal samples use a separate key so original and legacy templates are preserved.
+const PERSONAL_KEY='conectalsch-personal-v1';
+let personalSamples=[],baseTemplates=[],captureId=0,capturing=false,trainingReady=false;
+const trainingStatus=$('#trainingStatus'),recordBtn=$('#recordSample');
+function validSamples(value){
+ return Array.isArray(value)&&value.length<=500&&value.every(t=>
+ t&&typeof t.label==='string'&&t.label.trim().length>0&&t.label.length<=60&&
+ Array.isArray(t.seq)&&t.seq.length===9&&t.seq.every(f=>Array.isArray(f)&&f.length===126&&f.every(Number.isFinite)));
+}
+function refreshDictionary(){
+ templates=[...baseTemplates,...personalSamples];
+ const counts=new Map();for(const t of templates)counts.set(t.label,(counts.get(t.label)||0)+1);
+ const list=$('#signDictionary');list.replaceChildren();
+ for(const [label,count] of [...counts].sort((a,b)=>a[0].localeCompare(b[0],'es'))){const li=document.createElement('li');li.textContent=`${label} — ${count} ejemplos${count<3?' · añade más ejemplos':''}`;list.appendChild(li)}
+ $('#startRecognition').disabled=!templates.length;
+ status.textContent=`Modelo listo: ${counts.size} señas · ${templates.length} muestras`;
+}
+function initTraining(){
+ baseTemplates=[...templates];
+ try{const raw=localStorage.getItem(PERSONAL_KEY);if(raw){const value=JSON.parse(raw);if(!validSamples(value))throw Error('Formato de muestras inválido');personalSamples=value}
+ trainingStatus.textContent='Listo para agregar ejemplos.';
+ }catch(e){trainingStatus.textContent='No se pudieron cargar las muestras personales. Conserva un respaldo antes de guardar nuevos ejemplos.';return}
+ trainingReady=true;refreshDictionary();recordBtn.disabled=false;
+}
+function savePersonal(next){
+ if(!validSamples(next))throw Error('El respaldo debe contener hasta 500 ejemplos válidos.');
+ localStorage.setItem(PERSONAL_KEY,JSON.stringify(next));
+ personalSamples=next;refreshDictionary();
+}
+function downloadJson(data,name){
+ const url=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:'application/json'}));
+ const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function cancelCapture(){
+ if(!capturing)return;captureId++;capturing=false;recordBtn.disabled=!trainingReady;
+ $('#startRecognition').disabled=!templates.length;
+ trainingStatus.textContent='Grabación cancelada. No se guardó el ejemplo.';
+}
+recordBtn.onclick=async()=>{
+ if(capturing||!trainingReady)return;
+ const label=$('#signName').value.trim().normalize('NFC').toLocaleUpperCase('es-CL');
+ if(!label||label.length>60){trainingStatus.textContent='Escribe un nombre de hasta 60 caracteres.';return}
+ if(!stream){trainingStatus.textContent='Primero activa la cámara.';return}
+ recognizing=false;liveBuffer=[];$('#startRecognition').textContent='🤟 Iniciar reconocimiento';
+ $('#startRecognition').disabled=true;capturing=true;recordBtn.disabled=true;const id=++captureId;
+ try{
+ if(!videoHands)await vision();
+ for(let n=3;n>0;n--){if(id!==captureId)return;trainingStatus.textContent=`Prepárate: ${n}…`;await new Promise(r=>setTimeout(r,1000))}
+ if(id!==captureId)return;
+ const seq=[];let previous=-1;const started=performance.now();
+ await new Promise((resolve,reject)=>{
+ function frame(){try{
+ if(id!==captureId||!stream){resolve();return}
+ const now=performance.now();trainingStatus.textContent=`Haz ${label}: ${Math.max(1,Math.ceil((3000-now+started)/1000))} segundos…`;
+ if(camera.readyState>=2&&camera.currentTime!==previous){previous=camera.currentTime;const f=feature(videoHands.detectForVideo(camera,now));if(f)seq.push(f)}
+ if(now-started>=3000){resolve();return}requestAnimationFrame(frame);
+ }catch(e){reject(e)}}requestAnimationFrame(frame);
+ });
+ if(id!==captureId)return;
+ if(seq.length<8)throw Error('No se vieron las manos el tiempo suficiente. Repite con las manos completas dentro de la cámara.');
+ savePersonal([...personalSamples,{label,seq:resample(seq)}]);
+ trainingStatus.textContent=`Ejemplo de ${label} guardado. Repite la seña para agregar otro o inicia el reconocimiento para probarla.`;
+ }catch(e){if(id===captureId)trainingStatus.textContent=`No se guardó: ${e.message}`}
+ finally{if(id===captureId){capturing=false;recordBtn.disabled=false;$('#startRecognition').disabled=!templates.length}}
+};
+$('#exportSamples').onclick=()=>downloadJson({format:'conectalsch-personal',version:1,samples:personalSamples},'ConectaLSCh-mis-senas.json');
+$('#importSamples').onclick=()=>{if(capturing||!trainingReady){trainingStatus.textContent='Espera a que termine la preparación o grabación.';return}$('#samplesFile').click()};
+$('#samplesFile').onchange=async e=>{
+ const file=e.target.files[0];if(!file)return;
+ try{
+ if(capturing||!trainingReady)throw Error('Espera a que termine la grabación.');
+ if(file.size>12000000)throw Error('El archivo supera los 12 MB.');
+ const data=JSON.parse(await file.text());
+ if(data.format!=='conectalsch-personal'||data.version!==1||!validSamples(data.samples))throw Error('El archivo no es un respaldo compatible.');
+ const unique=new Map(personalSamples.map(t=>[JSON.stringify(t),t]));
+ for(const t of data.samples){const normalized={label:t.label.trim().normalize('NFC').toLocaleUpperCase('es-CL'),seq:t.seq};unique.set(JSON.stringify(normalized),normalized)}
+ const added=unique.size-personalSamples.length;savePersonal([...unique.values()]);
+ trainingStatus.textContent=`Respaldo importado: ${added} ejemplos nuevos. Tus ejemplos anteriores se conservaron.`;
+ }catch(e){trainingStatus.textContent=`No se importó: ${e.message}`}finally{e.target.value=''}
+};
+
