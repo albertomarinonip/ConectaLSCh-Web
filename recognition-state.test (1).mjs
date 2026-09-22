@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {SignGate,chooseSign} from './recognition-state.js';
+import {SignGate,chooseSign} from '../recognition-state.js';
 const pose=Array(126).fill(0),other=Array(126).fill(.5);
 const candidate=label=>({kind:'candidate',label});
 let checks=0;
@@ -49,5 +49,4 @@ test('long frame gaps and pause never count as observed release',()=>{
  gate.interrupt();for(let now=10000;now<12000;now+=100)assert(!gate.step({now,hands:true,pose,match:candidate('HOLA')}).speak);
 });
 console.log(`${checks} stability scenarios passed`);
-
 

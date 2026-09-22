@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {observation,drawHands,CONNECTIONS} from '../hand-overlay.js';
+let points=0,edges=0,clears=0;
+const ctx={clearRect(){clears++},beginPath(){},moveTo(){},lineTo(){edges++},stroke(){},arc(){points++},fill(){}};
+const canvas={width:0,height:0,getContext:()=>ctx},video={videoWidth:1280,videoHeight:720};
+const hand=Array.from({length:21},(_,i)=>({x:i/30,y:i/40,z:0}));
+const frame=observation({landmarks:[hand,hand]},123);
+assert.equal(frame.face,null);assert.equal(frame.expression,null);assert.equal(frame.pose,null);
+assert.equal(drawHands(canvas,video,frame,true),2);assert.equal(points,42);assert.equal(edges,2*CONNECTIONS.length);assert.equal(canvas.width,1280);assert.equal(canvas.height,720);
+drawHands(canvas,video,observation({landmarks:[]},124),true);assert.equal(points,42);assert.equal(clears,2);
+drawHands(canvas,video,frame,false);assert.equal(points,42);assert.equal(clears,3);
+const bad=observation({landmarks:[[...hand.slice(1)]]},125);assert.equal(drawHands(canvas,video,bad,true),0);
+console.log('PASS both hands: 42 landmarks; exact intrinsic video size; clear when missing/OFF; future channels remain null');

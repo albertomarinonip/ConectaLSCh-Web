@@ -1,9 +1,10 @@
-const CACHE='conectalsch-v111-'+encodeURIComponent(self.registration.scope);
-const CORE=['./','./index.html','./style.css','./app.js','./recognition-state.js','./sample-store.js','./training-data.js','./manifest.webmanifest','./icon.svg'];
+const CACHE='conectalsch-v120-'+encodeURIComponent(self.registration.scope);
+const CORE=['./','./index.html','./style.css','./app.js','./recognition-state.js','./sample-store.js','./training-data.js','./manifest.webmanifest','./icon.svg','./hand-overlay.js','./content-store.js','./notes-ui.js','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
 const urls=new Set(CORE.map(path=>new URL(path,self.registration.scope).href));
-self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE))));
+self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE.map(path=>new Request(new URL(path,self.registration.scope),{cache:'reload'}))))));
 // Finish existing sessions before activating a complete new version.
 self.addEventListener('activate',event=>event.waitUntil(self.clients.claim()));
+self.addEventListener('message',event=>{if(event.data?.type==='ACTIVATE_UPDATE')event.waitUntil(self.skipWaiting())});
 self.addEventListener('fetch',event=>{
  if(event.request.method!=='GET')return;
  const url=new URL(event.request.url);url.search='';

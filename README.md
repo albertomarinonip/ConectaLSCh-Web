@@ -1,49 +1,59 @@
-# ConectaLSCh v1.1.1 — Estabilidad
+# ConectaLSCh v1.2
 
-Continúa v1.1 sin reemplazar MediaPipe, las características de manos, el cálculo DTW ni las muestras originales.
+Actualización de v1.1.1: cuatro pestañas inferiores, seguimiento visual de ambas manos y notas persistentes. Interfaz oscura responsive con safe-area para iPhone.
 
-## Cambios
+## Funciones
 
-- Sin manos: descarta inmediatamente la secuencia anterior y muestra «Esperando seña…».
-- Confirmación: exige detecciones consecutivas de la misma seña durante al menos 650 ms y un mínimo de 6 observaciones, con muestreo aproximadamente cada 100 ms. Reunir la secuencia inicial añade tiempo a la confirmación.
-- Incertidumbre: «No estoy seguro», sin voz, si la distancia es demasiado alta o las dos mejores señas distintas están demasiado próximas. Varias muestras de una misma seña no compiten como señas distintas.
-- Voz: un evento por confirmación. No existe un temporizador que vuelva a pronunciar una seña mantenida.
-- Repetición: necesita al menos 500 ms observados sin manos o un cambio sostenido de su configuración. Después debe completar otra confirmación. Una caída breve de detección, fluctuación de puntuación o pausa no liberan por sí solas el bloqueo.
-- Las protecciones se aplican tanto a las cinco señas originales como a Mis señas.
-- Mis señas: mantiene la clave de v1.1, migra los ejemplos a IndexedDB y conserva una copia compatible en localStorage. Solo confirma el guardado después de completar la escritura. Recupera una copia desde la otra cuando es posible.
-- Restaura Mis señas independientemente de la descarga del modelo remoto.
-- Conserva cámara, escucha, subtítulos acumulativos, texto a voz y voz de señas.
+- Señas: cámara compacta, girar cámara, voz ON/OFF, resultado y confianza experimental. «🖐️ Seguimiento de manos» activa o desactiva los 21 puntos y conexiones de cada mano. El dibujo comparte tamaño, proporción y espejo con el video; se limpia cuando no hay detecciones.
+- Escuchar: activar/detener escucha, subtítulos acumulativos, copiar, limpiar y guardar texto completo como nota con fecha y hora. Limpiar el texto actual no elimina notas.
+- Mis señas: capturar ejemplos, consultar cantidades, administrar nombres visibles y activar/desactivar ejemplos personales. Respaldo e importación compatibles con la versión anterior. Los nombres visibles y estados se guardan por separado de las muestras originales.
+- Notas: abrir, copiar y eliminar notas con confirmación.
+- Texto → voz sigue disponible dentro de Señas. Las cinco señas originales se conservan: HOLA, GRACIAS, SÍ, NO y AYÚDAME.
 
-## Actualizar en GitHub Pages
+El seguimiento utiliza la misma detección que el reconocimiento y la captura; no ejecuta otro modelo. Al cambiar de pestaña se detiene la cámara o escucha correspondiente, conservando los subtítulos acumulados.
 
-1. En la versión actual, descarga un respaldo de Mis señas.
-2. Descomprime el ZIP y sube su contenido a la raíz del mismo repositorio ConectaLSCh-Web. Incluye los nuevos recognition-state.js y sample-store.js. No borres los archivos multimedia existentes.
-3. Espera a que termine GitHub Pages. Abre la página con conexión, después cierra todas sus pestañas y la app instalada y vuelve a abrirla para activar el paquete nuevo en caché. Comprueba el encabezado v1.1.1.
-4. Mantén el mismo navegador, perfil y dirección HTTPS. No borres los datos del sitio para actualizar. Si cambias de dispositivo o navegador, importa tu respaldo.
+## Reconocimiento y límites
 
-Esta entrega no se publicó automáticamente. Las muestras personales se conservan al recargar y cerrar/reabrir. El navegador todavía puede eliminar datos si tú los borras, si usas modo privado o por sus políticas de almacenamiento; conserva el respaldo descargado. El ZIP no incluye las muestras personales que existen únicamente en tu navegador.
+Se mantienen «Esperando seña…», «No estoy seguro», confirmación estable y un solo evento de voz por seña. Retirar las manos o cambiar suficientemente su configuración permite una nueva confirmación. Una pérdida breve de seguimiento no debe rearmar la voz.
 
-## Prueba con tu cámara
+Después de revisar los datos reales se conservaron las características numéricas, DTW y umbrales de v1.1.1. No hay evidencia suficiente para prometer más precisión mediante un ajuste automático. Consulta REVISION-RECONOCIMIENTO.md para resultados y limitaciones. La confianza mostrada es experimental, no un porcentaje calibrado.
 
-1. Inicia reconocimiento sin manos durante 15 segundos: debe esperar en silencio.
-2. Haz una seña conocida completa y mantenla: debe confirmarse una vez y no repetir voz.
-3. Retira las manos aproximadamente un segundo y vuelve a hacerla: debe pronunciarla otra vez tras confirmarla.
-4. Cambia de seña y prueba también una de Mis señas. Si hay duda debe mostrar «No estoy seguro» sin hablar.
-5. Guarda un ejemplo personal, recarga y cierra/reabre: debe continuar en el diccionario.
-6. Comprueba escucha ON/OFF, frases acumuladas, texto a voz y voz de señas ON/OFF.
+## Datos y persistencia
 
-## Verificación y límites
+Se mantiene sin cambios sample-store.js: IndexedDB `conectalsch-personal`, almacén `samples`, clave `conectalsch-personal-v1`, y respaldo compatible en localStorage. Se conservan también las claves de plantillas anteriores. Ninguna actualización borra IndexedDB ni localStorage.
 
-Se probaron secuencias simuladas de ausencia de manos, candidatos alternantes, empate entre señas, confirmación estable, una seña mantenida un minuto, pérdida breve de detección, retirada y repetición, cambio de manos, pausa y caídas de fotogramas.
+Las notas y preferencias de nombres/activación usan otra base, `conectalsch-content`, versión 1, con almacenes `notes` y `settings`. Las notas incluyen versión de esquema, identificador, texto, título, fechas, idioma, segmentos y un campo de adjuntos para ampliaciones futuras. El guardado se confirma al terminar la transacción.
 
-En Edge con cámara/modelo/voz simulados se probaron el bucle real de la aplicación, captura, importación, voz ON/OFF, controles existentes, migración desde v1.1, cierre y reapertura completa del navegador, recuperación desde IndexedDB y fallo de escritura en localStorage. También pasó la prueba real de actualización del service worker y recuperación de la interfaz y muestras sin conexión.
+Los datos personales existentes solamente en tu navegador no forman parte del ZIP. Mantén el mismo dominio, navegador y perfil; exporta Mis señas antes de cambiar de dispositivo o borrar datos del sitio. La persistencia se verificó tras recarga y cierre completo del navegador; borrar datos o las políticas de almacenamiento del navegador pueden eliminarlos.
 
-Los archivos de entrenamiento originales se conservan idénticos a v1.1. No se añadieron muestras ficticias al producto; los datos de prueba están aislados.
+## Actualizar GitHub Pages
 
-No se ha validado la precisión con cámara física, tu repertorio de señas ni iPhone. El filtro reduce falsos positivos, pero un clasificador de plantillas no puede determinar con certeza la intención de una postura muy parecida a una seña. Los umbrales conservadores pueden necesitar ajuste con ejemplos reales. No se cambió ni reentrenó el modelo.
+1. Descarga un respaldo de Mis señas desde tu versión actual.
+2. Descomprime este paquete y sube su contenido a la raíz del mismo repositorio. Incluye los módulos nuevos, iconos, manifest y service worker. Conserva los videos y otros archivos existentes del repositorio: el paquete no incluye esos videos.
+3. Espera el despliegue de GitHub Pages. Abre el sitio con conexión, cierra todas sus pestañas y la PWA, y vuelve a abrirlo. Esto permite pasar del service worker de v1.1.1 al de v1.2. Comprueba «ConectaLSCh v1.2».
+4. No borres los datos del sitio para actualizar. Comprueba tus ejemplos guardados y notas.
 
-Los umbrales están en recognition-state.js. La distancia es una medida experimental, no una probabilidad calibrada. La interfaz y muestras pueden recuperarse sin conexión; inicializar la visión puede seguir requiriendo conexión para MediaPipe y su modelo.
+Desde v1.2, una actualización posterior muestra un aviso cuando existe un service worker nuevo esperando. Activarla conserva el texto confirmado pendiente durante la recarga; espera a terminar una grabación o guardado. El service worker instala el paquete completo antes de activarlo y no elimina bases de datos ni cachés anteriores. En futuras publicaciones debe cambiarse el identificador CACHE de sw.js.
 
-## Prueba de lógica reproducible
+El paquete no ha sido publicado automáticamente. Cámara y micrófono requieren HTTPS o localhost. El reconocimiento de voz depende del soporte y permisos del navegador. La interfaz, notas y ejemplos funcionan sin conexión tras instalar la caché; cargar MediaPipe, su modelo o el servicio de reconocimiento de voz puede requerir conexión.
 
-Con Node instalado: `node tests/recognition-state.test.mjs`.
+## Verificación realizada
+
+- Pruebas de lógica: silencio sin manos, ambigüedad, estabilidad, seña mantenida, retirada y nueva confirmación, cambios de postura y pérdidas breves de detección.
+- Aplicación en Edge con entradas de cámara/modelo/voz simuladas: HOLA una vez, mantener sin repetir, retirar/repetir, voz OFF, seguimiento de dos manos, giro de cámara, captura, respaldo/importación y texto → voz.
+- Almacenamiento real: migración desde v1.1.1, recarga, cierre/reapertura del navegador, recuperación desde IndexedDB, notas y ajustes personales persistentes, eliminar/cancelar eliminación.
+- Voz simulada → subtítulos → guardar nota → limpiar texto sin borrar la nota.
+- Service worker real: actualización desde v1.1.1, actualización posterior con borrador, notas y muestras conservadas; recarga de interfaz sin conexión.
+- Diseño comprobado a 320×568, 390×844, 844×390, 768×1024 y 1440×900, sin desbordamiento horizontal y con navegación inferior fija.
+- MediaPipe real sobre 200 imágenes originales y comparación numérica de DTW: ver informe adjunto.
+
+No se probó una cámara física ni Safari en un iPhone real. Las pruebas simuladas verifican el comportamiento del sistema, no la precisión real de LSCh. Antes de usarlo en conversaciones, comprobar en el dispositivo: silencio sin señas, HOLA una vez, mantener sin repetir, retirar y repetir, recarga de Mis señas, y escucha → guardar nota → recarga.
+
+Pruebas reproducibles con Node:
+
+```sh
+node tests/recognition-state.test.mjs
+node tests/tracking.test.mjs
+```
+
+Los documentos LEEME-v1.1.md y LEEME-v1.1.1.md se conservan como historial; este README corresponde a la entrega actual.
