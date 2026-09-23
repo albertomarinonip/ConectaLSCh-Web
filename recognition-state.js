@@ -9,8 +9,9 @@ export function rms(a,b){
  return Math.sqrt(sum/a.length);
 }
 export function chooseSign(scores){
- // Open-set admission: the recognizer must be allowed to say "none".
- // A single lucky template is not enough when a label has multiple examples.
+ // Open-set recognition: "none" is the normal result unless a label is backed
+ // by a consensus of independent personal examples. We intentionally do not
+ // choose the nearest label just because it is the nearest one.
  const groups=new Map();
  for(const score of scores){
    if(!Number.isFinite(score?.d)||score.d<0)continue;
@@ -18,29 +19,37 @@ export function chooseSign(scores){
    groups.get(score.label).push(score);
  }
  const labels=[];
+ const finiteScoreCount=[...groups.values()].reduce((n,a)=>n+a.length,0);
  for(const [label,items] of groups){
    items.sort((a,b)=>a.d-b.d);
-   const best=items[0];
-   // With >=2 recordings, demand support from a second independent example.
-   // This rejects incidental poses/motions that happen to resemble only one sample.
-   const support=items.length>=2?items[1]:best;
-   const supportLimit=best.dynamic?0.19:0.145;
-   const supported=items.length<2 || support.d<=supportLimit;
-   labels.push({...best,label,supportD:support.d,supportCount:items.length,supported});
+   const dynamic=!!items[0]?.dynamic;
+   // A vote is stricter than the final aggregate distance. For dynamic signs it
+   // must agree in shape AND trajectory, not only in the weighted total.
+   const votes=items.filter(x=>{
+     if(x.motionComplete===false)return false;
+     if(dynamic)return x.d<=0.135 && x.shapeD<=0.145 && x.motionD<=0.155 && x.motionSimilar!==false && x.motionRatio!==false;
+     return x.d<=0.115;
+   });
+   const required=items.length>=5?3:items.length>=3?2:items.length>=2?2:1;
+   if(votes.length<required)continue;
+   const used=votes.slice(0,required);
+   // Median/mean-like consensus score prevents one exceptionally close sample
+   // from dominating an otherwise unrelated everyday movement.
+   const consensusD=used.reduce((s,x)=>s+x.d,0)/used.length;
+   const best=used[0];
+   labels.push({...best,label,d:consensusD,rawBestD:best.d,supportD:used.at(-1).d,
+     supportCount:items.length,voteCount:votes.length,requiredVotes:required,supported:true});
  }
  labels.sort((a,b)=>a.d-b.d);
  const [best,second]=labels;
- if(!best)return {kind:'waiting',reason:'Sin plantillas activas comparables'};
+ if(!best)return finiteScoreCount?{kind:'uncertain',reason:'Distancia/consenso: movimiento desconocido; ningún grupo de ejemplos coincide'}:{kind:'waiting',reason:'Sin plantillas activas comparables'};
  const margin=second?second.d-best.d:Infinity;
  const details={best,second,margin};
- if(!best.supported)return {kind:'uncertain',...details,reason:'Movimiento/postura no confirmado por suficientes ejemplos personales'};
- if(best.motionComplete===false)return {kind:'waiting',...details,reason:'Movimiento no coincide con una seña completa'};
- // Dynamic signs need stronger evidence because ordinary hand movement is common.
- const maxDistance=best.dynamic?0.145:0.125;
- if(best.d>maxDistance)return {kind:'uncertain',...details,reason:'Distancia: no coincide suficientemente con una seña entrenada'};
- if(margin<LIMITS.minMargin)return {kind:'uncertain',...details,reason:'Ambigüedad: margen entre señas menor que '+LIMITS.minMargin};
+ const maxDistance=best.dynamic?0.125:0.105;
+ if(best.d>maxDistance)return {kind:'uncertain',...details,reason:'Movimiento desconocido: consenso insuficiente'};
+ if(margin<LIMITS.minMargin)return {kind:'uncertain',...details,reason:'Ambigüedad: dos señas se parecen demasiado'};
  if(second&&margin/Math.max(second.d,0.001)<LIMITS.minRelativeMargin)return {kind:'uncertain',...details,reason:'Ambigüedad: margen relativo insuficiente'};
- return {kind:'candidate',label:best.label,d:best.d,dynamic:!!best.dynamic,...details,reason:'Coincidencia personal confirmada; requiere compuerta temporal'};
+ return {kind:'candidate',label:best.label,d:best.d,dynamic:!!best.dynamic,...details,reason:'Coincidencia respaldada por varios ejemplos personales'};
 }
 
 export class SignGate{

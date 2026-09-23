@@ -1,4 +1,4 @@
-# ConectaLSCh v1.2.9
+# ConectaLSCh v1.3.0
 
 Prototipo PWA de accesibilidad centrado en Lengua de Señas Chilena (LSCh). Funciona con cuatro pestañas: **Señas**, **Escuchar**, **Mis señas** y **Notas**.
 
@@ -9,7 +9,7 @@ Prototipo PWA de accesibilidad centrado en Lengua de Señas Chilena (LSCh). Func
 - **Mis señas:** permite crear varias muestras por seña, exportar/importar respaldo y administrar ejemplos personales. No incluye un diccionario LSCh precargado.
 - **Notas:** conserva notas guardadas independientemente de los subtítulos.
 
-## Reconocimiento de movimiento v1.2.9
+## Reconocimiento de movimiento v1.3.0
 
 Esta versión mejora especialmente las señas dinámicas. Para una muestra que contiene movimiento, el reconocedor separa el tramo activo de la preparación y de la postura final, compara la evolución temporal de la forma de las manos y la trayectoria de las muñecas, y tolera diferencias naturales de velocidad entre la grabación y la ejecución en vivo. Una postura quieta no debe bastar para confirmar una muestra dinámica.
 
@@ -28,7 +28,7 @@ Los datos personales se guardan en IndexedDB `conectalsch-personal` con respaldo
 
 ## Actualizar GitHub Pages / iPhone
 
-Descomprime el ZIP y reemplaza los archivos de la raíz del repositorio. El service worker usa una caché nueva para v1.2.9. Abre la web con conexión y acepta la actualización; si el iPhone conserva una versión anterior, cierra la PWA y sus pestañas y vuelve a abrirla.
+Descomprime el ZIP y reemplaza los archivos de la raíz del repositorio. El service worker usa una caché nueva para v1.3.0. Abre la web con conexión y acepta la actualización; si el iPhone conserva una versión anterior, cierra la PWA y sus pestañas y vuelve a abrirla.
 
 ## Límites
 
@@ -45,16 +45,19 @@ node tests/regressions-v121.test.mjs
 node tests/personal-temporal.test.mjs
 ```
 
-## Cambios v1.2.9
+## Cambios v1.3.0
 - Reduce falsos positivos: un movimiento cualquiera ya no basta para emitir una palabra.
 - En señas dinámicas se exige recorrido suficiente y semejanza de trayectoria con los ejemplos de “Mis señas”.
 - Después de confirmar una seña hay una breve protección contra el movimiento residual, para evitar que aparezca otra palabra sin haberla realizado.
 - Los estados internos de detección no se agregan a la transcripción; solo las señas confirmadas quedan como líneas.
 
 
-## v1.2.9 — fin de movimiento
+## v1.3.0 — fin de movimiento
 El reconocimiento en vivo segmenta cada seña dinámica como un evento: espera movimiento real, conserva un pequeño pre-roll, detecta el fin con histéresis y clasifica inmediatamente al terminar. Las señas dinámicas ya no se confirman por mantener una postura final quieta. Las señas estáticas conservan el flujo de estabilidad.
 
 
-## v1.2.9 — rechazo de falsos positivos
+## v1.3.0 — rechazo de falsos positivos
 El reconocimiento ahora usa una compuerta de “seña conocida”: no basta con elegir la plantilla más cercana. Cuando existen varios ejemplos de una seña, al menos dos deben respaldar la coincidencia. Las señas con movimiento exigen recorrido, trayectoria y proporción de movimiento compatibles antes de agregar una palabra. Los movimientos cotidianos deben quedar sin salida en la transcripción.
+
+## v1.3.0 — rechazo abierto de movimientos desconocidos
+El reconocimiento ya no elige una seña solo por ser la plantilla más cercana. Una seña debe obtener consenso entre varios ejemplos personales independientes. En señas dinámicas, cada voto debe coincidir por separado en forma de mano, trayectoria y cantidad de movimiento. Si no existe consenso suficiente, el resultado interno es desconocido y no se agrega ninguna palabra a la transcripción. Esto está diseñado para reducir falsos positivos con gestos cotidianos como tocarse la cabeza o acomodarse el pelo. El reconocimiento continúa siendo un prototipo experimental basado solo en manos y no equivale a un traductor completo de LSCh.
