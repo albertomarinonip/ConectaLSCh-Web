@@ -1,19 +1,19 @@
-# ConectaLSCh v1.4.0 — reconocimiento multimodal personal
+# ConectaLSCh v1.4.1
 
-PWA experimental de accesibilidad para LSCh. Mantiene tres áreas: **Señas**, **Escuchar** y **Mis señas**.
+Prototipo PWA de accesibilidad en LSCh.
 
 ## Cambio principal
-Las muestras nuevas de **Mis señas** ya no guardan solamente la forma relativa de las manos. Guardan una secuencia temporal local de: manos (21 puntos por mano), trayectoria/movimiento, rasgos geométricos seleccionados de rostro superior (ojos/cejas/cabeza) y pose superior (hombros, codos, muñecas) cuando MediaPipe puede observarlos. No se guardan fotos ni video en la muestra.
+`Mis señas` incorpora un **Control de captura** para enseñar señas dinámicas con el mismo detector de manos y el mismo segmentador de movimiento que usa `Señas`.
 
-Los canales visuales faltantes se marcan como no disponibles; no se inventan. Las manos y el movimiento siguen siendo el canal principal. El contexto visual solo participa cuando existe tanto en entrenamiento como en vivo. Esto sigue siendo un prototipo y no un traductor completo de LSCh.
+Durante la captura muestra manos detectadas, movimiento/actividad, rostro disponible como apoyo y cantidad de frames. Para una seña dinámica, una mano quieta no se acepta: debe detectarse inicio, trayectoria y final del movimiento antes de habilitar el guardado.
 
-## Mis señas
-Para aprovechar el formato multimodal v3, graba nuevamente cada seña importante con **5–10 ejemplos naturales**. Los ejemplos antiguos de v1.3.x se conservan y siguen siendo compatibles, pero son solo de manos. La app no los borra automáticamente.
+El rostro/cuerpo son contexto opcional. Las manos y su movimiento son el canal principal y nunca se inventan datos visuales ausentes.
 
-Flujo: PREPARADO → 3 → 2 → 1 → GRABANDO → CAPTURA TERMINADA → Guardar/Repetir. La cuenta regresiva no forma parte de la muestra.
+## Escuchar
+La función `Escuchar` se mantiene sin cambios funcionales en esta versión.
 
-## Privacidad
-Las muestras se almacenan localmente en IndexedDB/localStorage y se pueden exportar a JSON. Las nuevas muestras contienen coordenadas/descritores, no imágenes de cámara.
+## Datos
+Los ejemplos siguen almacenándose localmente con el esquema compatible existente. Conviene respaldarlos desde `Mis señas` antes de cambios importantes.
 
 ## Limitaciones
-La calidad depende de cámara, luz, encuadre y rendimiento del dispositivo. Rostro/cuerpo se procesan a menor frecuencia para priorizar las manos en iPhone. Para usos médicos, legales o de emergencia no debe sustituir a un intérprete profesional de LSCh.
+Este sigue siendo un prototipo personal basado en ejemplos, no un traductor completo de LSCh. La calidad depende de cámara, encuadre, iluminación, variedad de ejemplos y rendimiento del dispositivo.

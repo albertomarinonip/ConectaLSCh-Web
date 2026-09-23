@@ -202,19 +202,47 @@ async function prepareTrainingCamera(){
  $('#trainingCapture').hidden=false;return true;
 }
 function setCaptureStage(text,kind=''){const el=$('#captureStage');el.textContent=text;el.dataset.kind=kind}
+function trainingMonitor({hands=0,activity=0,face=false,frames=0,state='READY',quality='' }={}){
+ const mh=$('#monitorHands'),mm=$('#monitorMotion'),mf=$('#monitorFace'),mfr=$('#monitorFrames'),mq=$('#monitorQuality');
+ if(mh)mh.textContent=hands?`🖐️ Manos: ${hands} detectada${hands===1?'':'s'}`:'🖐️ Manos: no detectadas';
+ if(mm)mm.textContent=`➜ Movimiento: ${state==='MOVING'?'activo':activity>=.04?'iniciando':'esperando'} · ${activity.toFixed(3)}`;
+ if(mf)mf.textContent=`🙂 Rostro: ${face?'detectado (apoyo)':'no disponible'}`;
+ if(mfr)mfr.textContent=`🎞️ Frames: ${frames}`;
+ if(mq)mq.textContent=quality||'La captura se guardará solo si las manos y el movimiento tienen calidad suficiente.';
+}
+function drawTrainingOverlay(result){
+ const canvas=$('#trainingOverlay'),video=$('#trainingCamera');if(!canvas||!video?.videoWidth)return;
+ canvas.width=video.videoWidth;canvas.height=video.videoHeight;
+ const channels=observation({...result,landmarks:(result?.landmarks||[])},performance.now());Object.assign(channels,visualTracking.snapshot(performance.now()));
+ drawHands(canvas,video,channels,true);drawVisualTracking(canvas,channels);
+}
 async function capturePersonalExample(label){
  if(!await prepareTrainingCamera())return;
  pauseRecognition();$('#startRecognition').disabled=true;capturing=true;recordBtn.disabled=true;$('#captureReview').hidden=true;pendingSample=null;const id=++captureId;
  try{
   if(!videoHands)await vision();
   if(!visualTracking.enabled)await visualTracking.enable();
-  for(let n=3;n>0;n--){if(id!==captureId)return;setCaptureStage(String(n),'countdown');trainingStatus.textContent=`Prepárate: ${n}…`;await new Promise(r=>setTimeout(r,1000))}
-  if(id!==captureId)return;setCaptureStage('● GRABANDO','recording');
-  const seq=[];const aspectRatio=camera.videoWidth/camera.videoHeight;if(!Number.isFinite(aspectRatio)||aspectRatio<=0)throw Error('La cámara aún no informa su tamaño. Vuelve a activarla e inténtalo de nuevo.');let previous=-1;const started=performance.now();
-  await new Promise((resolve,reject)=>{function frame(){try{if(id!==captureId||!stream){resolve();return}const now=performance.now();const left=Math.max(0,3000-now+started);trainingStatus.textContent=`Grabando ${label} · ${(left/1000).toFixed(1)} s`;$('#captureProgress').style.width=(100-left/30)+'%';if(latestDetection&&latestDetection.time!==previous&&now-latestDetection.time<350){previous=latestDetection.time;const f=feature(latestDetection.result);if(f)seq.push({feature:f,time:latestDetection.time,hands:latestDetection.result.landmarks,visual:visualDescriptor(visualTracking.snapshot(performance.now()))})}if(now-started>=3000){resolve();return}requestAnimationFrame(frame)}catch(e){reject(e)}}requestAnimationFrame(frame)});
-  if(id!==captureId)return;if(seq.length<8)throw Error('No se vieron las manos el tiempo suficiente. Repite con las manos completas dentro de la cámara.');
-  pendingSample=recordedSample(label,seq,aspectRatio);setCaptureStage('✓ CAPTURA TERMINADA','done');trainingStatus.textContent=`Captura de ${label} lista. Guárdala o repítela.`;$('#captureReview').hidden=false;
- }catch(e){if(id===captureId){setCaptureStage('Repite la captura','error');trainingStatus.textContent=`No se guardó: ${e.message}`}}
+  const segmenter=new MotionEventSegmenter();trainingMonitor();
+  for(let n=3;n>0;n--){if(id!==captureId)return;setCaptureStage(String(n),'countdown');trainingStatus.textContent=`Prepárate: ${n}… mantén las manos visibles.`;await new Promise(r=>setTimeout(r,1000))}
+  if(id!==captureId)return;setCaptureStage('MUEVE TUS MANOS','recording');
+  const seq=[];const aspectRatio=camera.videoWidth/camera.videoHeight;if(!Number.isFinite(aspectRatio)||aspectRatio<=0)throw Error('La cámara aún no informa su tamaño. Vuelve a activarla e inténtalo de nuevo.');
+  const started=performance.now(),timeoutMs=6500;let previous=-1,completedEvent=null,maxActivity=0,movingFrames=0;
+  await new Promise((resolve,reject)=>{function frame(){try{
+   if(id!==captureId||!stream){resolve();return}const now=performance.now(),elapsed=now-started;
+   const left=Math.max(0,timeoutMs-elapsed);$('#captureProgress').style.width=(100-left/timeoutMs*100)+'%';
+   if(latestDetection&&latestDetection.time!==previous&&now-latestDetection.time<400){previous=latestDetection.time;const f=feature(latestDetection.result);drawTrainingOverlay(latestDetection.result);
+    visualTracking.process(camera,now,{enabled:true,handMs:0});const vis=visualDescriptor(visualTracking.snapshot(performance.now()));
+    if(f){const ev=segmenter.push({feature:f,hands:latestDetection.result.landmarks,time:latestDetection.time,aspectRatio,visual:vis});maxActivity=Math.max(maxActivity,ev.activity||0);if(ev.state==='MOVING')movingFrames++;const activeFrames=ev.completed?.frames||segmenter.event||[];trainingMonitor({hands:latestDetection.result.landmarks.length,activity:ev.activity||0,face:!!visualTracking.snapshot(performance.now()).face,frames:activeFrames.length,state:ev.state,quality:ev.state==='MOVING'?'🟢 Movimiento capturado. Completa la seña y termina de forma natural.':'Esperando un movimiento claro de las manos…'});if(ev.completed){completedEvent=ev.completed;resolve();return}}
+    else trainingMonitor({hands:0,activity:0,face:!!visualTracking.snapshot(performance.now()).face,frames:segmenter.event?.length||0,state:segmenter.state,quality:'Mantén al menos una mano completa dentro de la cámara.'});
+   }
+   if(elapsed>=timeoutMs){resolve();return}requestAnimationFrame(frame)
+  }catch(e){reject(e)}}requestAnimationFrame(frame)});
+  if(id!==captureId)return;
+  if(!completedEvent)throw Error('No detecté una seña completa con movimiento. Haz el movimiento natural y termina la seña antes de guardar.');
+  const frames=completedEvent.frames||[];if(frames.length<8||movingFrames<2||maxActivity<.075)throw Error('Movimiento insuficiente. Para una seña dinámica, una mano quieta no se guarda.');
+  for(const x of frames)seq.push({feature:x.feature,time:x.time,hands:x.hands,visual:x.visual||null});
+  pendingSample=recordedSample(label,seq,aspectRatio);setCaptureStage('✓ CAPTURA BUENA','done');trainingStatus.textContent=`Captura de ${label} lista: ${seq.length} frames con movimiento. Guárdala o repítela.`;trainingMonitor({hands:frames.at(-1)?.hands?.length||0,activity:maxActivity,face:!!frames.some(x=>x.visual?.face),frames:seq.length,state:'COMPLETE',quality:'✓ Captura buena: inicio, movimiento y final detectados.'});$('#captureReview').hidden=false;
+ }catch(e){if(id===captureId){setCaptureStage('Repite la captura','error');trainingStatus.textContent=`No se guardó: ${e.message}`;trainingMonitor({quality:'⚠️ '+e.message})}}
  finally{if(id===captureId){capturing=false;recordBtn.disabled=false;$('#startRecognition').disabled=!templates.length}}
 }
 recordBtn.onclick=async()=>{
