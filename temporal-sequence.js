@@ -23,7 +23,12 @@ export function matchWindow(frames,times,templates,aspectRatio,landmarkFrames=[]
  // similar pose (for example touching the hair). Compare wrist trajectory too.
  const liveLm=landmarkFrames.slice(from);
  const motionD=(liveLm.length>=2&&Array.isArray(t.landmarks))?motionDistance(liveLm,t.landmarks,aspectRatio,t.aspectRatio||aspectRatio):0;
- return {...base,shapeD:base.d,motionD,d:base.d+Math.min(motionD,1)*2.0};
+ // Keep shape and motion as separate channels. A weighted normalized score avoids
+ // rejecting a valid sign merely because natural wrist travel differs slightly.
+ // Motion still contributes enough to reject a static look-alike.
+ const motionClamped=Math.min(motionD,0.60);
+ const combined=base.d*0.72+motionClamped*0.28;
+ return {...base,shapeD:base.d,motionD,d:combined};
  });
  return chooseSign(scores);
 }

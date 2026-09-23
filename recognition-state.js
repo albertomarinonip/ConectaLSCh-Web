@@ -1,6 +1,6 @@
 // Admission filter shared by all personal examples; uncertainty never emits voice.
-export const LIMITS = Object.freeze({maxDistance:0.16, minMargin:0.035,
- minRelativeMargin:0.2, stableMs:650, stableFrames:6, releaseMs:500,
+export const LIMITS = Object.freeze({maxDistance:0.16, minMargin:0.018,
+ minRelativeMargin:0.10, stableMs:650, stableFrames:6, releaseMs:500,
  changedPoseDistance:0.24, maxGapMs:350});
 
 export function rms(a,b){
