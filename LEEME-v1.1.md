@@ -1,1 +1,1 @@
-Este paquete es v1.1.1. Consulta LEEME-v1.1.1.md para actualizar y probar la versión de estabilidad.
+Esta entrega es v1.2.1. Consulta README.md y REVISION-v1.2.1.md para actualizar conservando tus datos. El dataset precargado ya no se utiliza.

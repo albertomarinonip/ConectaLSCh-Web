@@ -1,4 +1,4 @@
-// Admission filter only: original hand features, DTW and training data stay unchanged.
+// Admission filter shared by all personal examples; uncertainty never emits voice.
 export const LIMITS = Object.freeze({maxDistance:0.16, minMargin:0.035,
  minRelativeMargin:0.2, stableMs:650, stableFrames:6, releaseMs:500,
  changedPoseDistance:0.24, maxGapMs:350});
@@ -14,11 +14,13 @@ export function chooseSign(scores){
  for(const {label,d} of scores){if(Number.isFinite(d)&&d>=0)labels.set(label,Math.min(labels.get(label)??Infinity,d))}
  const ranked=[...labels].map(([label,d])=>({label,d})).sort((a,b)=>a.d-b.d);
  const [best,second]=ranked;
- if(!best)return {kind:'waiting'};
+ if(!best)return {kind:'waiting',reason:'Sin plantillas activas comparables'};
  const margin=second?second.d-best.d:Infinity;
- if(best.d>LIMITS.maxDistance||margin<LIMITS.minMargin||
- (second&&margin/Math.max(second.d,0.001)<LIMITS.minRelativeMargin))return {kind:'uncertain'};
- return {kind:'candidate',label:best.label,d:best.d};
+ const details={best,second,margin};
+ if(best.d>LIMITS.maxDistance)return {kind:'uncertain',...details,reason:'Distancia DTW supera '+LIMITS.maxDistance};
+ if(margin<LIMITS.minMargin)return {kind:'uncertain',...details,reason:'Ambigüedad: margen entre señas menor que '+LIMITS.minMargin};
+ if(second&&margin/Math.max(second.d,0.001)<LIMITS.minRelativeMargin)return {kind:'uncertain',...details,reason:'Ambigüedad: margen relativo insuficiente'};
+ return {kind:'candidate',label:best.label,d:best.d,...details,reason:'Coincidencia; requiere estabilidad'};
 }
 
 export class SignGate{

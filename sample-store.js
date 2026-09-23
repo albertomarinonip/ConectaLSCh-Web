@@ -1,9 +1,17 @@
 // Version-independent storage, compatible with v1.1. Never delete legacy samples.
 export const PERSONAL_KEY='conectalsch-personal-v1';
 const DB_NAME='conectalsch-personal', STORE='samples';
+function validHand(h){return Array.isArray(h)&&h.length===21&&h.every(p=>p&&[p.x,p.y,p.z].every(Number.isFinite))}
 export function validSamples(value){
- return Array.isArray(value)&&value.length<=500&&value.every(t=>t&&typeof t.label==='string'&&t.label.trim().length>0&&t.label.length<=60&&
- Array.isArray(t.seq)&&t.seq.length===9&&t.seq.every(f=>Array.isArray(f)&&f.length===126&&f.every(Number.isFinite)));
+ return Array.isArray(value)&&value.length<=500&&value.every(t=>{
+ if(!t||typeof t.label!=='string'||!t.label.trim()||t.label.length>60)return false;
+ if(t.aspectRatio!==undefined&&(!Number.isFinite(t.aspectRatio)||t.aspectRatio<.1||t.aspectRatio>10))return false;
+ if(!Array.isArray(t.seq)||!t.seq.every(f=>Array.isArray(f)&&f.length===126&&f.every(Number.isFinite)))return false;
+ if(t.sampleVersion===undefined||t.sampleVersion===1)return t.seq.length===9;
+ return t.sampleVersion===2&&t.featureVersion==='hands-relative-v1'&&t.seq.length>=8&&t.seq.length<=40&&
+ Array.isArray(t.timestamps)&&t.timestamps.length===t.seq.length&&t.timestamps[0]===0&&t.timestamps.every((v,i)=>Number.isFinite(v)&&v>=0&&v<=15000&&(!i||v>t.timestamps[i-1]))&&
+ Array.isArray(t.landmarks)&&t.landmarks.length===t.seq.length&&t.landmarks.every(hands=>Array.isArray(hands)&&hands.length>=1&&hands.length<=2&&hands.every(validHand));
+ });
 }
 function openDB(){return new Promise((resolve,reject)=>{
  const request=indexedDB.open(DB_NAME,1);
@@ -25,7 +33,7 @@ export async function saveSamples(samples){
  try{await accessDB('readwrite',samples);stored=true}catch{}
  try{localStorage.setItem(PERSONAL_KEY,JSON.stringify(samples));mirror=true}catch{}
  if(!stored&&!mirror)throw Error('El navegador no permitió guardar. Libera espacio y conserva un respaldo.');
- return {warning:stored?'':'Guardado en este navegador; la copia adicional no está disponible.'};
+ return {warning:stored&&mirror?'':stored?'Guardado en IndexedDB; el respaldo local está lleno o no disponible. Exporta un JSON.':'Guardado en este navegador; la copia adicional no está disponible.'};
 }
 export async function loadSamples(){
  let dbValue,localValue,dbError=false,localError=false;
@@ -40,4 +48,17 @@ export async function loadSamples(){
  let warning='';
  if(samples.length){try{({warning}=await saveSamples(samples))}catch(e){warning=e.message}}
  return {samples,warning};
+}
+
+// Explicit deletion must update both old mirrors or fail, otherwise loadSamples()
+// would merge an old local backup and resurrect a deleted example on next launch.
+export async function removePersonalLabel(label){
+ const {samples}=await loadSamples();
+ const next=samples.filter(t=>t.label!==label),previous=localStorage.getItem(PERSONAL_KEY);
+ try{localStorage.setItem(PERSONAL_KEY,JSON.stringify(next))}catch{throw Error('No se eliminó: no se pudo actualizar el respaldo local.')}
+ try{await accessDB('readwrite',next)}catch{
+ try{if(previous===null)localStorage.removeItem(PERSONAL_KEY);else localStorage.setItem(PERSONAL_KEY,previous)}catch{}
+ throw Error('No se completó la eliminación en IndexedDB. Tus ejemplos siguen en la base; vuelve a cargar e inténtalo de nuevo.');
+ }
+ return next;
 }

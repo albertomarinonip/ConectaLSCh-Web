@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import {feature} from '../recognition-math.js';
+import {recordedSample,matchWindow} from '../temporal-sequence.js';
+import {validSamples} from '../sample-store.js';
+import {faceObservation,poseObservation,VisualTracking,FACE_LINES} from '../visual-tracking.js';
+const hand=direction=>Array.from({length:21},(_,i)=>({x:.3+direction*i/60,y:.25+i/80,z:0}));
+const frames=direction=>Array.from({length:30},(_,i)=>{const hands=[hand(direction)];return {time:100+i*100,feature:feature({landmarks:hands}),hands}});
+const hola=recordedSample('HOLA',frames(1),4/3),other=recordedSample('OTRA',frames(-1),4/3);
+assert(validSamples([hola,other]));assert.equal(hola.seq.length,30);assert.equal(hola.landmarks.length,30);assert.equal(hola.timestamps.at(-1),2900);
+assert.equal(matchWindow(hola.seq.slice(0,8),hola.timestamps.slice(0,8),[hola,other],4/3).kind,'waiting');
+assert.equal(matchWindow(hola.seq,hola.timestamps,[hola,other],4/3).label,'HOLA');
+assert.equal(matchWindow(other.seq,other.timestamps,[hola,other],4/3).label,'OTRA');
+assert.match(matchWindow([],[],[],4/3).reason,/No hay/);
+assert(!validSamples([{...hola,timestamps:Array(30).fill(0)}]));assert(!validSamples([{...hola,landmarks:[]}]))
+console.log('PASS full temporal captures and timestamps persist; short sequence waits; personal signs are distinguished');
+const landmarks=Array.from({length:478},(_,i)=>({x:.3+i/3000,y:.4+i/4000,z:0}));
+const face=faceObservation({faceLandmarks:[landmarks],faceBlendshapes:[{categories:[{categoryName:'browInnerUp',score:.7},{categoryName:'mouthSmileLeft',score:.9}]}],facialTransformationMatrixes:[{data:Array(16).fill(1)}]});
+assert.equal(face.mouth,null);assert.equal(face.mouthAvailability,'unknown');assert.equal(face.upperExpression.browInnerUp,.7);assert.equal(face.upperExpression.mouthSmileLeft,undefined);assert(Object.keys(face.points).length<40);
+assert.equal(faceObservation({faceLandmarks:[]}),null);assert.equal(poseObservation({landmarks:[]}),null);
+const pose=Array.from({length:33},()=>({x:.4,y:.5,z:0,visibility:.1}));assert.equal(poseObservation({landmarks:[pose]}),null);pose[11].visibility=.9;assert.equal(Object.keys(poseObservation({landmarks:[pose]}).points).length,1);
+const visual=new VisualTracking(()=>{});visual.face=face;visual.faceAt=100;assert.equal(visual.snapshot(800).face,null);assert.equal(visual.snapshot(200).face,face);visual.clear();assert.equal(visual.snapshot(200).face,null);
+assert.equal(matchWindow(hola.seq,hola.timestamps,[hola,other],4/3).label,'HOLA');
+console.log('PASS mouth unknown even with inferred lips; only upper-face coefficients; low-visibility pose filtered; stale visual channels cleared; no facial dependency in recognition');
+const motionFrames=reverse=>Array.from({length:30},(_,i)=>{const phase=(reverse?29-i:i)/29,direction=-1+phase*2,hands=[hand(direction)];return {time:i*100,feature:feature({landmarks:hands}),hands}});
+const forward=recordedSample('IDA',motionFrames(false),4/3),backward=recordedSample('VUELTA',motionFrames(true),4/3);
+assert.equal(matchWindow(forward.seq,forward.timestamps,[forward,backward],4/3).label,'IDA');
+assert.equal(matchWindow(backward.seq,backward.timestamps,[forward,backward],4/3).label,'VUELTA');
+console.log('PASS temporal joint evolution and reversed order distinguish two sequences with the same set of poses');
