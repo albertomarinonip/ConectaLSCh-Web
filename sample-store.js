@@ -3,7 +3,7 @@ export const PERSONAL_KEY='conectalsch-personal-v1';
 const DB_NAME='conectalsch-personal', STORE='samples';
 function validHand(h){return Array.isArray(h)&&h.length===21&&h.every(p=>p&&[p.x,p.y,p.z].every(Number.isFinite))}
 export function validSamples(value){
- return Array.isArray(value)&&value.length<=500&&value.every(t=>{
+ return Array.isArray(value)&&value.every(t=>{
  if(!t||typeof t.label!=='string'||!t.label.trim()||t.label.length>60)return false;
  if(t.aspectRatio!==undefined&&(!Number.isFinite(t.aspectRatio)||t.aspectRatio<.1||t.aspectRatio>10))return false;
  if(!Array.isArray(t.seq)||!t.seq.every(f=>Array.isArray(f)&&f.length===126&&f.every(Number.isFinite)))return false;
@@ -31,7 +31,7 @@ async function accessDB(mode,value){
  })}finally{db.close()}
 }
 export async function saveSamples(samples){
- if(!validSamples(samples))throw Error('Se permiten hasta 500 ejemplos válidos.');
+ if(!validSamples(samples))throw Error('Uno de los ejemplos tiene datos de captura inválidos. Repite solo esa captura; tus ejemplos guardados no se borraron.');
  let stored=false,mirror=false;
  try{await accessDB('readwrite',samples);stored=true}catch{}
  try{localStorage.setItem(PERSONAL_KEY,JSON.stringify(samples));mirror=true}catch{}
@@ -47,7 +47,7 @@ export async function loadSamples(){
  // examples within an existing collection; they may be intentional training captures.
  const samples=dbValue?[...dbValue]:localValue?[...localValue]:[];
  if(dbValue&&localValue){const keys=new Set(samples.map(t=>JSON.stringify(t)));for(const t of localValue){const key=JSON.stringify(t);if(!keys.has(key)){samples.push(t);keys.add(key)}}}
- if(!validSamples(samples))throw Error('Tus respaldos combinados superan el límite. Exporta antes de continuar.');
+ if(!validSamples(samples))throw Error('Hay un ejemplo incompatible o dañado en el almacenamiento. Tus datos no se sobrescribieron.');
  let warning='';
  if(samples.length){try{({warning}=await saveSamples(samples))}catch(e){warning=e.message}}
  return {samples,warning};
