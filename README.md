@@ -1,13 +1,12 @@
 # ConectaLSCh v1.3.0
 
-Prototipo PWA de accesibilidad centrado en Lengua de Señas Chilena (LSCh). Funciona con cuatro pestañas: **Señas**, **Escuchar**, **Mis señas** y **Notas**.
+Prototipo PWA de accesibilidad centrado en Lengua de Señas Chilena (LSCh). Funciona con cuatro pestañas: **Señas**, **Escuchar** y **Mis señas**.
 
 ## Qué hace esta versión
 
 - **Señas:** reconoce únicamente ejemplos personales grabados en **Mis señas**. Una seña confirmada se agrega a la transcripción y permanece visible; bajar las manos no borra el texto. Cada nueva seña aparece en una línea nueva.
 - **Escuchar:** convierte voz a subtítulos en español (cuando el navegador ofrece reconocimiento de voz) y permite guardar el texto como nota.
 - **Mis señas:** permite crear varias muestras por seña, exportar/importar respaldo y administrar ejemplos personales. No incluye un diccionario LSCh precargado.
-- **Notas:** conserva notas guardadas independientemente de los subtítulos.
 
 ## Reconocimiento de movimiento v1.3.0
 
@@ -24,7 +23,7 @@ El reconocimiento sigue siendo **experimental**: usa landmarks de manos y compar
 5. Graba varias repeticiones naturales de la misma seña; no intentes hacerlas idénticas.
 6. Exporta periódicamente **ConectaLSCh-mis-senas.json** como respaldo.
 
-Los datos personales se guardan en IndexedDB `conectalsch-personal` con respaldo local. Actualizar los archivos de la PWA no debería borrar Mis señas ni Notas.
+Los datos personales se guardan en IndexedDB `conectalsch-personal` con respaldo local. Actualizar los archivos de la PWA no debería borrar Mis señas.
 
 ## Actualizar GitHub Pages / iPhone
 
@@ -59,5 +58,9 @@ El reconocimiento en vivo segmenta cada seña dinámica como un evento: espera m
 ## v1.3.0 — rechazo de falsos positivos
 El reconocimiento ahora usa una compuerta de “seña conocida”: no basta con elegir la plantilla más cercana. Cuando existen varios ejemplos de una seña, al menos dos deben respaldar la coincidencia. Las señas con movimiento exigen recorrido, trayectoria y proporción de movimiento compatibles antes de agregar una palabra. Los movimientos cotidianos deben quedar sin salida en la transcripción.
 
-## v1.3.0 — rechazo abierto de movimientos desconocidos
+## v1.3.1 — equilibrio entre reconocimiento y rechazo
 El reconocimiento ya no elige una seña solo por ser la plantilla más cercana. Una seña debe obtener consenso entre varios ejemplos personales independientes. En señas dinámicas, cada voto debe coincidir por separado en forma de mano, trayectoria y cantidad de movimiento. Si no existe consenso suficiente, el resultado interno es desconocido y no se agrega ninguna palabra a la transcripción. Esto está diseñado para reducir falsos positivos con gestos cotidianos como tocarse la cabeza o acomodarse el pelo. El reconocimiento continúa siendo un prototipo experimental basado solo en manos y no equivale a un traductor completo de LSCh.
+
+
+### v1.3.1
+Se elimina la pestaña Notas por decisión de producto. El reconocimiento abierto mantiene el rechazo de movimientos desconocidos, pero calibra el consenso dinámico para aceptar variaciones naturales: dos ejemplos personales fuertes pueden confirmar una seña, manteniendo comprobaciones independientes de forma, trayectoria, cantidad de movimiento y margen frente a otras señas.

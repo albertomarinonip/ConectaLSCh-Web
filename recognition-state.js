@@ -27,10 +27,10 @@ export function chooseSign(scores){
    // must agree in shape AND trajectory, not only in the weighted total.
    const votes=items.filter(x=>{
      if(x.motionComplete===false)return false;
-     if(dynamic)return x.d<=0.135 && x.shapeD<=0.145 && x.motionD<=0.155 && x.motionSimilar!==false && x.motionRatio!==false;
+     if(dynamic)return x.d<=0.155 && x.shapeD<=0.165 && x.motionD<=0.175 && x.motionSimilar!==false && x.motionRatio!==false;
      return x.d<=0.115;
    });
-   const required=items.length>=5?3:items.length>=3?2:items.length>=2?2:1;
+   const required=items.length>=2?2:1;
    if(votes.length<required)continue;
    const used=votes.slice(0,required);
    // Median/mean-like consensus score prevents one exceptionally close sample
@@ -45,7 +45,7 @@ export function chooseSign(scores){
  if(!best)return finiteScoreCount?{kind:'uncertain',reason:'Distancia/consenso: movimiento desconocido; ningún grupo de ejemplos coincide'}:{kind:'waiting',reason:'Sin plantillas activas comparables'};
  const margin=second?second.d-best.d:Infinity;
  const details={best,second,margin};
- const maxDistance=best.dynamic?0.125:0.105;
+ const maxDistance=best.dynamic?0.145:0.115;
  if(best.d>maxDistance)return {kind:'uncertain',...details,reason:'Movimiento desconocido: consenso insuficiente'};
  if(margin<LIMITS.minMargin)return {kind:'uncertain',...details,reason:'Ambigüedad: dos señas se parecen demasiado'};
  if(second&&margin/Math.max(second.d,0.001)<LIMITS.minRelativeMargin)return {kind:'uncertain',...details,reason:'Ambigüedad: margen relativo insuficiente'};

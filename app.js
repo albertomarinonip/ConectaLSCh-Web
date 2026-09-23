@@ -7,7 +7,6 @@ import {VisualTracking,drawVisualTracking} from './visual-tracking.js';
 import { SignGate, LIMITS } from "./recognition-state.js";
 import { validSamples, loadSamples, saveSamples, removePersonalLabel } from "./sample-store.js";
 import {observation,drawHands} from './hand-overlay.js';
-import {initNotes} from './notes-ui.js';
 import {getSignSettings,putSignSettings} from './content-store.js';
 const $=s=>document.querySelector(s), camera=$("#camera"), resultEl=$("#signResult"), confEl=$("#confidence"), status=$("#modelStatus");
 let stream=null,facing="user",videoHands=null,templates=[],recognizing=false,liveBuffer=[],liveLandmarksBuffer=[],lastVideoTime=-1;
@@ -244,13 +243,12 @@ Promise.allSettled([initTraining(),loadSignSettings()]).then(()=>{refreshDiction
 document.addEventListener("visibilitychange",()=>{if(document.hidden){stopCamera();stopListening()}});
 
 function stopListening(){wantListening=false;clearTimeout(listenRestart);listening=false;try{rec?.stop()}catch{}setListeningUI(false)}
-const tabs=['signs','listen','samples','notes'];
-function selectTab(name){if(!tabs.includes(name))return;if(activeTab==='signs'&&name!=='signs')stopCamera();if(activeTab==='listen'&&name!=='listen')stopListening();activeTab=name;for(const id of tabs){$('#panel-'+id).hidden=id!==name;const button=$('#tab-'+id);button.setAttribute('aria-selected',String(id===name));button.tabIndex=id===name?0:-1}if(name==='notes')notes.refresh();window.scrollTo(0,0)}
+const tabs=['signs','listen','samples'];
+function selectTab(name){if(!tabs.includes(name))return;if(activeTab==='signs'&&name!=='signs')stopCamera();if(activeTab==='listen'&&name!=='listen')stopListening();activeTab=name;for(const id of tabs){$('#panel-'+id).hidden=id!==name;const button=$('#tab-'+id);button.setAttribute('aria-selected',String(id===name));button.tabIndex=id===name?0:-1}window.scrollTo(0,0)}
 for(const name of tabs)$('#tab-'+name).onclick=()=>selectTab(name);
-$('.main-nav').onkeydown=e=>{let i=tabs.indexOf(document.activeElement.id?.replace('tab-',''));if(i<0)return;if(e.key==='ArrowRight')i=(i+1)%4;else if(e.key==='ArrowLeft')i=(i+3)%4;else if(e.key==='Home')i=0;else if(e.key==='End')i=3;else return;e.preventDefault();selectTab(tabs[i]);$('#tab-'+tabs[i]).focus()};
+$('.main-nav').onkeydown=e=>{let i=tabs.indexOf(document.activeElement.id?.replace('tab-',''));if(i<0)return;if(e.key==='ArrowRight')i=(i+1)%tabs.length;else if(e.key==='ArrowLeft')i=(i+tabs.length-1)%tabs.length;else if(e.key==='Home')i=0;else if(e.key==='End')i=tabs.length-1;else return;e.preventDefault();selectTab(tabs[i]);$('#tab-'+tabs[i]).focus()};
 $('#trainShortcut').onclick=()=>{selectTab('samples');$('#trainingDetails').open=true;$('#signName').focus()};
 new MutationObserver(()=>{$('#captureFeedback').textContent=trainingStatus.textContent}).observe(trainingStatus,{childList:true,subtree:true,characterData:true});
-const notes=initNotes(()=>({text:subtitleSegments.map(s=>s.text).join('\n'),segments:subtitleSegments}));
 function validSettings(values){return values&&typeof values==='object'&&!Array.isArray(values)&&Object.entries(values).every(([key,value])=>key.length>0&&key.length<=60&&value&&typeof value.enabled==='boolean'&&typeof value.alias==='string'&&value.alias.trim().length>0&&value.alias.length<=60)}
 async function loadSignSettings(){try{const values=await getSignSettings();if(!validSettings(values))throw Error();signSettings=values;settingsReady=true;refreshDictionary()}catch{$('#settingsStatus').textContent='No se pudieron cargar los ajustes. Tus ejemplos siguen conservados.'}}
 function refreshManager(){
@@ -279,7 +277,7 @@ try{const pending=sessionStorage.getItem('conectalsch-update-transcript'),draft=
 if('serviceWorker' in navigator){
  let registration=null,updating=false;
  navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(r=>{registration=r;const pending=()=>{if(r.waiting)$('#updateNotice').hidden=false};pending();r.addEventListener('updatefound',()=>{const worker=r.installing;worker?.addEventListener('statechange',()=>{if(worker.state==='installed')pending()})});r.update().catch(()=>{})}).catch(()=>{});
- $('#applyUpdate').onclick=()=>{if(!registration?.waiting)return;if(capturing||savingSamples||notes.isSaving()){$('#updateNotice span').textContent='Termina de grabar o guardar antes de actualizar.';return}try{sessionStorage.setItem('conectalsch-update-transcript',JSON.stringify(subtitleSegments))}catch{$('#noteStatus').textContent='Guarda una nota antes de cerrar y actualizar.';selectTab('listen');return}stopCamera();stopListening();updating=true;registration.waiting.postMessage({type:'ACTIVATE_UPDATE'})};
+ $('#applyUpdate').onclick=()=>{if(!registration?.waiting)return;if(capturing||savingSamples){$('#updateNotice span').textContent='Termina de grabar o guardar antes de actualizar.';return}try{sessionStorage.setItem('conectalsch-update-transcript',JSON.stringify(subtitleSegments))}catch{}stopCamera();stopListening();updating=true;registration.waiting.postMessage({type:'ACTIVATE_UPDATE'})};
  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(updating)location.reload()});
 }
 
