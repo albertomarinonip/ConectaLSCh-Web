@@ -8,7 +8,10 @@ export function recordedSample(label,frames,aspectRatio){
  landmarks:frames.map(f=>f.hands.map(h=>h.map(p=>({x:p.x,y:p.y,z:p.z})))),
  channels:{recognition:['hands'],face:null,expression:null,pose:null}};
 }
-export function matchWindow(frames,times,templates,aspectRatio,landmarkFrames=[]){
+export function isDynamicTemplate(t,aspectRatio=1){
+ return t?.sampleVersion===2&&Array.isArray(t.landmarks)&&motionAmount(t.landmarks,t.aspectRatio||aspectRatio)>=0.35;
+}
+export function matchWindow(frames,times,templates,aspectRatio,landmarkFrames=[],options={}){
  if(!templates.length)return {kind:'waiting',reason:'No hay señas personales activas'};
  if(frames.length<8)return {kind:'waiting',reason:'Reuniendo fotogramas válidos (mínimo 8)'};
  const elapsed=times.at(-1)-times[0];
@@ -55,5 +58,6 @@ export function matchWindow(frames,times,templates,aspectRatio,landmarkFrames=[]
  const combined=dynamic?base.d*0.55+motionClamped*0.45:base.d;
  return {...base,shapeD:base.d,motionD,d:combined,liveMotion,templateMotion,requiredMotion,motionComplete:motionComplete&&motionSimilar&&motionRatio,dynamic,motionSimilar,motionRatio};
  });
- return chooseSign(scores);
+ const chosen=chooseSign(scores);
+ return options.eventComplete?{...chosen,eventComplete:true}:chosen;
 }

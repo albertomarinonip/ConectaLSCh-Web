@@ -53,6 +53,12 @@ export class SignGate{
  return {kind:match.kind==='uncertain'?'uncertain':'waiting'};
  }
  if(match.kind!=='candidate'){this.clearCandidate();return {kind:match.kind==='uncertain'?'uncertain':'waiting'}}
+ // A completed dynamic movement is already a bounded sign event: confirm at its end
+ // instead of waiting for an additional static hold. Distance/margin checks above still apply.
+ if(match.dynamic&&match.eventComplete){
+   this.latched=match.label;this.pose=pose?.slice();this.cooldownUntil=now+350;this.clearCandidate();
+   return {kind:'confirmed',label:match.label,speak:true};
+ }
  if(this.candidate!==match.label){this.candidate=match.label;this.since=now;this.count=1}else this.count++;
  const needFrames=match.dynamic?2:LIMITS.stableFrames,needMs=match.dynamic?100:LIMITS.stableMs;
  if(this.count<needFrames||now-this.since<needMs)return {kind:'waiting'};
