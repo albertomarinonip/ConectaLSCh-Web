@@ -11,6 +11,7 @@ import {getSignSettings,putSignSettings} from './content-store.js';
 const $=s=>document.querySelector(s), camera=$("#camera"), resultEl=$("#signResult"), confEl=$("#confidence"), status=$("#modelStatus");
 let stream=null,facing="user",videoHands=null,templates=[],recognizing=false,liveBuffer=[],liveLandmarksBuffer=[],lastVideoTime=-1;
 let signVoiceEnabled=true;
+const signTranscript=[];
 const observationClock=new ObservationClock();
 let lastCompletedAt=0,bufferTimes=[],diagnosticEnabled=false,lastDiagnostic={};
 const signGate=new SignGate();
@@ -64,17 +65,25 @@ flipBtn.onclick=async()=>{if(!stream||cameraBusy)return;cancelCapture();facing=f
 let previousVideoAspect=null;
 function fitCamera(){if(camera.videoWidth&&camera.videoHeight){const aspect=camera.videoWidth/camera.videoHeight;if(previousVideoAspect&&Math.abs(aspect-previousVideoAspect)>.001){visualTracking.clear();liveBuffer=[];bufferTimes=[];liveLandmarksBuffer=[];signGate.interrupt();cancelCapture()}previousVideoAspect=aspect;$('.videoWrap').style.aspectRatio=camera.videoWidth+'/'+camera.videoHeight}}
 camera.addEventListener('resize',fitCamera);
+function renderSignTranscript(){
+ if(!signTranscript.length){resultEl.textContent='Esperando seña…';return}
+ resultEl.replaceChildren();for(const label of signTranscript){const line=document.createElement('div');line.className='signTranscriptLine';line.textContent=label;resultEl.appendChild(line)}
+ resultEl.scrollTop=resultEl.scrollHeight;
+}
+function appendRecognizedSign(label){if(!label)return;signTranscript.push(label);renderSignTranscript()}
+$('#clearSigns').onclick=()=>{signTranscript.length=0;renderSignTranscript();confEl.textContent='Transcripción de señas limpia.'};
 function showRecognition(out,match={},hands=null){
  resultEl.classList.toggle('empty',!templates.length);
  if(!trainingReady){resultEl.textContent=trainingLoadError?'No se pudieron cargar Mis señas':'Cargando Mis señas…';confEl.textContent=trainingLoadError;return}
  if(!templates.length){resultEl.textContent=personalSamples.length?'Tus señas están desactivadas':'Aún no tienes señas entrenadas.';confEl.textContent=personalSamples.length?'Actívalas desde Mis señas.':'Agrega una desde Mis señas.';return}
- resultEl.textContent=hands===false?'No se detectan manos':out.kind==='confirmed'?out.label:out.kind==='uncertain'?'No estoy seguro':'Esperando seña…';
- confEl.textContent=out.kind==='uncertain'?'Confianza experimental: insuficiente.':out.kind==='confirmed'?'Confianza experimental: alta · seña estable.':hands===false?'Sin seña confirmada.':'Confianza experimental: esperando confirmación.';
- if(out.speak)speakSign(out.label);
+ if(out.speak){appendRecognizedSign(out.label);speakSign(out.label)}else if(!signTranscript.length)renderSignTranscript();
+ // Detection uncertainty belongs in the small status only; never overwrite a
+ // confirmed transcription with 'No estoy seguro' or 'No se detectan manos'.
+ confEl.textContent=out.kind==='confirmed'?'Seña reconocida.':hands===false?'Esperando la siguiente seña.':match.reason==='Movimiento incompleto; continúa la seña'?'Detectando movimiento…':'Reconociendo…';
 }
 function renderDiagnostic(){
  if(!diagnosticEnabled)return;const x=lastDiagnostic,m=x.match||{};
- const rows=[['Candidato',m.best?.label||'—'],['Distancia total',Number.isFinite(m.best?.d)?m.best.d.toFixed(4):'—'],['Forma',Number.isFinite(m.best?.shapeD)?m.best.shapeD.toFixed(4):'—'],['Movimiento',Number.isFinite(m.best?.motionD)?m.best.motionD.toFixed(4):'—'],['Segundo',m.second?m.second.label+' · '+m.second.d.toFixed(4):'—'],['Diferencia',Number.isFinite(m.margin)?m.margin.toFixed(4):m.best?'Solo una seña comparable':'—'],['Confianza experimental',x.kind==='confirmed'?'alta · estable':m.kind==='candidate'?'coincidencia pendiente de estabilidad':'insuficiente'],['Frames válidos',String(liveBuffer.length)+' / mínimo 8'],['Manos detectadas',String(latestDetection?.result.landmarks?.length||0)],['Duración de secuencia',bufferTimes.length>1?((bufferTimes.at(-1)-bufferTimes[0])/1000).toFixed(2)+' s':'0 s'],['Estado',x.reason||'Reconocimiento detenido'],['Estabilidad',signGate.count+' / '+LIMITS.stableFrames+' observaciones; mínimo '+LIMITS.stableMs+' ms activos'],['Inferencia',x.inferenceMs?x.inferenceMs.toFixed(0)+' ms':'—'],['Video',camera.videoWidth?camera.videoWidth+' × '+camera.videoHeight:'—'],['Muestras',personalSamples.length+' personales · '+templates.length+' activas'],['Formato',templates.filter(t=>t.aspectRatio).length+' muestras con proporción conocida; las anteriores usan modo compatible'],['Origen','Solo Mis señas'],['Canales de reconocimiento','Manos; rostro/cuerpo no intervienen']];
+ const rows=[['Candidato',m.best?.label||'—'],['Distancia total',Number.isFinite(m.best?.d)?m.best.d.toFixed(4):'—'],['Forma',Number.isFinite(m.best?.shapeD)?m.best.shapeD.toFixed(4):'—'],['Movimiento',Number.isFinite(m.best?.motionD)?m.best.motionD.toFixed(4):'—'],['Recorrido en vivo',Number.isFinite(m.best?.liveMotion)?m.best.liveMotion.toFixed(3):'—'],['Recorrido mínimo',Number.isFinite(m.best?.requiredMotion)?m.best.requiredMotion.toFixed(3):'—'],['Segundo',m.second?m.second.label+' · '+m.second.d.toFixed(4):'—'],['Diferencia',Number.isFinite(m.margin)?m.margin.toFixed(4):m.best?'Solo una seña comparable':'—'],['Confianza experimental',x.kind==='confirmed'?'alta · estable':m.kind==='candidate'?'coincidencia pendiente de estabilidad':'insuficiente'],['Frames válidos',String(liveBuffer.length)+' / mínimo 8'],['Manos detectadas',String(latestDetection?.result.landmarks?.length||0)],['Duración de secuencia',bufferTimes.length>1?((bufferTimes.at(-1)-bufferTimes[0])/1000).toFixed(2)+' s':'0 s'],['Estado',x.reason||'Reconocimiento detenido'],['Estabilidad',signGate.count+' / '+LIMITS.stableFrames+' observaciones; mínimo '+LIMITS.stableMs+' ms activos'],['Inferencia',x.inferenceMs?x.inferenceMs.toFixed(0)+' ms':'—'],['Video',camera.videoWidth?camera.videoWidth+' × '+camera.videoHeight:'—'],['Muestras',personalSamples.length+' personales · '+templates.length+' activas'],['Formato',templates.filter(t=>t.aspectRatio).length+' muestras con proporción conocida; las anteriores usan modo compatible'],['Origen','Solo Mis señas'],['Canales de reconocimiento','Manos; rostro/cuerpo no intervienen']];
  const list=$('#diagnosticValues');list.replaceChildren();for(const [key,value] of rows){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=key;dd.textContent=value;list.append(dt,dd)}
 }
 $('#toggleDiagnostics').onclick=()=>{diagnosticEnabled=!diagnosticEnabled;$('#toggleDiagnostics').setAttribute('aria-checked',String(diagnosticEnabled));$('#toggleDiagnostics').textContent=diagnosticEnabled?'ON':'OFF';$('#diagnosticValues').hidden=!diagnosticEnabled;renderDiagnostic()};

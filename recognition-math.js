@@ -59,3 +59,16 @@ export function motionDistance(queryLandmarks,templateLandmarks,queryAspect=1,te
  if(a.length<2||b.length<2)return 0;
  return dtw(resample(a,18),resample(b,18));
 }
+
+// Total normalized wrist travel. Used to distinguish a completed dynamic sign
+// from merely holding a similar hand shape still.
+export function motionAmount(landmarkFrames, aspectRatio=1){
+ const s=motionSequence(landmarkFrames,aspectRatio);
+ if(s.length<2)return 0;let total=0;
+ for(let i=1;i<s.length;i++){let sum=0,count=0;for(let h=0;h<2;h++){const k=h*2;
+  const a=s[i-1],b=s[i];if(!a||!b)continue;const dx=b[k]-a[k],dy=b[k+1]-a[k+1];
+  if(Number.isFinite(dx)&&Number.isFinite(dy)){sum+=Math.hypot(dx,dy);count++}}
+  if(count)total+=sum/count;
+ }
+ return total;
+}

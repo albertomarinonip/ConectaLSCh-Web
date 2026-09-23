@@ -11,16 +11,17 @@ export function rms(a,b){
 export function chooseSign(scores){
  // Many examples of one sign must not compete as different signs.
  const labels=new Map();
- for(const {label,d} of scores){if(Number.isFinite(d)&&d>=0)labels.set(label,Math.min(labels.get(label)??Infinity,d))}
- const ranked=[...labels].map(([label,d])=>({label,d})).sort((a,b)=>a.d-b.d);
+ for(const score of scores){const {label,d}=score;if(Number.isFinite(d)&&d>=0){const old=labels.get(label);if(!old||d<old.d)labels.set(label,score)}}
+ const ranked=[...labels.values()].sort((a,b)=>a.d-b.d);
  const [best,second]=ranked;
  if(!best)return {kind:'waiting',reason:'Sin plantillas activas comparables'};
  const margin=second?second.d-best.d:Infinity;
  const details={best,second,margin};
+ if(best.motionComplete===false)return {kind:'waiting',...details,reason:'Movimiento incompleto; continúa la seña'};
  if(best.d>LIMITS.maxDistance)return {kind:'uncertain',...details,reason:'Distancia DTW supera '+LIMITS.maxDistance};
  if(margin<LIMITS.minMargin)return {kind:'uncertain',...details,reason:'Ambigüedad: margen entre señas menor que '+LIMITS.minMargin};
  if(second&&margin/Math.max(second.d,0.001)<LIMITS.minRelativeMargin)return {kind:'uncertain',...details,reason:'Ambigüedad: margen relativo insuficiente'};
- return {kind:'candidate',label:best.label,d:best.d,...details,reason:'Coincidencia; requiere estabilidad'};
+ return {kind:'candidate',label:best.label,d:best.d,dynamic:!!best.dynamic,...details,reason:'Coincidencia; requiere estabilidad'};
 }
 
 export class SignGate{
@@ -52,7 +53,8 @@ export class SignGate{
  }
  if(match.kind!=='candidate'){this.clearCandidate();return {kind:match.kind==='uncertain'?'uncertain':'waiting'}}
  if(this.candidate!==match.label){this.candidate=match.label;this.since=now;this.count=1}else this.count++;
- if(this.count<LIMITS.stableFrames||now-this.since<LIMITS.stableMs)return {kind:'waiting'};
+ const needFrames=match.dynamic?2:LIMITS.stableFrames,needMs=match.dynamic?100:LIMITS.stableMs;
+ if(this.count<needFrames||now-this.since<needMs)return {kind:'waiting'};
  this.latched=match.label;this.pose=pose?.slice();this.clearCandidate();
  return {kind:'confirmed',label:match.label,speak:true};
  }

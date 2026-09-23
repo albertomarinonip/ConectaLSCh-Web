@@ -1,4 +1,4 @@
-import {resample,scoreTemplates,motionDistance} from './recognition-math.js';
+import {resample,scoreTemplates,motionDistance,motionAmount} from './recognition-math.js';
 import {chooseSign} from './recognition-state.js';
 // Keep original captured landmarks and timing. Only comparison is resampled.
 export function recordedSample(label,frames,aspectRatio){
@@ -30,12 +30,18 @@ export function matchWindow(frames,times,templates,aspectRatio,landmarkFrames=[]
  // similar pose (for example touching the hair). Compare wrist trajectory too.
  const liveLm=landmarkFrames.slice(from);
  const motionD=(liveLm.length>=2&&Array.isArray(t.landmarks))?motionDistance(liveLm,t.landmarks,aspectRatio,t.aspectRatio||aspectRatio):0;
+ const liveMotion=motionAmount(liveLm,aspectRatio),templateMotion=Array.isArray(t.landmarks)?motionAmount(t.landmarks,t.aspectRatio||aspectRatio):0;
+ // Personal examples are temporal signs. Do not accept a held pose when the
+ // recorded example contains real travel. Natural speed/size may vary, so use
+ // a conservative fraction of the example rather than exact displacement.
+ const requiredMotion=templateMotion>=0.35?Math.max(0.16,templateMotion*0.28):0;
+ const motionComplete=requiredMotion===0||liveMotion>=requiredMotion;
  // Keep shape and motion as separate channels. A weighted normalized score avoids
  // rejecting a valid sign merely because natural wrist travel differs slightly.
  // Motion still contributes enough to reject a static look-alike.
  const motionClamped=Math.min(motionD,0.60);
  const combined=base.d*0.72+motionClamped*0.28;
- return {...base,shapeD:base.d,motionD,d:combined};
+ return {...base,shapeD:base.d,motionD,d:combined,liveMotion,templateMotion,requiredMotion,motionComplete,dynamic:templateMotion>=0.35};
  });
  return chooseSign(scores);
 }
