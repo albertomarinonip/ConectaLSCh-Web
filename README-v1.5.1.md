@@ -1,4 +1,4 @@
-# ConectaLSCh v1.5.1 — corrección de guardado
+# ConectaLSCh v1.5.2 — corrección de guardado
 
 - Elimina el límite fijo de 500 ejemplos de Mis señas.
 - IndexedDB sigue siendo el almacenamiento principal; localStorage queda como espejo cuando hay espacio.
