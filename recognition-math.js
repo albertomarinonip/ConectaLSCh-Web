@@ -30,3 +30,32 @@ export function scoreTemplates(query,templates,videoAspect){
  return {label:t.label,d:dtw(q,t.seq)};
  });
 }
+
+
+// Motion descriptor: wrist trajectory relative to the first frame, normalized by
+// hand size. This preserves movement that hands-relative shape features remove.
+export function motionSequence(landmarkFrames, aspectRatio=1){
+ if(!Array.isArray(landmarkFrames)||landmarkFrames.length<2)return [];
+ const normalized=landmarkFrames.map(hands=>{
+  if(!Array.isArray(hands)||!hands.length)return null;
+  return hands.map(lm=>{
+   const w=lm[0];let scale=.001;
+   for(const p of lm)scale=Math.max(scale,Math.hypot((p.x-w.x)*aspectRatio,p.y-w.y));
+   return {x:w.x*aspectRatio,y:w.y,scale};
+  }).sort((a,b)=>a.x-b.x);
+ });
+ const first=normalized.find(Boolean);if(!first)return [];
+ return normalized.map(hands=>{
+  if(!hands)return [0,0,0,0];
+  const out=[];
+  for(let i=0;i<2;i++){const h=hands[i],base=first[i];
+   if(!h||!base)out.push(0,0);else out.push((h.x-base.x)/base.scale,(h.y-base.y)/base.scale);
+  }
+  return out;
+ });
+}
+export function motionDistance(queryLandmarks,templateLandmarks,queryAspect=1,templateAspect=1){
+ const a=motionSequence(queryLandmarks,queryAspect),b=motionSequence(templateLandmarks,templateAspect);
+ if(a.length<2||b.length<2)return 0;
+ return dtw(resample(a,18),resample(b,18));
+}

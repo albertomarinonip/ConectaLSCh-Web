@@ -26,3 +26,9 @@ const forward=recordedSample('IDA',motionFrames(false),4/3),backward=recordedSam
 assert.equal(matchWindow(forward.seq,forward.timestamps,[forward,backward],4/3).label,'IDA');
 assert.equal(matchWindow(backward.seq,backward.timestamps,[forward,backward],4/3).label,'VUELTA');
 console.log('PASS temporal joint evolution and reversed order distinguish two sequences with the same set of poses');
+import {motionDistance} from '../recognition-math.js';
+const movedFrames=dx=>Array.from({length:30},(_,i)=>[hand(1).map(p=>({...p,x:p.x+dx*i/29}))]);
+const stillFrames=Array.from({length:30},()=>[hand(1)]);
+assert(motionDistance(movedFrames(.25),movedFrames(.25),4/3,4/3)<1e-8);
+assert(motionDistance(stillFrames,movedFrames(.25),4/3,4/3)>.05);
+console.log('PASS wrist trajectory distinguishes similar hand shape with different movement');
