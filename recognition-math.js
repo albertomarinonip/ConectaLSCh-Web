@@ -72,3 +72,20 @@ export function motionAmount(landmarkFrames, aspectRatio=1){
  }
  return total;
 }
+
+
+// Remove quiet preparation/end frames from a dynamic sign. The threshold is
+// relative to that capture, so a naturally faster/slower repetition is accepted.
+export function trimMotionLandmarks(frames,aspectRatio=1){
+ if(!Array.isArray(frames)||frames.length<6)return frames||[];
+ const centers=frames.map(hands=>{
+  if(!Array.isArray(hands)||!hands.length)return null;
+  const pts=hands.map(h=>h?.[0]).filter(Boolean);if(!pts.length)return null;
+  return {x:pts.reduce((a,p)=>a+p.x*aspectRatio,0)/pts.length,y:pts.reduce((a,p)=>a+p.y,0)/pts.length};
+ });
+ const speed=[];for(let i=1;i<centers.length;i++){const a=centers[i-1],b=centers[i];speed.push(a&&b?Math.hypot(b.x-a.x,b.y-a.y):0)}
+ const peak=Math.max(...speed,0);if(peak<0.004)return frames;
+ const threshold=Math.max(0.003,peak*0.16);let first=speed.findIndex(v=>v>=threshold),last=-1;for(let i=speed.length-1;i>=0;i--)if(speed[i]>=threshold){last=i;break}
+ if(first<0||last<0)return frames;first=Math.max(0,first-2);last=Math.min(frames.length-1,last+3);
+ return last-first+1>=5?frames.slice(first,last+1):frames;
+}
