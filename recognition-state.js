@@ -27,10 +27,10 @@ export function chooseSign(scores){
    // must agree in shape AND trajectory, not only in the weighted total.
    const votes=items.filter(x=>{
      if(x.motionComplete===false)return false;
-     if(dynamic)return x.d<=0.18 && x.shapeD<=0.19 && x.motionD<=(x.envelope?.motion??0.18) && (x.pathD??0)<=(x.envelope?.path??0.24) && x.motionSimilar!==false && x.motionRatio!==false;
+     if(dynamic)return x.d<=0.205 && x.shapeD<=0.205 && x.motionD<=(x.envelope?.motion??0.20) && (x.pathD??0)<=(x.envelope?.path??0.28) && (x.kineticD??0)<=0.34 && x.motionSimilar!==false && x.motionRatio!==false;
      return x.d<=0.115;
    });
-   const required=items.length>=4?3:items.length>=2?2:1;
+   const required=items.length>=5?Math.ceil(items.length*0.55):items.length>=3?2:1;
    if(votes.length<required)continue;
    const used=votes.slice(0,required);
    // Median/mean-like consensus score prevents one exceptionally close sample
@@ -45,7 +45,7 @@ export function chooseSign(scores){
  if(!best)return finiteScoreCount?{kind:'uncertain',reason:'Distancia/consenso: movimiento desconocido; ningún grupo de ejemplos coincide'}:{kind:'waiting',reason:'Sin plantillas activas comparables'};
  const margin=second?second.d-best.d:Infinity;
  const details={best,second,margin};
- const maxDistance=best.dynamic?0.17:0.115;
+ const maxDistance=best.dynamic?0.195:0.115;
  if(best.d>maxDistance)return {kind:'uncertain',...details,reason:'Movimiento desconocido: consenso insuficiente'};
  if(margin<LIMITS.minMargin)return {kind:'uncertain',...details,reason:'Ambigüedad: dos señas se parecen demasiado'};
  if(second&&margin/Math.max(second.d,0.001)<LIMITS.minRelativeMargin)return {kind:'uncertain',...details,reason:'Ambigüedad: margen relativo insuficiente'};

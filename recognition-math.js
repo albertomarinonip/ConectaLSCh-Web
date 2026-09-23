@@ -106,3 +106,26 @@ export function motionPathDescriptor(landmarkFrames, aspectRatio=1){
 export function descriptorDistance(a,b){
  if(!a||!b||a.length!==b.length)return Infinity;let s=0;for(let i=0;i<a.length;i++){const q=a[i]-b[i];s+=q*q}return Math.sqrt(s/a.length);
 }
+
+// Rich kinematic descriptor derived from the raw 21-point hand landmarks.
+// It keeps global travel, palm orientation and finger opening through time.
+export function handKinematicSequence(landmarkFrames, aspectRatio=1){
+ if(!Array.isArray(landmarkFrames)||landmarkFrames.length<2)return [];
+ return landmarkFrames.map(hands=>{
+  const ordered=(Array.isArray(hands)?hands:[]).map(lm=>{
+   if(!Array.isArray(lm)||lm.length<21)return null;
+   const w=lm[0], mid=lm[9], idx=lm[5], pinky=lm[17];
+   let sc=.001;for(const p of lm)sc=Math.max(sc,Math.hypot((p.x-w.x)*aspectRatio,p.y-w.y));
+   const angle=Math.atan2((mid.y-w.y),((mid.x-w.x)*aspectRatio));
+   const spread=[4,8,12,16,20].reduce((s,i)=>s+Math.hypot((lm[i].x-w.x)*aspectRatio,lm[i].y-w.y),0)/(5*sc);
+   const palm=Math.hypot((pinky.x-idx.x)*aspectRatio,pinky.y-idx.y)/sc;
+   return {x:w.x*aspectRatio,y:w.y,sc,angle,spread,palm};
+  }).filter(Boolean).sort((a,b)=>a.x-b.x);
+  const out=[];for(let i=0;i<2;i++){const h=ordered[i];out.push(h?.x??0,h?.y??0,h?.angle??0,h?.spread??0,h?.palm??0)}return out;
+ });
+}
+export function kinematicDistance(aFrames,bFrames,aAspect=1,bAspect=1){
+ const A=handKinematicSequence(aFrames,aAspect),B=handKinematicSequence(bFrames,bAspect);if(A.length<2||B.length<2)return Infinity;
+ const norm=(S)=>{const first=S[0];return S.map(v=>v.map((x,i)=>i%5<2?x-first[i]:x));};
+ return dtw(resample(norm(A),18),resample(norm(B),18));
+}

@@ -32,9 +32,9 @@ export class MotionEventSegmenter{
     }
     const obs={feature:feature.slice(),hands:hands.map(h=>h.map(p=>({x:p.x,y:p.y,z:p.z}))),time,visual};
     const activity=this._activity(obs,aspectRatio);this.lastActivity=activity;
-    const START=.075, END=.032;
+    const START=.055, END=.024;
     if(this.state==='READY'){
-      this.pre.push(obs);if(this.pre.length>4)this.pre.shift();
+      this.pre.push(obs);if(this.pre.length>6)this.pre.shift();
       this.activeCount=activity>=START?this.activeCount+1:0;
       if(this.activeCount>=2){this.state='MOVING';this.startedAt=this.pre[0]?.time??time;this.event=this.pre.slice();this.quietSince=0}
     }else{
@@ -42,10 +42,10 @@ export class MotionEventSegmenter{
       if(activity<=END){if(!this.quietSince)this.quietSince=time}
       else this.quietSince=0;
       const duration=time-this.startedAt;
-      if(duration>=260&&this.quietSince&&time-this.quietSince>=220&&this.event.length>=6){
+      if(duration>=260&&this.quietSince&&time-this.quietSince>=140&&this.event.length>=6){
         const done=this._finish('settled');this.reset();this.prev=obs;return done;
       }
-      if(duration>=2600){const done=this._finish('max-duration');this.reset();this.prev=obs;return done}
+      if(duration>=3000){const done=this._finish('max-duration');this.reset();this.prev=obs;return done}
     }
     this.prev=obs;
     return {state:this.state,completed:null,activity};
