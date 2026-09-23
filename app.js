@@ -102,7 +102,7 @@ function loop(id){
  try{
  const now=performance.now();
  if(lastCompletedAt&&now-lastCompletedAt>LIMITS.maxGapMs){visualTracking.clear();liveBuffer=[];bufferTimes=[];liveLandmarksBuffer=[];motionEvent.reset();latestDetection=null;signGate.interrupt();updateHands({landmarks:[]});lastDiagnostic={reason:'Interrupción de fotogramas; esperando una secuencia nueva'};renderDiagnostic();if(recognizing)showRecognition({kind:'waiting'})}
- if(now-lastSampleAt>=100&&camera.readyState>=2&&camera.currentTime!==lastVideoTime){
+ if(now-lastSampleAt>=50&&camera.readyState>=2&&camera.currentTime!==lastVideoTime){
  lastSampleAt=now;lastVideoTime=camera.currentTime;
  const result=videoHands.detectForVideo(camera,now),completed=performance.now();
  const clock=observationClock.observe(now,completed);lastCompletedAt=completed;
@@ -202,11 +202,15 @@ async function prepareTrainingCamera(){
  $('#trainingCapture').hidden=false;return true;
 }
 function setCaptureStage(text,kind=''){const el=$('#captureStage');el.textContent=text;el.dataset.kind=kind}
-function trainingMonitor({hands=0,activity=0,face=false,frames=0,state='READY',quality='' }={}){
+function trainingMonitor({hands=0,activity=0,face=false,pose=false,frames=0,continuity=0,qualityScore=0,state='READY',quality='' }={}){
  const mh=$('#monitorHands'),mm=$('#monitorMotion'),mf=$('#monitorFace'),mfr=$('#monitorFrames'),mq=$('#monitorQuality');
  if(mh)mh.textContent=hands?`🖐️ Manos: ${hands} detectada${hands===1?'':'s'}`:'🖐️ Manos: no detectadas';
  if(mm)mm.textContent=`➜ Movimiento: ${state==='MOVING'?'activo':activity>=.04?'iniciando':'esperando'} · ${activity.toFixed(3)}`;
  if(mf)mf.textContent=`🙂 Rostro: ${face?'detectado (apoyo)':'no disponible'}`;
+ const mp=$('#monitorPose'),mc=$('#monitorContinuity'),ms=$('#monitorScore');
+ if(mp)mp.textContent=`🧍 Brazos/pose: ${pose?'detectados (apoyo)':'no disponibles'}`;
+ if(mc)mc.textContent=`🔗 Continuidad manos: ${Math.round(continuity*100)}%`;
+ if(ms)ms.textContent=`🎯 Calidad captura: ${Math.round(qualityScore)} / 100`;
  if(mfr)mfr.textContent=`🎞️ Frames: ${frames}`;
  if(mq)mq.textContent=quality||'La captura se guardará solo si las manos y el movimiento tienen calidad suficiente.';
 }
@@ -226,22 +230,22 @@ async function capturePersonalExample(label){
   for(let n=3;n>0;n--){if(id!==captureId)return;setCaptureStage(String(n),'countdown');trainingStatus.textContent=`Prepárate: ${n}… mantén las manos visibles.`;await new Promise(r=>setTimeout(r,1000))}
   if(id!==captureId)return;setCaptureStage('MUEVE TUS MANOS','recording');
   const seq=[];const aspectRatio=camera.videoWidth/camera.videoHeight;if(!Number.isFinite(aspectRatio)||aspectRatio<=0)throw Error('La cámara aún no informa su tamaño. Vuelve a activarla e inténtalo de nuevo.');
-  const started=performance.now(),timeoutMs=6500;let previous=-1,completedEvent=null,maxActivity=0,movingFrames=0;
+  const started=performance.now(),timeoutMs=6500;let previous=-1,completedEvent=null,maxActivity=0,movingFrames=0,seenFrames=0,handFrames=0,faceFrames=0,poseFrames=0;
   await new Promise((resolve,reject)=>{function frame(){try{
    if(id!==captureId||!stream){resolve();return}const now=performance.now(),elapsed=now-started;
    const left=Math.max(0,timeoutMs-elapsed);$('#captureProgress').style.width=(100-left/timeoutMs*100)+'%';
-   if(latestDetection&&latestDetection.time!==previous&&now-latestDetection.time<400){previous=latestDetection.time;const f=feature(latestDetection.result);drawTrainingOverlay(latestDetection.result);
-    visualTracking.process(camera,now,{enabled:true,handMs:0});const vis=visualDescriptor(visualTracking.snapshot(performance.now()));
-    if(f){const ev=segmenter.push({feature:f,hands:latestDetection.result.landmarks,time:latestDetection.time,aspectRatio,visual:vis});maxActivity=Math.max(maxActivity,ev.activity||0);if(ev.state==='MOVING')movingFrames++;const activeFrames=ev.completed?.frames||segmenter.event||[];trainingMonitor({hands:latestDetection.result.landmarks.length,activity:ev.activity||0,face:!!visualTracking.snapshot(performance.now()).face,frames:activeFrames.length,state:ev.state,quality:ev.state==='MOVING'?'🟢 Movimiento capturado. Completa la seña y termina de forma natural.':'Esperando un movimiento claro de las manos…'});if(ev.completed){completedEvent=ev.completed;resolve();return}}
+   if(latestDetection&&latestDetection.time!==previous&&now-latestDetection.time<400){previous=latestDetection.time;seenFrames++;const f=feature(latestDetection.result);drawTrainingOverlay(latestDetection.result);
+    visualTracking.process(camera,now,{enabled:true,handMs:0});const snap=visualTracking.snapshot(performance.now()),vis=visualDescriptor(snap);if(f)handFrames++;if(snap.face)faceFrames++;if(snap.pose)poseFrames++;
+    if(f){const ev=segmenter.push({feature:f,hands:latestDetection.result.landmarks,time:latestDetection.time,aspectRatio,visual:vis});maxActivity=Math.max(maxActivity,ev.activity||0);if(ev.state==='MOVING')movingFrames++;const activeFrames=ev.completed?.frames||segmenter.event||[];const continuity=seenFrames?handFrames/seenFrames:0;const score=Math.min(100,continuity*45+Math.min(1,maxActivity/.18)*35+Math.min(1,activeFrames.length/18)*20);trainingMonitor({hands:latestDetection.result.landmarks.length,activity:ev.activity||0,face:!!snap.face,pose:!!snap.pose,frames:activeFrames.length,continuity,qualityScore:score,state:ev.state,quality:ev.state==='MOVING'?'🟢 Movimiento capturado. Completa la seña y termina de forma natural.':'Esperando un movimiento claro de las manos…'});if(ev.completed){completedEvent=ev.completed;resolve();return}}
     else trainingMonitor({hands:0,activity:0,face:!!visualTracking.snapshot(performance.now()).face,frames:segmenter.event?.length||0,state:segmenter.state,quality:'Mantén al menos una mano completa dentro de la cámara.'});
    }
    if(elapsed>=timeoutMs){resolve();return}requestAnimationFrame(frame)
   }catch(e){reject(e)}}requestAnimationFrame(frame)});
   if(id!==captureId)return;
   if(!completedEvent)throw Error('No detecté una seña completa con movimiento. Haz el movimiento natural y termina la seña antes de guardar.');
-  const frames=completedEvent.frames||[];if(frames.length<8||movingFrames<2||maxActivity<.075)throw Error('Movimiento insuficiente. Para una seña dinámica, una mano quieta no se guarda.');
+  const frames=completedEvent.frames||[],continuity=seenFrames?handFrames/seenFrames:0;if(frames.length<12||movingFrames<3||maxActivity<.075)throw Error('Movimiento insuficiente. Para una seña dinámica, una mano quieta no se guarda.');if(continuity<.78)throw Error('Seguimiento de manos inestable. Mantén las manos completas dentro de la cámara durante toda la seña.');
   for(const x of frames)seq.push({feature:x.feature,time:x.time,hands:x.hands,visual:x.visual||null});
-  pendingSample=recordedSample(label,seq,aspectRatio);setCaptureStage('✓ CAPTURA BUENA','done');trainingStatus.textContent=`Captura de ${label} lista: ${seq.length} frames con movimiento. Guárdala o repítela.`;trainingMonitor({hands:frames.at(-1)?.hands?.length||0,activity:maxActivity,face:!!frames.some(x=>x.visual?.face),frames:seq.length,state:'COMPLETE',quality:'✓ Captura buena: inicio, movimiento y final detectados.'});$('#captureReview').hidden=false;
+  pendingSample=recordedSample(label,seq,aspectRatio);setCaptureStage('✓ CAPTURA BUENA','done');trainingStatus.textContent=`Captura de ${label} lista: ${seq.length} frames con movimiento. Guárdala o repítela.`;trainingMonitor({hands:frames.at(-1)?.hands?.length||0,activity:maxActivity,face:faceFrames>0,pose:poseFrames>0,frames:seq.length,continuity:seenFrames?handFrames/seenFrames:0,qualityScore:Math.min(100,(seenFrames?handFrames/seenFrames:0)*45+Math.min(1,maxActivity/.18)*35+Math.min(1,seq.length/18)*20),state:'COMPLETE',quality:'✓ Captura buena: manos continuas, movimiento, trayectoria e inicio/final detectados.'});$('#captureReview').hidden=false;
  }catch(e){if(id===captureId){setCaptureStage('Repite la captura','error');trainingStatus.textContent=`No se guardó: ${e.message}`;trainingMonitor({quality:'⚠️ '+e.message})}}
  finally{if(id===captureId){capturing=false;recordBtn.disabled=false;$('#startRecognition').disabled=!templates.length}}
 }

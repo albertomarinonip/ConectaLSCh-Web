@@ -14,15 +14,15 @@ export function faceObservation(result){
 }
 export function poseObservation(result){const points=selectPoints(result?.landmarks?.[0],BODY_LINES,true);return Object.keys(points).length?{points,availability:'estimated'}:null}
 export class VisualTracking{
- constructor(context){this.context=context;this.enabled=false;this.faceModel=null;this.poseModel=null;this.generation=0;this.interval=250;this.clear();this.status='Opcional. Solo seguimiento; no reconoce señas.'}
+ constructor(context){this.context=context;this.enabled=false;this.faceModel=null;this.poseModel=null;this.generation=0;this.interval=100;this.clear();this.status='Opcional. Solo seguimiento; no reconoce señas.'}
  clear(){this.face=null;this.pose=null;this.faceAt=-Infinity;this.poseAt=-Infinity;this.lastAt=-Infinity;this.next='face'}
  async enable(){
  const generation=++this.generation;this.status='Cargando seguimiento opcional…';
  try{const {lib,files}=await this.context();
  for(const [kind,Class,url,options] of [
  ['face',lib.FaceLandmarker,'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task',{numFaces:1,outputFaceBlendshapes:true,outputFacialTransformationMatrixes:true}],
- ['pose',lib.PoseLandmarker,'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task',{numPoses:1,outputSegmentationMasks:false}]
- ]){if(generation!==this.generation)return;try{const model=await Class.createFromOptions(files,{baseOptions:{modelAssetPath:url},runningMode:'VIDEO',...options});if(generation!==this.generation){model.close();return}this[kind+'Model']=model}catch{/* Either optional channel can fail independently. */}}
+ ['pose',lib.PoseLandmarker,'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/1/pose_landmarker_full.task',{numPoses:1,outputSegmentationMasks:false}]
+ ]){if(generation!==this.generation)return;try{const model=await Class.createFromOptions(files,{baseOptions:{modelAssetPath:url,delegate:'GPU'},runningMode:'VIDEO',...options});if(generation!==this.generation){model.close();return}this[kind+'Model']=model}catch{/* Either optional channel can fail independently. */}}
  this.enabled=!!(this.faceModel||this.poseModel);this.status=this.enabled?'Seguimiento visual preparado. Activa Seguimiento de señas.':'Seguimiento opcional no disponible. Las manos siguen funcionando.';
  }catch{this.status='No se pudo cargar el seguimiento opcional. Las manos siguen funcionando.'}
  }
@@ -31,11 +31,11 @@ export class VisualTracking{
  if(!this.enabled)return;
  if(!enabled){this.clear();this.status='Rostro/cuerpo en pausa. Activa el overlay; se pausa al grabar.';return}
  // Hand detection wins the frame budget. No second animation loop is created.
- if(handMs>80){this.clear();this.status='Rostro/cuerpo en pausa para priorizar las manos.';return}
+ if(handMs>140){this.status='Rostro/cuerpo reducido para priorizar las manos.';return}
  if(now-this.lastAt<this.interval)return;this.lastAt=now;
  const kind=this.next;this.next=kind==='face'?'pose':'face';const model=this[kind+'Model'];if(!model)return;
  const started=performance.now();try{const result=model.detectForVideo(video,now);this[kind]=kind==='face'?faceObservation(result):poseObservation(result);this[kind+'At']=performance.now();this.status='Solo seguimiento · '+(this.face?'rostro estimado':'rostro no disponible')+' · '+(this.pose?'brazos estimados':'cuerpo no disponible')}catch{this[kind]=null;this.status='Canal visual no disponible; reconocimiento de manos activo.'}
- const elapsed=performance.now()-started;this.interval=elapsed>80?1000:250;
+ const elapsed=performance.now()-started;this.interval=elapsed>120?350:100;
  }
  snapshot(now){return {face:now-this.faceAt<=600?this.face:null,expression:now-this.faceAt<=600?this.face?.upperExpression||null:null,pose:now-this.poseAt<=600?this.pose:null}}
 }

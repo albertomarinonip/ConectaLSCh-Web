@@ -4,10 +4,13 @@ import {visualDistance,visualCoverage} from './multimodal.js';
 // Keep original captured landmarks and timing. Only comparison is resampled.
 export function recordedSample(label,frames,aspectRatio){
  const first=frames[0].time;
- return {label,sampleVersion:2,featureVersion:'hands-relative-v1',aspectRatio,
+ const visual=frames.map(f=>f.visual||null);
+ const coverage=visualCoverage(visual);
+ return {label,sampleVersion:3,featureVersion:'hands-motion-visual-v1',aspectRatio,
  seq:frames.map(f=>f.feature),timestamps:frames.map(f=>f.time-first),
  landmarks:frames.map(f=>f.hands.map(h=>h.map(p=>({x:p.x,y:p.y,z:p.z})))),
- channels:{recognition:['hands'],face:null,expression:null,pose:null}};
+ visual,visualCoverage:coverage,
+ channels:{recognition:['hands','motion','trajectory'],face:coverage.face?'support':null,expression:coverage.expression?'support':null,pose:coverage.pose?'support':null}};
 }
 export function isDynamicTemplate(t,aspectRatio=1){
  return (t?.sampleVersion===2||t?.sampleVersion===3)&&Array.isArray(t.landmarks)&&motionAmount(t.landmarks,t.aspectRatio||aspectRatio)>=0.12;
