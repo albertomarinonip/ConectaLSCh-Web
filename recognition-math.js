@@ -89,3 +89,20 @@ export function trimMotionLandmarks(frames,aspectRatio=1){
  if(first<0||last<0)return frames;first=Math.max(0,first-2);last=Math.min(frames.length-1,last+3);
  return last-first+1>=5?frames.slice(first,last+1):frames;
 }
+
+
+// Direction/path descriptor for open-set rejection. DTW can align unrelated
+// motions too generously; this preserves the sign's net direction and path shape.
+export function motionPathDescriptor(landmarkFrames, aspectRatio=1){
+ const seq=motionSequence(landmarkFrames,aspectRatio);if(seq.length<3)return null;
+ const r=resample(seq,9), dims=4, out=[];
+ for(let k=0;k<dims;k++){const end=r.at(-1)[k]-r[0][k];out.push(end)}
+ let travel=0;for(let i=1;i<r.length;i++){let z=0;for(let k=0;k<dims;k++)z+=(r[i][k]-r[i-1][k])**2;travel+=Math.sqrt(z/dims)}
+ out.push(travel);
+ // coarse signed trajectory relative to start
+ for(const idx of [2,4,6,8])for(let k=0;k<dims;k++)out.push(r[idx][k]-r[0][k]);
+ return out;
+}
+export function descriptorDistance(a,b){
+ if(!a||!b||a.length!==b.length)return Infinity;let s=0;for(let i=0;i<a.length;i++){const q=a[i]-b[i];s+=q*q}return Math.sqrt(s/a.length);
+}

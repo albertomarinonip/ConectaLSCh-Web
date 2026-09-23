@@ -58,9 +58,9 @@ El reconocimiento en vivo segmenta cada seña dinámica como un evento: espera m
 ## v1.3.0 — rechazo de falsos positivos
 El reconocimiento ahora usa una compuerta de “seña conocida”: no basta con elegir la plantilla más cercana. Cuando existen varios ejemplos de una seña, al menos dos deben respaldar la coincidencia. Las señas con movimiento exigen recorrido, trayectoria y proporción de movimiento compatibles antes de agregar una palabra. Los movimientos cotidianos deben quedar sin salida en la transcripción.
 
-## v1.3.1 — equilibrio entre reconocimiento y rechazo
+## v1.3.2 — equilibrio entre reconocimiento y rechazo
 El reconocimiento ya no elige una seña solo por ser la plantilla más cercana. Una seña debe obtener consenso entre varios ejemplos personales independientes. En señas dinámicas, cada voto debe coincidir por separado en forma de mano, trayectoria y cantidad de movimiento. Si no existe consenso suficiente, el resultado interno es desconocido y no se agrega ninguna palabra a la transcripción. Esto está diseñado para reducir falsos positivos con gestos cotidianos como tocarse la cabeza o acomodarse el pelo. El reconocimiento continúa siendo un prototipo experimental basado solo en manos y no equivale a un traductor completo de LSCh.
 
 
-### v1.3.1
+### v1.3.2
 Se elimina la pestaña Notas por decisión de producto. El reconocimiento abierto mantiene el rechazo de movimientos desconocidos, pero calibra el consenso dinámico para aceptar variaciones naturales: dos ejemplos personales fuertes pueden confirmar una seña, manteniendo comprobaciones independientes de forma, trayectoria, cantidad de movimiento y margen frente a otras señas.
