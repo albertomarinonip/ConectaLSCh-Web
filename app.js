@@ -7,6 +7,7 @@ import {VisualTracking,drawVisualTracking} from './visual-tracking.js';
 import { SignGate, LIMITS } from "./recognition-state.js";
 import { validSamples, loadSamples, saveSamples, removePersonalLabel } from "./sample-store.js";
 import {observation,drawHands} from './hand-overlay.js';
+import {visualDescriptor} from './multimodal.js';
 import {getSignSettings,putSignSettings} from './content-store.js';
 const $=s=>document.querySelector(s), camera=$("#camera"), resultEl=$("#signResult"), confEl=$("#confidence"), status=$("#modelStatus");
 let stream=null,facing="user",videoHands=null,templates=[],recognizing=false,liveBuffer=[],liveLandmarksBuffer=[],lastVideoTime=-1;
@@ -84,7 +85,7 @@ function showRecognition(out,match={},hands=null){
 }
 function renderDiagnostic(){
  if(!diagnosticEnabled)return;const x=lastDiagnostic,m=x.match||{};
- const rows=[['Candidato',m.best?.label||'—'],['Distancia total',Number.isFinite(m.best?.d)?m.best.d.toFixed(4):'—'],['Forma',Number.isFinite(m.best?.shapeD)?m.best.shapeD.toFixed(4):'—'],['Movimiento',Number.isFinite(m.best?.motionD)?m.best.motionD.toFixed(4):'—'],['Trayectoria',Number.isFinite(m.best?.pathD)?m.best.pathD.toFixed(4):'—'],['Límite personal trayectoria',Number.isFinite(m.best?.envelope?.path)?m.best.envelope.path.toFixed(4):'—'],['Recorrido en vivo',Number.isFinite(m.best?.liveMotion)?m.best.liveMotion.toFixed(3):'—'],['Recorrido mínimo',Number.isFinite(m.best?.requiredMotion)?m.best.requiredMotion.toFixed(3):'—'],['Segundo',m.second?m.second.label+' · '+m.second.d.toFixed(4):'—'],['Diferencia',Number.isFinite(m.margin)?m.margin.toFixed(4):m.best?'Solo una seña comparable':'—'],['Confianza experimental',x.kind==='confirmed'?'alta · estable':m.kind==='candidate'?'coincidencia pendiente de estabilidad':'insuficiente'],['Frames válidos',String(liveBuffer.length)+' / mínimo 8'],['Manos detectadas',String(latestDetection?.result.landmarks?.length||0)],['Duración de secuencia',bufferTimes.length>1?((bufferTimes.at(-1)-bufferTimes[0])/1000).toFixed(2)+' s':'0 s'],['Estado',x.reason||'Reconocimiento detenido'],['Movimiento en vivo',motionEvent.state+' · actividad '+motionEvent.lastActivity.toFixed(3)],['Estabilidad',signGate.count+' / '+LIMITS.stableFrames+' observaciones; mínimo '+LIMITS.stableMs+' ms activos'],['Inferencia',x.inferenceMs?x.inferenceMs.toFixed(0)+' ms':'—'],['Video',camera.videoWidth?camera.videoWidth+' × '+camera.videoHeight:'—'],['Muestras',personalSamples.length+' personales · '+templates.length+' activas'],['Formato',templates.filter(t=>t.aspectRatio).length+' muestras con proporción conocida; las anteriores usan modo compatible'],['Origen','Solo Mis señas'],['Canales de reconocimiento','Manos; rostro/cuerpo no intervienen']];
+ const rows=[['Candidato',m.best?.label||'—'],['Distancia total',Number.isFinite(m.best?.d)?m.best.d.toFixed(4):'—'],['Forma',Number.isFinite(m.best?.shapeD)?m.best.shapeD.toFixed(4):'—'],['Movimiento',Number.isFinite(m.best?.motionD)?m.best.motionD.toFixed(4):'—'],['Trayectoria',Number.isFinite(m.best?.pathD)?m.best.pathD.toFixed(4):'—'],['Límite personal trayectoria',Number.isFinite(m.best?.envelope?.path)?m.best.envelope.path.toFixed(4):'—'],['Recorrido en vivo',Number.isFinite(m.best?.liveMotion)?m.best.liveMotion.toFixed(3):'—'],['Recorrido mínimo',Number.isFinite(m.best?.requiredMotion)?m.best.requiredMotion.toFixed(3):'—'],['Segundo',m.second?m.second.label+' · '+m.second.d.toFixed(4):'—'],['Diferencia',Number.isFinite(m.margin)?m.margin.toFixed(4):m.best?'Solo una seña comparable':'—'],['Confianza experimental',x.kind==='confirmed'?'alta · estable':m.kind==='candidate'?'coincidencia pendiente de estabilidad':'insuficiente'],['Frames válidos',String(liveBuffer.length)+' / mínimo 8'],['Manos detectadas',String(latestDetection?.result.landmarks?.length||0)],['Duración de secuencia',bufferTimes.length>1?((bufferTimes.at(-1)-bufferTimes[0])/1000).toFixed(2)+' s':'0 s'],['Estado',x.reason||'Reconocimiento detenido'],['Movimiento en vivo',motionEvent.state+' · actividad '+motionEvent.lastActivity.toFixed(3)],['Estabilidad',signGate.count+' / '+LIMITS.stableFrames+' observaciones; mínimo '+LIMITS.stableMs+' ms activos'],['Inferencia',x.inferenceMs?x.inferenceMs.toFixed(0)+' ms':'—'],['Video',camera.videoWidth?camera.videoWidth+' × '+camera.videoHeight:'—'],['Muestras',personalSamples.length+' personales · '+templates.length+' activas'],['Formato',templates.filter(t=>t.aspectRatio).length+' muestras con proporción conocida; las anteriores usan modo compatible'],['Origen','Solo Mis señas'],['Canales de reconocimiento','Manos + movimiento; muestras nuevas pueden usar rostro/cejas/cabeza y pose cuando están disponibles']];
  const list=$('#diagnosticValues');list.replaceChildren();for(const [key,value] of rows){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=key;dd.textContent=value;list.append(dt,dd)}
 }
 $('#toggleDiagnostics').onclick=()=>{diagnosticEnabled=!diagnosticEnabled;$('#toggleDiagnostics').setAttribute('aria-checked',String(diagnosticEnabled));$('#toggleDiagnostics').textContent=diagnosticEnabled?'ON':'OFF';$('#diagnosticValues').hidden=!diagnosticEnabled;renderDiagnostic()};
@@ -93,6 +94,7 @@ function pauseRecognition(){recognizing=false;liveBuffer=[];bufferTimes=[];liveL
 $('#startRecognition').onclick=()=>{
  if(capturing||cameraBusy)return;if(!templates.length){showRecognition({kind:'waiting'});return}if(recognizing){pauseRecognition();return}
  if(!stream||!videoHands){confEl.textContent='Primero activa la cámara y espera el detector.';return}
+ if(!visualTracking.enabled)visualTracking.enable().then(()=>updateHands(latestDetection?.result||{landmarks:[]}));
  recognizing=true;liveBuffer=[];bufferTimes=[];liveLandmarksBuffer=[];motionEvent.reset();signGate.interrupt();$('#startRecognition').textContent='⏹ Parar reconocimiento';showRecognition({kind:'waiting'});
 };
 function loop(id){
@@ -106,10 +108,11 @@ function loop(id){
  const clock=observationClock.observe(now,completed);lastCompletedAt=completed;
  if(clock.interrupted){liveBuffer=[];bufferTimes=[];liveLandmarksBuffer=[];signGate.interrupt()}
  latestDetection={result,time:completed};
- visualTracking.process(camera,now,{enabled:overlayEnabled&&!capturing,handMs:completed-now});updateHands(result);
+ visualTracking.process(camera,now,{enabled:visualTracking.enabled&&(overlayEnabled||recognizing||capturing),handMs:completed-now});updateHands(result);
  if(recognizing){const f=feature(result);let match={kind:'waiting',reason:'Esperando el inicio de una seña'};
  const aspect=camera.videoWidth/camera.videoHeight;
- const event=motionEvent.push({feature:f,hands:result.landmarks,time:now,aspectRatio:aspect});
+ const liveVisual=visualDescriptor(visualTracking.snapshot(performance.now()));
+ const event=motionEvent.push({feature:f,hands:result.landmarks,time:now,aspectRatio:aspect,visual:liveVisual});
  if(!f){liveBuffer=[];bufferTimes=[];liveLandmarksBuffer=[];match.reason='No se detectan manos'}else{
    liveBuffer.push(f);bufferTimes.push(now);liveLandmarksBuffer.push(result.landmarks.map(h=>h.map(p=>({x:p.x,y:p.y,z:p.z}))));if(liveBuffer.length>120){liveBuffer.shift();bufferTimes.shift();liveLandmarksBuffer.shift()}
    // Static signs may still use a stable hold. Dynamic signs are classified only
@@ -121,7 +124,8 @@ function loop(id){
  if(event.completed){
    const ef=event.completed.frames.map(x=>x.feature),et=event.completed.frames.map(x=>x.time),el=event.completed.frames.map(x=>x.hands);
    const dynamicTemplates=templates.filter(t=>isDynamicTemplate(t,aspect));
-   match=dynamicTemplates.length?matchWindow(ef,et,dynamicTemplates,aspect,el,{eventComplete:true}):match;
+   const ev=event.completed.frames.map(x=>x.visual||null);
+   match=dynamicTemplates.length?matchWindow(ef,et,dynamicTemplates,aspect,el,{eventComplete:true,visualFrames:ev}):match;
    liveBuffer=[];bufferTimes=[];liveLandmarksBuffer=[];
  }
  const out=signGate.step({now:clock.time,hands:!!f,pose:f,match});
@@ -203,10 +207,11 @@ async function capturePersonalExample(label){
  pauseRecognition();$('#startRecognition').disabled=true;capturing=true;recordBtn.disabled=true;$('#captureReview').hidden=true;pendingSample=null;const id=++captureId;
  try{
   if(!videoHands)await vision();
+  if(!visualTracking.enabled)await visualTracking.enable();
   for(let n=3;n>0;n--){if(id!==captureId)return;setCaptureStage(String(n),'countdown');trainingStatus.textContent=`Prepárate: ${n}…`;await new Promise(r=>setTimeout(r,1000))}
   if(id!==captureId)return;setCaptureStage('● GRABANDO','recording');
   const seq=[];const aspectRatio=camera.videoWidth/camera.videoHeight;if(!Number.isFinite(aspectRatio)||aspectRatio<=0)throw Error('La cámara aún no informa su tamaño. Vuelve a activarla e inténtalo de nuevo.');let previous=-1;const started=performance.now();
-  await new Promise((resolve,reject)=>{function frame(){try{if(id!==captureId||!stream){resolve();return}const now=performance.now();const left=Math.max(0,3000-now+started);trainingStatus.textContent=`Grabando ${label} · ${(left/1000).toFixed(1)} s`;$('#captureProgress').style.width=(100-left/30)+'%';if(latestDetection&&latestDetection.time!==previous&&now-latestDetection.time<350){previous=latestDetection.time;const f=feature(latestDetection.result);if(f)seq.push({feature:f,time:latestDetection.time,hands:latestDetection.result.landmarks})}if(now-started>=3000){resolve();return}requestAnimationFrame(frame)}catch(e){reject(e)}}requestAnimationFrame(frame)});
+  await new Promise((resolve,reject)=>{function frame(){try{if(id!==captureId||!stream){resolve();return}const now=performance.now();const left=Math.max(0,3000-now+started);trainingStatus.textContent=`Grabando ${label} · ${(left/1000).toFixed(1)} s`;$('#captureProgress').style.width=(100-left/30)+'%';if(latestDetection&&latestDetection.time!==previous&&now-latestDetection.time<350){previous=latestDetection.time;const f=feature(latestDetection.result);if(f)seq.push({feature:f,time:latestDetection.time,hands:latestDetection.result.landmarks,visual:visualDescriptor(visualTracking.snapshot(performance.now()))})}if(now-started>=3000){resolve();return}requestAnimationFrame(frame)}catch(e){reject(e)}}requestAnimationFrame(frame)});
   if(id!==captureId)return;if(seq.length<8)throw Error('No se vieron las manos el tiempo suficiente. Repite con las manos completas dentro de la cámara.');
   pendingSample=recordedSample(label,seq,aspectRatio);setCaptureStage('✓ CAPTURA TERMINADA','done');trainingStatus.textContent=`Captura de ${label} lista. Guárdala o repítela.`;$('#captureReview').hidden=false;
  }catch(e){if(id===captureId){setCaptureStage('Repite la captura','error');trainingStatus.textContent=`No se guardó: ${e.message}`}}

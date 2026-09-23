@@ -1,5 +1,6 @@
 import {resample,scoreTemplates,motionDistance,motionAmount,trimMotionLandmarks,motionPathDescriptor,descriptorDistance} from './recognition-math.js';
 import {chooseSign} from './recognition-state.js';
+import {visualDistance,visualCoverage} from './multimodal.js';
 // Keep original captured landmarks and timing. Only comparison is resampled.
 export function recordedSample(label,frames,aspectRatio){
  const first=frames[0].time;
@@ -9,11 +10,11 @@ export function recordedSample(label,frames,aspectRatio){
  channels:{recognition:['hands'],face:null,expression:null,pose:null}};
 }
 export function isDynamicTemplate(t,aspectRatio=1){
- return t?.sampleVersion===2&&Array.isArray(t.landmarks)&&motionAmount(t.landmarks,t.aspectRatio||aspectRatio)>=0.12;
+ return (t?.sampleVersion===2||t?.sampleVersion===3)&&Array.isArray(t.landmarks)&&motionAmount(t.landmarks,t.aspectRatio||aspectRatio)>=0.12;
 }
 
 function personalEnvelope(template,templates,aspectRatio){
- const peers=templates.filter(x=>x!==template&&x.label===template.label&&x.sampleVersion===2&&Array.isArray(x.landmarks));
+ const peers=templates.filter(x=>x!==template&&x.label===template.label&&(x.sampleVersion===2||x.sampleVersion===3)&&Array.isArray(x.landmarks));
  if(!peers.length)return null;
  const aLm=trimMotionLandmarks(template.landmarks,template.aspectRatio||aspectRatio);
  const aDesc=motionPathDescriptor(aLm,template.aspectRatio||aspectRatio);
@@ -37,7 +38,7 @@ export function matchWindow(frames,times,templates,aspectRatio,landmarkFrames=[]
  const comparable=templates.filter(t=>t.sampleVersion!==2||!t.timestamps?.length||elapsed>=Math.max(250,t.timestamps.at(-1)*0.72));
  if(!comparable.length)return {kind:'waiting',reason:'Reuniendo el movimiento de la seña'};
  const scores=comparable.map(t=>{
- if(t.sampleVersion!==2)return scoreTemplates(resample(frames.slice(-18)),[t],aspectRatio)[0];
+ if(t.sampleVersion!==2&&t.sampleVersion!==3)return scoreTemplates(resample(frames.slice(-18)),[t],aspectRatio)[0];
  const duration=t.timestamps.at(-1);
  // Natural signing speed varies. Compare a slightly wider recent window and let
  // DTW/resampling align the motion instead of demanding the exact training duration.
@@ -74,8 +75,14 @@ export function matchWindow(frames,times,templates,aspectRatio,landmarkFrames=[]
  // Motion still contributes enough to reject a static look-alike.
  const motionClamped=Math.min(motionD,0.60);
  // Dynamic signs prioritize the temporal path. Static signs remain shape-led.
- const combined=dynamic?base.d*0.45+motionClamped*0.55:base.d;
- return {...base,shapeD:base.d,motionD,pathD,envelope,d:combined,liveMotion,templateMotion,requiredMotion,motionComplete:motionComplete&&motionSimilar&&motionRatio,dynamic,motionSimilar,motionRatio};
+ let combined=dynamic?base.d*0.45+motionClamped*0.55:base.d;
+ const visualD=t.sampleVersion===3?visualDistance(options.visualFrames||[],t.visual||[]):null;
+ // Visual context is supportive, never mandatory when face/body are occluded. When both
+ // training and live channels exist, a strong mismatch rejects the candidate instead of
+ // forcing the nearest hand-only label.
+ const visualSimilar=visualD===null||visualD<0.58;
+ if(Number.isFinite(visualD))combined=combined*0.82+Math.min(visualD,.8)*0.18;
+ return {...base,shapeD:base.d,motionD,pathD,visualD,envelope,d:combined,liveMotion,templateMotion,requiredMotion,motionComplete:motionComplete&&motionSimilar&&motionRatio&&visualSimilar,dynamic,motionSimilar,motionRatio,visualSimilar};
  });
  const chosen=chooseSign(scores);
  return options.eventComplete?{...chosen,eventComplete:true}:chosen;

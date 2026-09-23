@@ -25,12 +25,12 @@ export class MotionEventSegmenter{
     const shape=Number.isFinite(rms(this.prev.feature,obs.feature))?rms(this.prev.feature,obs.feature):0;
     return travel + Math.min(shape,.35)*.45;
   }
-  push({feature,hands,time,aspectRatio=1}){
+  push({feature,hands,time,aspectRatio=1,visual=null}){
     if(!feature||!hands?.length){
       if(this.state==='MOVING'&&this.event.length>=6){const done=this._finish('hands-left');this.reset();return done}
       this.reset();return {state:'READY',completed:null,activity:0};
     }
-    const obs={feature:feature.slice(),hands:hands.map(h=>h.map(p=>({x:p.x,y:p.y,z:p.z}))),time};
+    const obs={feature:feature.slice(),hands:hands.map(h=>h.map(p=>({x:p.x,y:p.y,z:p.z}))),time,visual};
     const activity=this._activity(obs,aspectRatio);this.lastActivity=activity;
     const START=.075, END=.032;
     if(this.state==='READY'){

@@ -8,9 +8,12 @@ export function validSamples(value){
  if(t.aspectRatio!==undefined&&(!Number.isFinite(t.aspectRatio)||t.aspectRatio<.1||t.aspectRatio>10))return false;
  if(!Array.isArray(t.seq)||!t.seq.every(f=>Array.isArray(f)&&f.length===126&&f.every(Number.isFinite)))return false;
  if(t.sampleVersion===undefined||t.sampleVersion===1)return t.seq.length===9;
- return t.sampleVersion===2&&t.featureVersion==='hands-relative-v1'&&t.seq.length>=8&&t.seq.length<=40&&
- Array.isArray(t.timestamps)&&t.timestamps.length===t.seq.length&&t.timestamps[0]===0&&t.timestamps.every((v,i)=>Number.isFinite(v)&&v>=0&&v<=15000&&(!i||v>t.timestamps[i-1]))&&
+ const temporal=(t.sampleVersion===2&&t.featureVersion==='hands-relative-v1')||(t.sampleVersion===3&&t.featureVersion==='hands-visual-v1');
+ if(!temporal||t.seq.length<8||t.seq.length>40)return false;
+ const core=Array.isArray(t.timestamps)&&t.timestamps.length===t.seq.length&&t.timestamps[0]===0&&t.timestamps.every((v,i)=>Number.isFinite(v)&&v>=0&&v<=15000&&(!i||v>t.timestamps[i-1]))&&
  Array.isArray(t.landmarks)&&t.landmarks.length===t.seq.length&&t.landmarks.every(hands=>Array.isArray(hands)&&hands.length>=1&&hands.length<=2&&hands.every(validHand));
+ if(!core)return false;if(t.sampleVersion===2)return true;
+ return Array.isArray(t.visual)&&t.visual.length===t.seq.length;
  });
 }
 function openDB(){return new Promise((resolve,reject)=>{
