@@ -17,7 +17,7 @@ export function chooseSign(scores){
  if(!best)return {kind:'waiting',reason:'Sin plantillas activas comparables'};
  const margin=second?second.d-best.d:Infinity;
  const details={best,second,margin};
- if(best.motionComplete===false)return {kind:'waiting',...details,reason:'Movimiento incompleto; continúa la seña'};
+ if(best.motionComplete===false)return {kind:'waiting',...details,reason:'Movimiento no coincide con una seña completa'};
  if(best.d>LIMITS.maxDistance)return {kind:'uncertain',...details,reason:'Distancia DTW supera '+LIMITS.maxDistance};
  if(margin<LIMITS.minMargin)return {kind:'uncertain',...details,reason:'Ambigüedad: margen entre señas menor que '+LIMITS.minMargin};
  if(second&&margin/Math.max(second.d,0.001)<LIMITS.minRelativeMargin)return {kind:'uncertain',...details,reason:'Ambigüedad: margen relativo insuficiente'};
@@ -26,13 +26,14 @@ export function chooseSign(scores){
 
 export class SignGate{
  constructor(){this.reset()}
- reset(){this.latched='';this.pose=null;this.absentSince=null;this.changedSince=null;this.lastAt=null;this.clearCandidate()}
+ reset(){this.latched='';this.pose=null;this.absentSince=null;this.changedSince=null;this.lastAt=null;this.cooldownUntil=0;this.clearCandidate()}
  clearCandidate(){this.candidate='';this.since=0;this.count=0}
  // Pausing or a dropped frame must not release an already spoken sign.
  interrupt(){this.clearCandidate();this.absentSince=null;this.changedSince=null;this.lastAt=null}
  step({now,hands,pose=null,match={kind:'waiting'}}){
  if(this.lastAt!==null&&now-this.lastAt>LIMITS.maxGapMs){this.clearCandidate();this.absentSince=null;this.changedSince=null}
  this.lastAt=now;
+ if(now<this.cooldownUntil){this.clearCandidate();return {kind:'waiting'}}
  if(!hands){
  this.clearCandidate();this.changedSince=null;this.absentSince??=now;
  if(now-this.absentSince>=LIMITS.releaseMs){this.latched='';this.pose=null}
@@ -55,7 +56,7 @@ export class SignGate{
  if(this.candidate!==match.label){this.candidate=match.label;this.since=now;this.count=1}else this.count++;
  const needFrames=match.dynamic?2:LIMITS.stableFrames,needMs=match.dynamic?100:LIMITS.stableMs;
  if(this.count<needFrames||now-this.since<needMs)return {kind:'waiting'};
- this.latched=match.label;this.pose=pose?.slice();this.clearCandidate();
+ this.latched=match.label;this.pose=pose?.slice();this.cooldownUntil=now+350;this.clearCandidate();
  return {kind:'confirmed',label:match.label,speak:true};
  }
 }

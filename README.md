@@ -1,4 +1,4 @@
-# ConectaLSCh v1.2.6
+# ConectaLSCh v1.2.7
 
 Prototipo PWA de accesibilidad centrado en Lengua de Señas Chilena (LSCh). Funciona con cuatro pestañas: **Señas**, **Escuchar**, **Mis señas** y **Notas**.
 
@@ -9,7 +9,7 @@ Prototipo PWA de accesibilidad centrado en Lengua de Señas Chilena (LSCh). Func
 - **Mis señas:** permite crear varias muestras por seña, exportar/importar respaldo y administrar ejemplos personales. No incluye un diccionario LSCh precargado.
 - **Notas:** conserva notas guardadas independientemente de los subtítulos.
 
-## Reconocimiento de movimiento v1.2.6
+## Reconocimiento de movimiento v1.2.7
 
 Esta versión mejora especialmente las señas dinámicas. Para una muestra que contiene movimiento, el reconocedor separa el tramo activo de la preparación y de la postura final, compara la evolución temporal de la forma de las manos y la trayectoria de las muñecas, y tolera diferencias naturales de velocidad entre la grabación y la ejecución en vivo. Una postura quieta no debe bastar para confirmar una muestra dinámica.
 
@@ -28,7 +28,7 @@ Los datos personales se guardan en IndexedDB `conectalsch-personal` con respaldo
 
 ## Actualizar GitHub Pages / iPhone
 
-Descomprime el ZIP y reemplaza los archivos de la raíz del repositorio. El service worker usa una caché nueva para v1.2.6. Abre la web con conexión y acepta la actualización; si el iPhone conserva una versión anterior, cierra la PWA y sus pestañas y vuelve a abrirla.
+Descomprime el ZIP y reemplaza los archivos de la raíz del repositorio. El service worker usa una caché nueva para v1.2.7. Abre la web con conexión y acepta la actualización; si el iPhone conserva una versión anterior, cierra la PWA y sus pestañas y vuelve a abrirla.
 
 ## Límites
 
@@ -44,3 +44,9 @@ node tests/tracking.test.mjs
 node tests/regressions-v121.test.mjs
 node tests/personal-temporal.test.mjs
 ```
+
+## Cambios v1.2.7
+- Reduce falsos positivos: un movimiento cualquiera ya no basta para emitir una palabra.
+- En señas dinámicas se exige recorrido suficiente y semejanza de trayectoria con los ejemplos de “Mis señas”.
+- Después de confirmar una seña hay una breve protección contra el movimiento residual, para evitar que aparezca otra palabra sin haberla realizado.
+- Los estados internos de detección no se agregan a la transcripción; solo las señas confirmadas quedan como líneas.

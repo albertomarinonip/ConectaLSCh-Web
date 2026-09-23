@@ -41,15 +41,19 @@ export function matchWindow(frames,times,templates,aspectRatio,landmarkFrames=[]
  // Personal examples are temporal signs. Do not accept a held pose when the
  // recorded example contains real travel. Natural speed/size may vary, so use
  // a conservative fraction of the example rather than exact displacement.
- const requiredMotion=dynamic?Math.max(0.10,templateMotion*0.18):0;
+ const requiredMotion=dynamic?Math.max(0.16,templateMotion*0.38):0;
  const motionComplete=requiredMotion===0||liveMotion>=requiredMotion;
+ // Reject accidental/background motion independently from the combined score.
+ // A dynamic sign must resemble the recorded path, not merely move enough.
+ const motionSimilar=!dynamic||motionD<=0.34;
+ const motionRatio=!dynamic||templateMotion<=0||(liveMotion/templateMotion>=0.30&&liveMotion/templateMotion<=3.2);
  // Keep shape and motion as separate channels. A weighted normalized score avoids
  // rejecting a valid sign merely because natural wrist travel differs slightly.
  // Motion still contributes enough to reject a static look-alike.
  const motionClamped=Math.min(motionD,0.60);
  // Dynamic signs prioritize the temporal path. Static signs remain shape-led.
  const combined=dynamic?base.d*0.55+motionClamped*0.45:base.d;
- return {...base,shapeD:base.d,motionD,d:combined,liveMotion,templateMotion,requiredMotion,motionComplete,dynamic};
+ return {...base,shapeD:base.d,motionD,d:combined,liveMotion,templateMotion,requiredMotion,motionComplete:motionComplete&&motionSimilar&&motionRatio,dynamic,motionSimilar,motionRatio};
  });
  return chooseSign(scores);
 }
