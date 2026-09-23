@@ -11,11 +11,18 @@ export function recordedSample(label,frames,aspectRatio){
 export function matchWindow(frames,times,templates,aspectRatio,landmarkFrames=[]){
  if(!templates.length)return {kind:'waiting',reason:'No hay señas personales activas'};
  if(frames.length<8)return {kind:'waiting',reason:'Reuniendo fotogramas válidos (mínimo 8)'};
- const required=Math.max(0,...templates.map(t=>t.sampleVersion===2?t.timestamps.at(-1):0));
- if(times.at(-1)-times[0]<required)return {kind:'waiting',reason:'Secuencia incompleta: necesita '+(required/1000).toFixed(1)+' s'};
- const scores=templates.map(t=>{
+ const elapsed=times.at(-1)-times[0];
+ // Do not wait for the longest sign in the whole library. Each personal example
+ // becomes comparable as soon as the live buffer contains enough time for it.
+ const comparable=templates.filter(t=>t.sampleVersion!==2||!t.timestamps?.length||elapsed>=Math.max(250,t.timestamps.at(-1)*0.72));
+ if(!comparable.length)return {kind:'waiting',reason:'Reuniendo el movimiento de la seña'};
+ const scores=comparable.map(t=>{
  if(t.sampleVersion!==2)return scoreTemplates(resample(frames.slice(-18)),[t],aspectRatio)[0];
- const duration=t.timestamps.at(-1),start=times.at(-1)-duration;
+ const duration=t.timestamps.at(-1);
+ // Natural signing speed varies. Compare a slightly wider recent window and let
+ // DTW/resampling align the motion instead of demanding the exact training duration.
+ const liveDuration=Math.min(elapsed,Math.max(duration*1.30,duration+220));
+ const start=times.at(-1)-liveDuration;
  let index=times.findIndex(time=>time>=start);if(index>0)index--;
  const from=Math.max(0,index),query=resample(frames.slice(from),18);
  const base=scoreTemplates(query,[{...t,seq:resample(t.seq,18)}],aspectRatio)[0];
