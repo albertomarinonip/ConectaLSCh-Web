@@ -9,19 +9,38 @@ export function rms(a,b){
  return Math.sqrt(sum/a.length);
 }
 export function chooseSign(scores){
- // Many examples of one sign must not compete as different signs.
- const labels=new Map();
- for(const score of scores){const {label,d}=score;if(Number.isFinite(d)&&d>=0){const old=labels.get(label);if(!old||d<old.d)labels.set(label,score)}}
- const ranked=[...labels.values()].sort((a,b)=>a.d-b.d);
- const [best,second]=ranked;
+ // Open-set admission: the recognizer must be allowed to say "none".
+ // A single lucky template is not enough when a label has multiple examples.
+ const groups=new Map();
+ for(const score of scores){
+   if(!Number.isFinite(score?.d)||score.d<0)continue;
+   if(!groups.has(score.label))groups.set(score.label,[]);
+   groups.get(score.label).push(score);
+ }
+ const labels=[];
+ for(const [label,items] of groups){
+   items.sort((a,b)=>a.d-b.d);
+   const best=items[0];
+   // With >=2 recordings, demand support from a second independent example.
+   // This rejects incidental poses/motions that happen to resemble only one sample.
+   const support=items.length>=2?items[1]:best;
+   const supportLimit=best.dynamic?0.19:0.145;
+   const supported=items.length<2 || support.d<=supportLimit;
+   labels.push({...best,label,supportD:support.d,supportCount:items.length,supported});
+ }
+ labels.sort((a,b)=>a.d-b.d);
+ const [best,second]=labels;
  if(!best)return {kind:'waiting',reason:'Sin plantillas activas comparables'};
  const margin=second?second.d-best.d:Infinity;
  const details={best,second,margin};
+ if(!best.supported)return {kind:'uncertain',...details,reason:'Movimiento/postura no confirmado por suficientes ejemplos personales'};
  if(best.motionComplete===false)return {kind:'waiting',...details,reason:'Movimiento no coincide con una seña completa'};
- if(best.d>LIMITS.maxDistance)return {kind:'uncertain',...details,reason:'Distancia DTW supera '+LIMITS.maxDistance};
+ // Dynamic signs need stronger evidence because ordinary hand movement is common.
+ const maxDistance=best.dynamic?0.145:0.125;
+ if(best.d>maxDistance)return {kind:'uncertain',...details,reason:'Distancia: no coincide suficientemente con una seña entrenada'};
  if(margin<LIMITS.minMargin)return {kind:'uncertain',...details,reason:'Ambigüedad: margen entre señas menor que '+LIMITS.minMargin};
  if(second&&margin/Math.max(second.d,0.001)<LIMITS.minRelativeMargin)return {kind:'uncertain',...details,reason:'Ambigüedad: margen relativo insuficiente'};
- return {kind:'candidate',label:best.label,d:best.d,dynamic:!!best.dynamic,...details,reason:'Coincidencia; requiere estabilidad'};
+ return {kind:'candidate',label:best.label,d:best.d,dynamic:!!best.dynamic,...details,reason:'Coincidencia personal confirmada; requiere compuerta temporal'};
 }
 
 export class SignGate{
