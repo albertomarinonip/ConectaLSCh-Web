@@ -1,6 +1,13 @@
-# ConectaLSCh v1.6.0 alfa — primera base temporal multimodal
+# ConectaLSCh v1.6.1 alfa — primera base temporal multimodal
 
 Esta versión cambia el reconocimiento, la captura y el formato de datos de v1.5.3. **Sigue siendo un prototipo por ejemplos personales; no incluye un modelo neuronal entrenado en LSCh ni una precisión medida con personas.**
+
+## Ajustes de v1.6.1
+
+- Cámara amplia, texto y subtítulos más grandes, controles de 48 px y navegación más legible.
+- Inicio del movimiento confirmado durante al menos 50 ms para evitar que dos fotogramas rápidos activen una seña.
+- Historial previo al movimiento de hasta 350 ms, independiente de la velocidad de la cámara.
+- Estos ajustes no constituyen una precisión medida en LSCh. Falta probar grabaciones reales y revisar la interfaz en iPhone/Android.
 
 ## Qué cambia
 

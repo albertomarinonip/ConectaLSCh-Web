@@ -2,7 +2,7 @@ import {handShape,handScale} from './multimodal-frame.js';
 // Detect each hand's activity separately. Opposing movements must not cancel.
 export class MotionEventSegmenter {
   constructor(){this.reset()}
-  reset(){this.state='READY';this.pre=[];this.event=[];this.prev=null;this.activeCount=0;this.quietSince=null;this.startedAt=0;this.lastActivity=0;this.missingSince=null}
+  reset(){this.state='READY';this.pre=[];this.event=[];this.prev=null;this.activeCount=0;this.activeSince=null;this.quietSince=null;this.startedAt=0;this.lastActivity=0;this.missingSince=null}
   _activity(obs,aspect){
     if(!this.prev)return 0;
     const dt=obs.time-this.prev.time;if(dt<=0)return 0;
@@ -33,9 +33,11 @@ export class MotionEventSegmenter {
     const obs={feature:feature.slice(),hands:hands.map(h=>h.map(p=>({x:p.x,y:p.y,z:p.z}))),time,visual,multimodal};
     const activity=this._activity(obs,aspectRatio);this.lastActivity=activity;
     if(this.state==='READY'){
-      this.pre.push(obs);if(this.pre.length>6)this.pre.shift();
-      this.activeCount=activity>=.04?this.activeCount+1:0;
-      if(this.activeCount>=2){this.state='MOVING';this.startedAt=this.pre[0].time;this.event=this.pre.slice();this.quietSince=null}
+      this.pre.push(obs);
+      // Preserve the lead-in by elapsed time across different camera frame rates.
+      while(this.pre.length>1 && (time-this.pre[0].time>350 || this.pre.length>60))this.pre.shift();
+      if(activity>=.04){this.activeCount++;this.activeSince??=time}else{this.activeCount=0;this.activeSince=null}
+      if(this.activeCount>=2 && time-this.activeSince>=50){this.state='MOVING';this.startedAt=this.pre[0].time;this.event=this.pre.slice();this.quietSince=null}
     }else{
       this.event.push(obs);
       if(activity<=.016)this.quietSince??=time;else this.quietSince=null;

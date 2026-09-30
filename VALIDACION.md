@@ -18,3 +18,7 @@
 - Reconocimiento continuo sin pausas, traducción de frases y avatar LSCh.
 
 Esta alfa corrige errores verificables de la mecánica y prepara una evaluación real. No debe presentarse como una mejora porcentual demostrada de precisión, un detector de miles de señas ya entrenado ni un producto nativo publicado.
+
+## v1.6.1 alfa
+
+26 pruebas Node aprobadas y prueba de integración de captura/reconocimiento aprobada con cámara sintética. Nuevas pruebas: rechazo de dos fotogramas rápidos y cierre del movimiento a 10, 20 y 60 FPS. No se midió precisión con personas ni se verificó visualmente la interfaz en un navegador real. Debe probarse en iPhone/Android; el cambio de inicio exige movimiento sostenido 50 ms y puede omitir gestos extremadamente breves.
