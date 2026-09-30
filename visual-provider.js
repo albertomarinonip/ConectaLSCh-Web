@@ -10,6 +10,11 @@ export function visionContext(){
  return contextPromise;
 }
 export function handModel(){
- if(!handPromise)handPromise=(async()=>{const {lib,files}=await visionContext();return lib.HandLandmarker.createFromOptions(files,{baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',delegate:'GPU'},numHands:2,runningMode:'VIDEO',minHandDetectionConfidence:.55,minHandPresenceConfidence:.60,minTrackingConfidence:.55})})().catch(error=>{handPromise=null;throw error});
+ if(!handPromise)handPromise=(async()=>{const {lib,files}=await visionContext();
+ const options={numHands:2,runningMode:'VIDEO',minHandDetectionConfidence:.55,minHandPresenceConfidence:.60,minTrackingConfidence:.55};
+ const modelAssetPath='https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task';
+ try{return await lib.HandLandmarker.createFromOptions(files,{...options,baseOptions:{modelAssetPath,delegate:'GPU'}})}
+ catch{return lib.HandLandmarker.createFromOptions(files,{...options,baseOptions:{modelAssetPath,delegate:'CPU'}})}
+ })().catch(error=>{handPromise=null;throw error});
  return handPromise;
 }

@@ -1,3 +1,4 @@
+import {FEATURE_VERSION,FEATURE_SIZE,frameVector} from './multimodal-frame.js';
 // Version-independent storage, compatible with v1.1. Never delete legacy samples.
 export const PERSONAL_KEY='conectalsch-personal-v1';
 const DB_NAME='conectalsch-personal', STORE='samples';
@@ -8,6 +9,17 @@ export function validSamples(value){
  if(t.aspectRatio!==undefined&&(!Number.isFinite(t.aspectRatio)||t.aspectRatio<.1||t.aspectRatio>10))return false;
  if(!Array.isArray(t.seq)||!t.seq.every(f=>Array.isArray(f)&&f.length===126&&f.every(Number.isFinite)))return false;
  if(t.sampleVersion===undefined||t.sampleVersion===1)return t.seq.length===9;
+ if(t.sampleVersion===4){
+  if(t.featureVersion!==FEATURE_VERSION||t.seq.length<8||t.seq.length>180||typeof t.id!=='string'||!t.id)return false;
+  const m=t.metadata;if(!m||!['dynamic','static','background'].includes(m.captureMode)||!['signerId','sessionId','variant'].every(k=>typeof m[k]==='string'&&m[k].length>0&&m[k].length<=80)||!Array.isArray(m.requiredChannels)||!m.requiredChannels.every(c=>['face','pose'].includes(c)))return false;
+  if(!Array.isArray(t.timestamps)||t.timestamps.length!==t.seq.length||t.timestamps[0]!==0||!t.timestamps.every((v,i)=>Number.isFinite(v)&&v>=0&&v<=15000&&(!i||v>t.timestamps[i-1])))return false;
+  if(!Array.isArray(t.landmarks)||t.landmarks.length!==t.seq.length||!t.landmarks.every(h=>Array.isArray(h)&&h.length<=2&&h.every(validHand)))return false;
+  if(!Array.isArray(t.observations)||t.observations.length!==t.seq.length)return false;
+  return t.observations.every((o,i)=>{
+   if(!o||o.time!==t.timestamps[i]||o.aspectRatio!==t.aspectRatio||!Array.isArray(o.slots)||o.slots.length!==2||!o.slots.every(h=>h===null||validHand(h))||!Array.isArray(o.identityConfidence)||o.identityConfidence.length!==2||!o.identityConfidence.every(x=>Number.isFinite(x)&&x>=0&&x<=1)||!Array.isArray(o.vector)||o.vector.length!==FEATURE_SIZE||!o.vector.every(Number.isFinite))return false;
+   try{return frameVector(o).every((x,j)=>Math.abs(x-o.vector[j])<1e-6)}catch{return false}
+  });
+ }
  const temporal=(t.sampleVersion===2&&t.featureVersion==='hands-relative-v1')||(t.sampleVersion===3&&['hands-visual-v1','hands-motion-visual-v1'].includes(t.featureVersion));
  // Faster devices can capture more than 40 valid frames. Recognition resamples later.
  if(!temporal||t.seq.length<8||t.seq.length>180)return false;

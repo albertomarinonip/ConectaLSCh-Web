@@ -13,6 +13,7 @@ export function recordedSample(label,frames,aspectRatio){
  channels:{recognition:['hands','motion','trajectory'],face:coverage.face?'support':null,expression:coverage.expression?'support':null,pose:coverage.pose?'support':null}};
 }
 export function isDynamicTemplate(t,aspectRatio=1){
+ if(t?.sampleVersion===4)return t.metadata?.captureMode==='dynamic';
  return (t?.sampleVersion===2||t?.sampleVersion===3)&&Array.isArray(t.landmarks)&&motionAmount(t.landmarks,t.aspectRatio||aspectRatio)>=0.12;
 }
 

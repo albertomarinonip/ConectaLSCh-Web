@@ -1,3 +1,4 @@
+// Historical v1.2.1 harness, incompatible with the supplied v1.5.3 UI. Current tests: browser-v160.cjs.
 const {chromium}=require('playwright');
 const fs=require('fs'),http=require('http'),assert=require('assert');const path=require('path'),os=require('os');let root=path.resolve(__dirname,'..');
 const server=http.createServer((q,r)=>{let p=decodeURIComponent(new URL(q.url,'http://localhost').pathname);if(p==='/')p='/index.html';try{r.setHeader('Content-Type',p.endsWith('.js')?'text/javascript':p.endsWith('.css')?'text/css':'text/html');r.end(fs.readFileSync(root+p))}catch{r.statusCode=404;r.end()}});

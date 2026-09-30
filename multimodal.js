@@ -1,4 +1,4 @@
-// Compact non-identifying descriptors for LSCh context. We store geometry/expression,
+// Compact visual descriptors (personal data) for LSCh context. We store geometry/expression,
 // never camera images. Missing channels stay null and are never invented.
 function avg(a){return a.length?a.reduce((s,v)=>s+v,0)/a.length:0}
 function pointVector(obs,ids){if(!obs?.points)return null;const pts=ids.map(i=>obs.points[i]).filter(Boolean);if(pts.length<2)return null;const cx=avg(pts.map(p=>p.x)),cy=avg(pts.map(p=>p.y));let scale=.001;for(const p of pts)scale=Math.max(scale,Math.hypot(p.x-cx,p.y-cy));const out=[];for(const i of ids){const p=obs.points[i];out.push(p?(p.x-cx)/scale:0,p?(p.y-cy)/scale:0)}return out}

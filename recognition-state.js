@@ -54,7 +54,7 @@ export function chooseSign(scores){
 
 export class SignGate{
  constructor(){this.reset()}
- reset(){this.latched='';this.pose=null;this.absentSince=null;this.changedSince=null;this.lastAt=null;this.cooldownUntil=0;this.clearCandidate()}
+ reset(){this.latched='';this.pose=null;this.absentSince=null;this.changedSince=null;this.lastAt=null;this.cooldownUntil=0;this.lastEventId=null;this.clearCandidate()}
  clearCandidate(){this.candidate='';this.since=0;this.count=0}
  // Pausing or a dropped frame must not release an already spoken sign.
  interrupt(){this.clearCandidate();this.absentSince=null;this.changedSince=null;this.lastAt=null}
@@ -68,6 +68,12 @@ export class SignGate{
  return {kind:'waiting'};
  }
  this.absentSince=null;
+ // A distinct, fully completed event can follow a sign with the same end pose.
+ // The event id prevents duplicate async results from speaking twice.
+ if(match.kind==='candidate'&&match.dynamic&&match.eventComplete&&match.eventId&&match.eventId!==this.lastEventId){
+   this.lastEventId=match.eventId;this.latched=match.label;this.pose=pose?.slice();this.cooldownUntil=now+350;this.clearCandidate();
+   return {kind:'confirmed',label:match.label,speak:true};
+ }
  if(this.latched){
  // Require actual hand-feature change, not a fluctuating label/confidence score.
  const changed=rms(pose,this.pose)>=LIMITS.changedPoseDistance;

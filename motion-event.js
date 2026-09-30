@@ -1,59 +1,52 @@
-import { rms } from './recognition-state.js';
-
-function handCenterAndScale(hands, aspect=1){
-  if(!Array.isArray(hands)||!hands.length)return null;
-  const centers=[];
-  for(const lm of hands){
-    if(!Array.isArray(lm)||lm.length<21)continue;
-    const w=lm[0];let scale=.001;
-    for(const p of lm)scale=Math.max(scale,Math.hypot((p.x-w.x)*aspect,p.y-w.y));
-    centers.push({x:w.x*aspect,y:w.y,scale});
-  }
-  if(!centers.length)return null;
-  return {x:centers.reduce((s,p)=>s+p.x,0)/centers.length,
-          y:centers.reduce((s,p)=>s+p.y,0)/centers.length,
-          scale:centers.reduce((s,p)=>s+p.scale,0)/centers.length};
-}
-
-export class MotionEventSegmenter{
+import {handShape,handScale} from './multimodal-frame.js';
+// Detect each hand's activity separately. Opposing movements must not cancel.
+export class MotionEventSegmenter {
   constructor(){this.reset()}
-  reset(){this.state='READY';this.pre=[];this.event=[];this.prev=null;this.activeCount=0;this.quietSince=0;this.startedAt=0;this.lastActivity=0}
+  reset(){this.state='READY';this.pre=[];this.event=[];this.prev=null;this.activeCount=0;this.quietSince=null;this.startedAt=0;this.lastActivity=0;this.missingSince=null}
   _activity(obs,aspect){
     if(!this.prev)return 0;
-    const a=handCenterAndScale(this.prev.hands,aspect),b=handCenterAndScale(obs.hands,aspect);
-    const travel=a&&b?Math.hypot(b.x-a.x,b.y-a.y)/Math.max(.02,(a.scale+b.scale)/2):0;
-    const shape=Number.isFinite(rms(this.prev.feature,obs.feature))?rms(this.prev.feature,obs.feature):0;
-    return travel + Math.min(shape,.35)*.45;
+    const dt=obs.time-this.prev.time;if(dt<=0)return 0;
+    const a=this.prev.multimodal?.slots||this.prev.hands,b=obs.multimodal?.slots||obs.hands;
+    let activity=0;
+    for(let i=0;i<2;i++){
+      const x=a[i],y=b[i];if(!x||!y)continue;
+      const scale=Math.max(.02,(handScale(x,aspect)+handScale(y,aspect))/2);
+      const travel=Math.hypot((y[0].x-x[0].x)*aspect,y[0].y-x[0].y)/scale;
+      const sx=handShape(x,aspect),sy=handShape(y,aspect);
+      const shape=Math.sqrt(sx.reduce((s,v,j)=>s+(v-sy[j])**2,0)/sx.length);
+      const fingerChange=Math.max(...[4,8,12,16,20].map(j=>Math.hypot(sx[j*3]-sy[j*3],sx[j*3+1]-sy[j*3+1],sx[j*3+2]-sy[j*3+2])));
+      activity=Math.max(activity,(travel+Math.min(fingerChange,.45)*.35+Math.min(shape,.35)*.2)*50/Math.max(25,dt));
+    }return activity;
   }
-  push({feature,hands,time,aspectRatio=1,visual=null}){
-    if(!feature||!hands?.length){
-      if(this.state==='MOVING'&&this.event.length>=6){const done=this._finish('hands-left');this.reset();return done}
-      this.reset();return {state:'READY',completed:null,activity:0};
+  push({feature,hands,time,aspectRatio=1,visual=null,multimodal=null}){
+    if(this.prev && (time<=this.prev.time||time-this.prev.time>350)){
+      const wasMoving=this.state==='MOVING';this.reset();
+      if(wasMoving)return {state:'READY',completed:null,activity:0,aborted:'Interrupción de fotogramas'};
     }
-    const obs={feature:feature.slice(),hands:hands.map(h=>h.map(p=>({x:p.x,y:p.y,z:p.z}))),time,visual};
+    if(!feature||!hands?.length){
+      this.missingSince??=time;
+      if(this.state==='MOVING' && time-this.missingSince<=120)return {state:'MOVING',completed:null,activity:0};
+      const wasMoving=this.state==='MOVING';this.reset();
+      return {state:'READY',completed:null,activity:0,aborted:wasMoving?'Se perdieron las manos durante la seña':null};
+    }
+    this.missingSince=null;
+    const obs={feature:feature.slice(),hands:hands.map(h=>h.map(p=>({x:p.x,y:p.y,z:p.z}))),time,visual,multimodal};
     const activity=this._activity(obs,aspectRatio);this.lastActivity=activity;
-    const START=.055, END=.024;
     if(this.state==='READY'){
       this.pre.push(obs);if(this.pre.length>6)this.pre.shift();
-      this.activeCount=activity>=START?this.activeCount+1:0;
-      if(this.activeCount>=2){this.state='MOVING';this.startedAt=this.pre[0]?.time??time;this.event=this.pre.slice();this.quietSince=0}
+      this.activeCount=activity>=.04?this.activeCount+1:0;
+      if(this.activeCount>=2){this.state='MOVING';this.startedAt=this.pre[0].time;this.event=this.pre.slice();this.quietSince=null}
     }else{
       this.event.push(obs);
-      if(activity<=END){if(!this.quietSince)this.quietSince=time}
-      else this.quietSince=0;
+      if(activity<=.016)this.quietSince??=time;else this.quietSince=null;
       const duration=time-this.startedAt;
-      if(duration>=260&&this.quietSince&&time-this.quietSince>=140&&this.event.length>=6){
-        const done=this._finish('settled');this.reset();this.prev=obs;return done;
+      if(duration>=260&&this.quietSince!==null&&time-this.quietSince>=180&&this.event.length>=8){
+        const frames=this.event.slice(),completed={reason:'settled',frames,id:frames[0].time+':'+frames.at(-1).time};
+        this.reset();this.prev=obs;return {state:'COMPLETE',activity,completed};
       }
-      if(duration>=3000){const done=this._finish('max-duration');this.reset();this.prev=obs;return done}
+      // A timeout is not evidence that a linguistic movement was completed.
+      if(duration>=4500){this.reset();return {state:'READY',activity,completed:null,aborted:'La seña no tuvo un final estable'} }
     }
-    this.prev=obs;
-    return {state:this.state,completed:null,activity};
-  }
-  _finish(reason){
-    let frames=this.event.slice();
-    // Remove most of the quiet tail used only to prove that the movement ended.
-    if(reason==='settled'&&frames.length>7)frames=frames.slice(0,-1);
-    return {state:'COMPLETE',activity:this.lastActivity,completed:{reason,frames}};
+    this.prev=obs;return {state:this.state,completed:null,activity};
   }
 }
