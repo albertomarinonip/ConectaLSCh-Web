@@ -76,7 +76,26 @@ export function matchMultimodal(observations,templates,{eventComplete=false}={})
   }
   const byLabel=new Map();for(const c of candidates)if(!byLabel.has(c.label)||c.d<byLabel.get(c.label).d)byLabel.set(c.label,c);
   const [best,second]=[...byLabel.values()].sort((a,b)=>a.d-b.d);
-  if(!best)return {kind:'uncertain',reason:'DESCONOCIDO: faltan dos ejemplos de esta variante o no coincide la secuencia'};
+  if(!best){
+    // Rejected examples are diagnostic evidence, never admission candidates.
+    const rejected=[...groups.values()].map(items=>{
+      const unique=[...new Map(items.map(x=>[x.id,x])).values()].sort((a,b)=>a.d-b.d);
+      const votes=unique.filter(x=>x.acceptable).length;
+      return {...unique[0],voteCount:votes,requiredVotes:2,supportCount:unique.length};
+    }).sort((a,b)=>b.voteCount-a.voteCount||a.d-b.d);
+    const nearest=rejected[0];
+    const failures=nearest?[
+      nearest.supportCount<2?'faltan repeticiones del mismo patrón de manos':null,
+      !nearest.motionComplete?'movimiento incompleto':null,
+      nearest.shapeD>=.22?'forma de mano diferente':null,
+      nearest.motionD>=.32?'trayectoria diferente':null,
+      nearest.visualD!==null&&nearest.visualD>=.55?'posición o expresión diferente':null,
+      nearest.d>=.18?'distancia total alta':null,
+      nearest.voteCount<2?'menos de dos coincidencias válidas':null
+    ].filter(Boolean):[];
+    return {kind:'uncertain',best:nearest,diagnosticOnly:true,
+      reason:nearest?'DESCONOCIDO: '+failures.join('; '):'DESCONOCIDO: sin ejemplos con duración, manos y canales compatibles'};
+  }
   const margin=second?second.d-best.d:Infinity;
   if(margin<.035)return {kind:'uncertain',best,second,margin,reason:'Dos señas tienen secuencias demasiado parecidas'};
   for(const t of templates.filter(t=>t.metadata.captureMode==='background'&&signature(t.observations)===sig)){

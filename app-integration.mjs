@@ -101,11 +101,17 @@ if(process.env.CONNECTA_QA_DATASET)fs.writeFileSync(process.env.CONNECTA_QA_DATA
 console.log('PASS v4 sample storage and dataset/backup export through the actual UI handlers');
 elements.get('#tab-signs').click();if(elements.get('#cameraStatus').textContent.includes('desactivada'))await elements.get('#toggleCamera').click();control.auto=false;control.motionAt=null;control.mode='present';
 elements.get('#startRecognition').click();
+elements.get('#toggleDiagnostics').click();
 for(const side of ['Right','Left']){
   const before=spoken.length;control.side=side;control.motionAt=now+250;
   await until(()=>spoken.length>before);
   assert.equal(spoken.at(-1),'Hola');
 }
+function diagnosticValue(label){const cs=elements.get('#diagnosticValues').children;const index=cs.findIndex(e=>e.textContent===label);return cs[index+1]?.textContent}
+const retainedAttempt=diagnosticValue('Último intento');assert(retainedAttempt&&!retainedAttempt.includes('Todavía no'));
+control.mode='none';for(let i=0;i<20;i++)await tick();
+assert.equal(diagnosticValue('Último intento'),retainedAttempt,'last completed attempt survives waiting/no hands');
+console.log('PASS last completed diagnostic survives subsequent idle frames');
 const before=spoken.length;control.mode='unknown';control.motionAt=now+250;for(let i=0;i<50;i++)await tick();assert.equal(spoken.length,before);
 control.mode='none';for(let i=0;i<20;i++)await tick();assert.match(elements.get('#signResult').textContent,/HOLA/);
 elements.get('#tab-listen').click();elements.get('#toggleListening').click();const phrase=[{transcript:'Prueba de voz.'}];phrase.isFinal=true;c.testRec.onresult({resultIndex:0,results:[phrase]});assert.match(elements.get('#subtitleHistory').textContent,/Prueba de voz/);

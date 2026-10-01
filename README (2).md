@@ -1,67 +1,74 @@
-# Entrenar el primer modelo en PC
+# ConectaLSCh v1.6.2 alfa — primera base temporal multimodal
 
-Las herramientas incluidas preparan un **clasificador de señas aisladas**, no un traductor de conversación continua. No hay pesos LSCh en este paquete. El entrenador PyTorch/ONNX está preparado pero no ejecutado en esta entrega: faltan las dependencias y, sobre todo, datos reales etiquetados.
+Esta versión cambia el reconocimiento, la captura y el formato de datos de v1.5.3. **Sigue siendo un prototipo por ejemplos personales; no incluye un modelo neuronal entrenado en LSCh ni una precisión medida con personas.**
 
-Primero confirma sistema operativo, RAM y modelo de tarjeta gráfica. El modelo pequeño permite comenzar con CPU. La grabación puede hacerse en iPhone; exporta los JSON al PC. La elección de CUDA se hará después de comprobar GPU/controlador.
+## Ajustes de v1.6.2
 
-## Datos y separación
+- El diagnóstico conserva el último evento completo/rechazado hasta reiniciar el reconocimiento.
+- Los rechazos muestran el ejemplo más cercano y los criterios que fallan, sin habilitar su voz. Los umbrales de aceptación se conservan.
+- No hay todavía un modelo LSCh entrenado ni una precisión validada en cámara.
 
-En «Mis señas» cada ejemplo nuevo necesita código de persona, sesión y variante. Cambia la sesión cada vez; no uses nombres reales. Marca los componentes obligatorios y usa «No es una seña» para negativos. Exporta «Datos para entrenar en PC».
+## Ajustes de v1.6.1
 
-Con Python instalado, prepara un entorno virtual e instala `training/requirements.txt` con su Python. En Windows se puede ejecutar directamente `\.venv\Scripts\python.exe`; en Linux/macOS, `.venv/bin/python`. Conserva las versiones exactas de dependencias del entorno después de validar la instalación.
+- Cámara amplia, texto y subtítulos más grandes, controles de 48 px y navegación más legible.
+- Inicio del movimiento confirmado durante al menos 50 ms para evitar que dos fotogramas rápidos activen una seña.
+- Historial previo al movimiento de hasta 350 ms, independiente de la velocidad de la cámara.
+- Estos ajustes no constituyen una precisión medida en LSCh. Falta probar grabaciones reales y revisar la interfaz en iPhone/Android.
+
+## Qué cambia
+
+- Seguimiento de cada mano mediante identidad izquierda/derecha del detector y continuidad temporal, sin ordenar las manos por su posición horizontal para el motor nuevo.
+- Actividad por mano y por articulaciones. Los movimientos opuestos de dos manos ya no se cancelan; el movimiento de dedos puede iniciar una captura aunque la muñeca esté quieta.
+- Se guardan secuencias con tiempos reales, posición de las manos respecto al cuerpo/rostro, expresiones estimadas y máscaras de canales ausentes.
+- Consenso separado por variante y mano. Graba al menos **dos ejemplos nuevos** de cada variante/mano que quieras reconocer.
+- Captura de postura fija, seña con movimiento y movimientos que **no son señas**, para rechazo y entrenamiento.
+- Una pérdida de seguimiento o un tiempo máximo sin final estable no se consideran una seña completa.
+- Exportación para entrenamiento en PC, herramientas de preparación/evaluación y un clasificador temporal pequeño en PyTorch con exportación ONNX.
+- Adaptador ONNX para integrar el modelo una vez entrenado y validado; todavía no está conectado al botón de reconocimiento de la PWA.
+
+La función de voz/subtítulos conserva su implementación. El indicador de identidad mide cobertura del seguimiento, **no precisión del reconocimiento**.
+
+## Primera prueba con Alberto
+
+1. Descarga el respaldo de «Mis señas» en tu versión anterior.
+2. Usa esta versión en el mismo origen HTTPS para conservar el almacenamiento del navegador, o importa el respaldo al cambiar de origen/dispositivo. Para probar en un PC con Python instalado: `python -m http.server 8000 --bind 127.0.0.1` y abre `http://localhost:8000`. Abrir `index.html` como archivo no sirve para estos módulos/cámara. Para iPhone/Android en otro dispositivo se necesita HTTPS.
+3. Graba dos ejemplos nuevos de HOLA con tu mano habitual y dos de GRACIAS. Selecciona «Con movimiento» y termina cada seña con una breve pausa. Si hay variantes distintas, usa nombres de variante distintos.
+4. Si quieres reconocer la otra mano y esa variante es válida en LSCh, graba también dos ejemplos con ella. No hay un espejo automático universal.
+5. Prueba cada seña, con y sin la otra mano visible. Graba en «No es una seña» ejemplos como tocarte el pelo o ajustar la ropa. Esos ejemplos nunca se pronuncian como palabras.
+6. Marca «necesita rostro/cuerpo» cuando esos canales sean necesarios para distinguir la seña. Una muestra así se rechaza si falta el canal durante reconocimiento.
+7. Cambia el código de sesión al comenzar una nueva sesión. Exporta «Datos para entrenar en PC» cuando tengamos suficientes ejemplos.
+
+Las muestras v1–v3 se conservan en sus claves originales y se pueden respaldar/importar. No se inventan rostro, identidad o cuerpo para esas muestras. Cuando hay muestras v4 de una etiqueta, el motor nuevo toma prioridad para esa etiqueta; necesita dos capturas por variante/mano. Las otras etiquetas antiguas conservan su comparación compatible. Los respaldos v3 nuevos no son importables por la antigua app v1.5.3: conserva también tu respaldo anterior.
+
+No hay sincronización en nube en esta entrega. El JSON contiene datos personales de movimiento y expresiones, aunque no guarde imágenes ni nombre real. Compártelo de forma deliberada.
+
+## Documentación y entrenamiento
+
+- [ARCHITECTURA.md](ARCHITECTURA.md): auditoría del código, decisiones técnicas, límites y ruta hacia miles de señas.
+- [training/README.md](training/README.md): flujo de datos, división de sesiones/personas, entrenamiento y exportación.
+- [VALIDACION.md](VALIDACION.md): qué se ejecutó y qué sigue pendiente.
+
+## Pruebas
+
+Con Node.js:
 
 ```sh
-python -m venv .venv
-# Usa el Python del entorno virtual en los comandos siguientes.
-python -m pip install -r training/requirements.txt
-python training/dataset.py ConectaLSCh-dataset-v1.json --out dataset-review --group-by session
+npm test
+npm run test:app
 ```
 
-`summary.json` muestra las capturas/grupos y `splits.json` inicia todos como `UNASSIGNED`. Edita este último para asignar **grupos completos** a `train`, `validation` o `test`.
-
-- `--group-by session`: agrupa por persona y sesión. Sirve para evaluar un modelo personal en otra sesión; no demuestra reconocimiento de personas nuevas.
-- `--group-by person`: cada persona aparece en un único conjunto. Es la evaluación apropiada para generalización a personas nuevas.
-- El entrenamiento requiere al menos dos etiquetas de señas más negativos, cuatro clips por seña en entrenamiento y dos por seña en cada conjunto de validación/prueba. Exige además 20 negativos en validación y 20 en prueba. Son mínimos técnicos; una evaluación profesional requerirá más variedad y tamaño.
-- Se detectan IDs repetidos contradictorios y secuencias idénticas repartidas entre conjuntos. No se garantiza detectar duplicados editados o todas las formas de fuga; los metadatos deben ser correctos.
-
-## Entrenamiento y exportación
+Con Python y NumPy:
 
 ```sh
-python training/train.py --data ConectaLSCh-dataset-v1.json --splits dataset-review/splits.json --out model-pilot --device cpu
+python -m unittest discover -s training -p 'test_*.py'
 ```
 
-La CNN temporal tiene tres capas de convolución y clasifica 48 observaciones de 216 valores. El entrenador usa validación para detener el aprendizaje y elegir rechazo; evalúa la prueba una vez al final. Si la validación no ofrece un umbral útil dentro de los objetivos, no exporta un modelo que acepte palabras arbitrariamente.
+Prueba en navegador, pendiente en esta entrega:
 
-Produce:
-
-- `recognizer.onnx`: clasificador, incluida normalización calculada con entrenamiento.
-- `manifest.json`: etiquetas, contrato, requisitos de canales y umbrales de rechazo.
-- `evaluation.json`: métricas de validación/prueba y matriz de confusión.
-- `weights.pt`: estado del modelo PyTorch para continuar investigación.
-
-Verifica logits de PyTorch frente a ONNX Runtime con hasta diez clips de prueba, exigiendo error absoluto máximo ≤1e-4. Este control de conversión todavía no se ejecutó aquí. El modelo se marca siempre `experimental`: las métricas de clips no validan automáticamente uso con cámara continua ni todas las plataformas.
-
-## Integración web posterior
-
-`adapters/onnx-recognizer.js` es la interfaz preparada. No se ha conectado a la PWA ni se incluye ONNX Runtime Web en su caché actual. En una aplicación con dependencias empaquetadas:
-
-```js
-import * as ort from 'onnxruntime-web';
-import {OnnxRecognizer} from './adapters/onnx-recognizer.js';
-
-const manifest = await (await fetch('./models/manifest.json')).json();
-const bytes = new Uint8Array(await (await fetch('./models/recognizer.onnx')).arrayBuffer());
-const recognizer = await OnnxRecognizer.load(ort, bytes, manifest, {
-  allowExperimental: true, // Solo piloto de desarrollo con evaluación pendiente.
-  executionProviders: ['wasm']
-});
-const match = await recognizer.predict(event.frames.map(f => f.multimodal), {
-  eventComplete: true,
-  eventId: event.id
-});
-// Consumir match con SignGate y la misma transcripción/voz.
+```sh
+npm install
+npx playwright install chromium
+npm run test:browser
 ```
 
-Antes de conectarlo: fijar la versión ORT/archivos WASM, preparar Worker y ciclo de vida, rechazar resultados de una cámara/sesión anterior, medir equivalencia web/nativo y rendimiento, y verificar falsos positivos de la cámara continua. El adaptador actual se invoca al final de eventos: para posturas fijas habrá que añadir ventanas estables y su control de repetición. Cambiar el extractor requiere nuevo ensayo de equivalencia.
-
-Los entrenamientos grandes necesitarán más datos, mejor anotación y comparación de modelos. Añadir miles de nombres a un diccionario no enseña miles de señas.
+`tests/browser.e2e.cjs` es un archivo histórico anterior a la interfaz recibida, no la prueba vigente. La prueba vigente es `tests/browser-v160.cjs`. Las pruebas usan coordenadas sintéticas y no certifican LSCh.
