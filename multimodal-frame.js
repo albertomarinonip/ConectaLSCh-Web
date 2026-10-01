@@ -64,7 +64,7 @@ export function sequenceQuality(observations){
 export function movementExtent(observations){
   let extent=0;
   for(let i=0;i<2;i++){
-    const os=observations.filter(o=>o.slots[i]);if(os.length<2)continue;
+    const os=observations.filter(o=>o.slots[i]);if(os.length<2||os.length/observations.length<.5)continue;
     const first=os[0],h=first.slots[i],scale=handScale(h,first.aspectRatio);
     // Finger-only signs and palm rotation can have a stationary wrist.
     for(const o of os)for(const joint of [0,4,8,12,16,20]){

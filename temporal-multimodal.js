@@ -13,12 +13,16 @@ function alignedDistance(A,B,cost){
 }
 function signature(os){return [0,1].filter(i=>os.filter(o=>o.slots[i]).length/os.length>=.5).join('')}
 function descriptors(os){
+  // The sequence signature is the contract for participating hands. A brief
+  // extra detection must not enter costs for a one-hand variant.
+  const active=signature(os);
   const bases=[0,1].map(i=>os.find(o=>o.slots[i]));
   return resampleTimed(os,24).map(o=>{
     const {body,face}=anchors(o);
-    return {shape:o.slots.map(h=>handShape(h,o.aspectRatio)),
-      path:o.slots.map((h,i)=>{const base=bases[i],b=base?.slots[i];return h&&b?[(h[0].x*o.aspectRatio-b[0].x*base.aspectRatio)/handScale(b,base.aspectRatio),(h[0].y-b[0].y)/handScale(b,base.aspectRatio)]:null}),
-      body:o.slots.map(h=>relative(h?.[0],body,o.aspectRatio)),face:o.slots.map(h=>relative(h?.[0],face,o.aspectRatio)),
+    const slots=o.slots.map((h,i)=>active.includes(String(i))?h:null);
+    return {shape:slots.map(h=>handShape(h,o.aspectRatio)),
+      path:slots.map((h,i)=>{const base=bases[i],b=base?.slots[i];return h&&b?[(h[0].x*o.aspectRatio-b[0].x*base.aspectRatio)/handScale(b,base.aspectRatio),(h[0].y-b[0].y)/handScale(b,base.aspectRatio)]:null}),
+      body:slots.map(h=>relative(h?.[0],body,o.aspectRatio)),face:slots.map(h=>relative(h?.[0],face,o.aspectRatio)),
       expression:o.expression,pose:o.pose,aspectRatio:o.aspectRatio,bodyAnchor:body};
   });
 }
@@ -42,7 +46,7 @@ function contextCost(a,b){
 }
 const cache=new WeakMap();
 function templateDesc(t){if(!cache.has(t))cache.set(t,descriptors(t.observations));return cache.get(t)}
-export function matchMultimodal(observations,templates,{eventComplete=false}={}){
+export function matchMultimodal(observations,templates,{eventComplete=false,diagnostics=false}={}){
   if(observations.length<8)return {kind:'waiting',reason:'Reuniendo observaciones multimodales'};
   const quality=sequenceQuality(observations);
   if(quality.handCoverage<.85 || quality.identityCoverage<.7)return {kind:'uncertain',reason:'Seguimiento o identidad de manos insuficiente; repite la seña'};
@@ -76,25 +80,16 @@ export function matchMultimodal(observations,templates,{eventComplete=false}={})
   }
   const byLabel=new Map();for(const c of candidates)if(!byLabel.has(c.label)||c.d<byLabel.get(c.label).d)byLabel.set(c.label,c);
   const [best,second]=[...byLabel.values()].sort((a,b)=>a.d-b.d);
+  const details=diagnostics?{comparisons:[...groups.values()].flat()}:{};
   if(!best){
-    // Rejected examples are diagnostic evidence, never admission candidates.
-    const rejected=[...groups.values()].map(items=>{
-      const unique=[...new Map(items.map(x=>[x.id,x])).values()].sort((a,b)=>a.d-b.d);
-      const votes=unique.filter(x=>x.acceptable).length;
-      return {...unique[0],voteCount:votes,requiredVotes:2,supportCount:unique.length};
-    }).sort((a,b)=>b.voteCount-a.voteCount||a.d-b.d);
-    const nearest=rejected[0];
-    const failures=nearest?[
-      nearest.supportCount<2?'faltan repeticiones del mismo patrón de manos':null,
-      !nearest.motionComplete?'movimiento incompleto':null,
-      nearest.shapeD>=.22?'forma de mano diferente':null,
-      nearest.motionD>=.32?'trayectoria diferente':null,
-      nearest.visualD!==null&&nearest.visualD>=.55?'posición o expresión diferente':null,
-      nearest.d>=.18?'distancia total alta':null,
-      nearest.voteCount<2?'menos de dos coincidencias válidas':null
-    ].filter(Boolean):[];
-    return {kind:'uncertain',best:nearest,diagnosticOnly:true,
-      reason:nearest?'DESCONOCIDO: '+failures.join('; '):'DESCONOCIDO: sin ejemplos con duración, manos y canales compatibles'};
+    const comparisons=[...groups.values()].flat().sort((a,b)=>a.d-b.d),closest=comparisons[0];
+    const failed=closest?[
+      !closest.motionComplete?'movimiento incompleto':null,
+      closest.shapeD>=.22?'forma':null,closest.motionD>=.32?'trayectoria':null,
+      closest.visualD!==null&&closest.visualD>=.55?'contexto':null,
+      closest.d>=.18?'distancia total':null].filter(Boolean):[];
+    return {kind:'uncertain',...details,best:closest,
+      reason:!closest?'DESCONOCIDO: no hay ejemplos compatibles en manos, duración o canales':failed.length?'DESCONOCIDO: no coincide '+failed.join(', '):'DESCONOCIDO: falta un segundo ejemplo coincidente de esta variante'};
   }
   const margin=second?second.d-best.d:Infinity;
   if(margin<.035)return {kind:'uncertain',best,second,margin,reason:'Dos señas tienen secuencias demasiado parecidas'};
@@ -104,7 +99,7 @@ export function matchMultimodal(observations,templates,{eventComplete=false}={})
     const negative=.8*(.55*shape+.45*path)+.2*context;
     if(negative<=best.d+.025)return {kind:'uncertain',best,reason:'El movimiento se parece a un ejemplo marcado como no-seña'};
   }
-  return {kind:'candidate',label:best.label,d:best.d,dynamic:best.dynamic,best,second,margin,eventComplete,reason:'Secuencia temporal respaldada por dos capturas'};
+  return {kind:'candidate',...details,label:best.label,d:best.d,dynamic:best.dynamic,best,second,margin,eventComplete,reason:'Secuencia temporal respaldada por dos capturas'};
 }
 export function matchPersonalWindow(frames,times,templates,aspect,landmarks,options={}){
   const modern=templates.filter(t=>t.sampleVersion===4),modernLabels=new Set(modern.map(t=>t.label));

@@ -15,7 +15,7 @@ export function checkCapture(frames,mode,requiredChannels=[]){
   if(mode==='static'){
     if(movementExtent(os)>.2)throw Error('Hubo desplazamiento: selecciona «Con movimiento» o mantén la postura.');
     for(let slot=0;slot<2;slot++){
-      const seen=os.filter(o=>o.slots[slot]);if(!seen.length)continue;
+      const seen=os.filter(o=>o.slots[slot]);if(seen.length/os.length<.5)continue;
       const base=handShape(seen[0].slots[slot],seen[0].aspectRatio);
       if(seen.some(o=>{const s=handShape(o.slots[slot],o.aspectRatio);return Math.sqrt(s.reduce((sum,x,i)=>sum+(x-base[i])**2,0)/s.length)>.18}))throw Error('Cambió demasiado la forma de la mano para una postura fija.');
     }

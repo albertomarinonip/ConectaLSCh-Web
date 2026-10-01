@@ -68,6 +68,10 @@ export class SignGate{
  return {kind:'waiting'};
  }
  this.absentSince=null;
+ // A replayed result must remain consumed even after a physical release.
+ if(match.kind==='candidate'&&match.dynamic&&match.eventId===this.lastEventId){
+   this.clearCandidate();return {kind:'waiting'};
+ }
  // A distinct, fully completed event can follow a sign with the same end pose.
  // The event id prevents duplicate async results from speaking twice.
  if(match.kind==='candidate'&&match.dynamic&&match.eventComplete&&match.eventId&&match.eventId!==this.lastEventId){

@@ -1,0 +1,490 @@
+{
+  "summary": {
+    "HOLA": {
+      "accepted": 4,
+      "rejected": 5
+    },
+    "GRACIAS": {
+      "accepted": 0,
+      "rejected": 9
+    }
+  },
+  "rows": [
+    {
+      "index": 0,
+      "label": "HOLA",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "candidate",
+        "label": "HOLA",
+        "d": 0.10662569105495551,
+        "dynamic": true,
+        "best": {
+          "label": "HOLA",
+          "d": 0.10662569105495551,
+          "shapeD": 0.0528104355862712,
+          "motionD": 0.11306731210968855,
+          "visualD": 0.13920857431515024,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "c3a1b3df-8aff-4136-a663-16068f4313bc",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          },
+          "voteCount": 2,
+          "requiredVotes": 2
+        },
+        "margin": null,
+        "eventComplete": true,
+        "reason": "Secuencia temporal respaldada por dos capturas"
+      }
+    },
+    {
+      "index": 1,
+      "label": "HOLA",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "candidate",
+        "label": "HOLA",
+        "d": 0.11420440809605722,
+        "dynamic": true,
+        "best": {
+          "label": "HOLA",
+          "d": 0.11420440809605722,
+          "shapeD": 0.0528104355862712,
+          "motionD": 0.11306731210968855,
+          "visualD": 0.13920857431515024,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "15dd8dab-846f-470b-bdfd-f8881cbbef3e",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          },
+          "voteCount": 2,
+          "requiredVotes": 2
+        },
+        "margin": null,
+        "eventComplete": true,
+        "reason": "Secuencia temporal respaldada por dos capturas"
+      }
+    },
+    {
+      "index": 2,
+      "label": "HOLA",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "candidate",
+        "label": "HOLA",
+        "d": 0.12904756027053546,
+        "dynamic": true,
+        "best": {
+          "label": "HOLA",
+          "d": 0.12904756027053546,
+          "shapeD": 0.14911606691437249,
+          "motionD": 0.09146799713338603,
+          "visualD": 0.11464647409545434,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "15dd8dab-846f-470b-bdfd-f8881cbbef3e",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          },
+          "voteCount": 2,
+          "requiredVotes": 2
+        },
+        "margin": null,
+        "eventComplete": true,
+        "reason": "Secuencia temporal respaldada por dos capturas"
+      }
+    },
+    {
+      "index": 3,
+      "label": "HOLA",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          1,
+          0.038461538461538464
+        ],
+        "identityCoverage": 0.9615384615384616,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "candidate",
+        "label": "HOLA",
+        "d": 0.1628327139751056,
+        "dynamic": true,
+        "best": {
+          "label": "HOLA",
+          "d": 0.1628327139751056,
+          "shapeD": 0.1444087516409732,
+          "motionD": 0.20184842175471135,
+          "visualD": 0.10049074495863154,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "a7e833e1-3ca4-45a1-ae87-a45a87485fd8",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              1,
+              0.038461538461538464
+            ],
+            "identityCoverage": 0.9615384615384616,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          },
+          "voteCount": 2,
+          "requiredVotes": 2
+        },
+        "margin": null,
+        "eventComplete": true,
+        "reason": "Secuencia temporal respaldada por dos capturas"
+      }
+    },
+    {
+      "index": 4,
+      "label": "HOLA",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0.9583333333333334,
+          0.08333333333333333
+        ],
+        "identityCoverage": 0.9583333333333334,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "reason": "DESCONOCIDO: faltan dos ejemplos de esta variante o no coincide la secuencia"
+      }
+    },
+    {
+      "index": 5,
+      "label": "HOLA",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          1,
+          0.038461538461538464
+        ],
+        "identityCoverage": 0.9615384615384616,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "reason": "DESCONOCIDO: faltan dos ejemplos de esta variante o no coincide la secuencia"
+      }
+    },
+    {
+      "index": 6,
+      "label": "HOLA",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0.9285714285714286,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "reason": "DESCONOCIDO: faltan dos ejemplos de esta variante o no coincide la secuencia"
+      }
+    },
+    {
+      "index": 7,
+      "label": "HOLA",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          1,
+          0.9375
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "reason": "DESCONOCIDO: faltan dos ejemplos de esta variante o no coincide la secuencia"
+      }
+    },
+    {
+      "index": 8,
+      "label": "HOLA",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0.9655172413793104,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "reason": "DESCONOCIDO: faltan dos ejemplos de esta variante o no coincide la secuencia"
+      }
+    },
+    {
+      "index": 9,
+      "label": "GRACIAS",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "reason": "DESCONOCIDO: faltan dos ejemplos de esta variante o no coincide la secuencia"
+      }
+    },
+    {
+      "index": 10,
+      "label": "GRACIAS",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "reason": "DESCONOCIDO: faltan dos ejemplos de esta variante o no coincide la secuencia"
+      }
+    },
+    {
+      "index": 11,
+      "label": "GRACIAS",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "reason": "DESCONOCIDO: faltan dos ejemplos de esta variante o no coincide la secuencia"
+      }
+    },
+    {
+      "index": 12,
+      "label": "GRACIAS",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          1,
+          0
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "reason": "DESCONOCIDO: faltan dos ejemplos de esta variante o no coincide la secuencia"
+      }
+    },
+    {
+      "index": 13,
+      "label": "GRACIAS",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0.9655172413793104,
+          0.06896551724137931
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "reason": "DESCONOCIDO: faltan dos ejemplos de esta variante o no coincide la secuencia"
+      }
+    },
+    {
+      "index": 14,
+      "label": "GRACIAS",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          1,
+          0
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "reason": "DESCONOCIDO: faltan dos ejemplos de esta variante o no coincide la secuencia"
+      }
+    },
+    {
+      "index": 15,
+      "label": "GRACIAS",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0.9090909090909091,
+          1
+        ],
+        "identityCoverage": 0.9696969696969697,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "reason": "DESCONOCIDO: faltan dos ejemplos de esta variante o no coincide la secuencia"
+      }
+    },
+    {
+      "index": 16,
+      "label": "GRACIAS",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0.9230769230769231,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "reason": "DESCONOCIDO: faltan dos ejemplos de esta variante o no coincide la secuencia"
+      }
+    },
+    {
+      "index": 17,
+      "label": "GRACIAS",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0.9428571428571428,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "reason": "DESCONOCIDO: faltan dos ejemplos de esta variante o no coincide la secuencia"
+      }
+    }
+  ]
+}

@@ -22,7 +22,3 @@ Esta alfa corrige errores verificables de la mecánica y prepara una evaluación
 ## v1.6.1 alfa
 
 26 pruebas Node aprobadas y prueba de integración de captura/reconocimiento aprobada con cámara sintética. Nuevas pruebas: rechazo de dos fotogramas rápidos y cierre del movimiento a 10, 20 y 60 FPS. No se midió precisión con personas ni se verificó visualmente la interfaz en un navegador real. Debe probarse en iPhone/Android; el cambio de inicio exige movimiento sostenido 50 ms y puede omitir gestos extremadamente breves.
-
-## v1.6.2 alfa
-
-28 pruebas Node, 3 Python e integración con cámara sintética aprobadas. Rechazos diagnósticos no emiten voz y el último intento persiste durante fotogramas inactivos. Investigación con 18 grabaciones en REVISION_ALBERTO.md. Sin evaluación de falsos positivos ni validación de precisión en cámara real.

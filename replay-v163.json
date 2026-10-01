@@ -1,0 +1,5050 @@
+{
+  "summary": {
+    "HOLA": {
+      "accepted": 4,
+      "rejected": 5
+    },
+    "GRACIAS": {
+      "accepted": 1,
+      "rejected": 8
+    }
+  },
+  "rows": [
+    {
+      "index": 0,
+      "label": "HOLA",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "candidate",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.09178253888047726,
+            "shapeD": 0.0528104355862712,
+            "motionD": 0.11306731210968855,
+            "visualD": 0.13920857431515024,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "c3a1b3df-8aff-4136-a663-16068f4313bc",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.12146884322943374,
+            "shapeD": 0.14911606691437249,
+            "motionD": 0.09146799713338603,
+            "visualD": 0.11464647409545434,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "ee833d9c-fec4-41cb-bef6-75f218d116cb",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.24752729312973581,
+            "shapeD": 0.359965959780882,
+            "motionD": 0.1473644142612353,
+            "visualD": 0.18045540846051483,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "73085133-78be-43b7-9156-f5bebb5f80d3",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2688922742705049,
+            "shapeD": 0.2949126821937415,
+            "motionD": 0.28860872131389465,
+            "visualD": 0.17615777216128245,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "9415cc7f-06a7-40e8-b2de-fae474d7749e",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "label": "HOLA",
+        "d": 0.10662569105495551,
+        "dynamic": true,
+        "best": {
+          "label": "HOLA",
+          "d": 0.10662569105495551,
+          "shapeD": 0.0528104355862712,
+          "motionD": 0.11306731210968855,
+          "visualD": 0.13920857431515024,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "c3a1b3df-8aff-4136-a663-16068f4313bc",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          },
+          "voteCount": 2,
+          "requiredVotes": 2
+        },
+        "margin": null,
+        "eventComplete": true,
+        "reason": "Secuencia temporal respaldada por dos capturas"
+      },
+      "segmentedMatch": {
+        "kind": "candidate",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.09178253888047726,
+            "shapeD": 0.0528104355862712,
+            "motionD": 0.11306731210968855,
+            "visualD": 0.13920857431515024,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "c3a1b3df-8aff-4136-a663-16068f4313bc",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.12146884322943374,
+            "shapeD": 0.14911606691437249,
+            "motionD": 0.09146799713338603,
+            "visualD": 0.11464647409545434,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "ee833d9c-fec4-41cb-bef6-75f218d116cb",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.24752729312973581,
+            "shapeD": 0.359965959780882,
+            "motionD": 0.1473644142612353,
+            "visualD": 0.18045540846051483,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "73085133-78be-43b7-9156-f5bebb5f80d3",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2688922742705049,
+            "shapeD": 0.2949126821937415,
+            "motionD": 0.28860872131389465,
+            "visualD": 0.17615777216128245,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "9415cc7f-06a7-40e8-b2de-fae474d7749e",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "label": "HOLA",
+        "d": 0.10662569105495551,
+        "dynamic": true,
+        "best": {
+          "label": "HOLA",
+          "d": 0.10662569105495551,
+          "shapeD": 0.0528104355862712,
+          "motionD": 0.11306731210968855,
+          "visualD": 0.13920857431515024,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "c3a1b3df-8aff-4136-a663-16068f4313bc",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          },
+          "voteCount": 2,
+          "requiredVotes": 2
+        },
+        "margin": null,
+        "eventComplete": true,
+        "reason": "Secuencia temporal respaldada por dos capturas"
+      },
+      "confirmed": true
+    },
+    {
+      "index": 1,
+      "label": "HOLA",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "candidate",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.09178253888047726,
+            "shapeD": 0.0528104355862712,
+            "motionD": 0.11306731210968855,
+            "visualD": 0.13920857431515024,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "15dd8dab-846f-470b-bdfd-f8881cbbef3e",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.13662627731163718,
+            "shapeD": 0.12987064615375046,
+            "motionD": 0.16035537142342518,
+            "visualD": 0.10877629645776941,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "ee833d9c-fec4-41cb-bef6-75f218d116cb",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.27069834276815613,
+            "shapeD": 0.35390195261386054,
+            "motionD": 0.24829972615552423,
+            "visualD": 0.12796791101034366,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "73085133-78be-43b7-9156-f5bebb5f80d3",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2899770471429749,
+            "shapeD": 0.2845733520338181,
+            "motionD": 0.4017888418622971,
+            "visualD": 0.10060394588833971,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "9415cc7f-06a7-40e8-b2de-fae474d7749e",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "label": "HOLA",
+        "d": 0.11420440809605722,
+        "dynamic": true,
+        "best": {
+          "label": "HOLA",
+          "d": 0.11420440809605722,
+          "shapeD": 0.0528104355862712,
+          "motionD": 0.11306731210968855,
+          "visualD": 0.13920857431515024,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "15dd8dab-846f-470b-bdfd-f8881cbbef3e",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          },
+          "voteCount": 2,
+          "requiredVotes": 2
+        },
+        "margin": null,
+        "eventComplete": true,
+        "reason": "Secuencia temporal respaldada por dos capturas"
+      },
+      "segmentedMatch": {
+        "kind": "candidate",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.09178253888047726,
+            "shapeD": 0.0528104355862712,
+            "motionD": 0.11306731210968855,
+            "visualD": 0.13920857431515024,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "15dd8dab-846f-470b-bdfd-f8881cbbef3e",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.13662627731163718,
+            "shapeD": 0.12987064615375046,
+            "motionD": 0.16035537142342518,
+            "visualD": 0.10877629645776941,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "ee833d9c-fec4-41cb-bef6-75f218d116cb",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.27069834276815613,
+            "shapeD": 0.35390195261386054,
+            "motionD": 0.24829972615552423,
+            "visualD": 0.12796791101034366,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "73085133-78be-43b7-9156-f5bebb5f80d3",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2899770471429749,
+            "shapeD": 0.2845733520338181,
+            "motionD": 0.4017888418622971,
+            "visualD": 0.10060394588833971,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "9415cc7f-06a7-40e8-b2de-fae474d7749e",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "label": "HOLA",
+        "d": 0.11420440809605722,
+        "dynamic": true,
+        "best": {
+          "label": "HOLA",
+          "d": 0.11420440809605722,
+          "shapeD": 0.0528104355862712,
+          "motionD": 0.11306731210968855,
+          "visualD": 0.13920857431515024,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "15dd8dab-846f-470b-bdfd-f8881cbbef3e",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          },
+          "voteCount": 2,
+          "requiredVotes": 2
+        },
+        "margin": null,
+        "eventComplete": true,
+        "reason": "Secuencia temporal respaldada por dos capturas"
+      },
+      "confirmed": true
+    },
+    {
+      "index": 2,
+      "label": "HOLA",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "candidate",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.12146884322943374,
+            "shapeD": 0.14911606691437249,
+            "motionD": 0.09146799713338603,
+            "visualD": 0.11464647409545434,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "15dd8dab-846f-470b-bdfd-f8881cbbef3e",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.13662627731163718,
+            "shapeD": 0.12987064615375046,
+            "motionD": 0.16035537142342518,
+            "visualD": 0.10877629645776941,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "c3a1b3df-8aff-4136-a663-16068f4313bc",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.21767494817678637,
+            "shapeD": 0.3303037428545857,
+            "motionD": 0.13052962893440898,
+            "visualD": 0.1267531745219071,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "73085133-78be-43b7-9156-f5bebb5f80d3",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.21703168367445927,
+            "shapeD": 0.2817918299970249,
+            "motionD": 0.1998918404298078,
+            "visualD": 0.10541107960518743,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "9415cc7f-06a7-40e8-b2de-fae474d7749e",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "label": "HOLA",
+        "d": 0.12904756027053546,
+        "dynamic": true,
+        "best": {
+          "label": "HOLA",
+          "d": 0.12904756027053546,
+          "shapeD": 0.14911606691437249,
+          "motionD": 0.09146799713338603,
+          "visualD": 0.11464647409545434,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "15dd8dab-846f-470b-bdfd-f8881cbbef3e",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          },
+          "voteCount": 2,
+          "requiredVotes": 2
+        },
+        "margin": null,
+        "eventComplete": true,
+        "reason": "Secuencia temporal respaldada por dos capturas"
+      },
+      "segmentedMatch": {
+        "kind": "candidate",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.12146884322943374,
+            "shapeD": 0.14911606691437249,
+            "motionD": 0.09146799713338603,
+            "visualD": 0.11464647409545434,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "15dd8dab-846f-470b-bdfd-f8881cbbef3e",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.13662627731163718,
+            "shapeD": 0.12987064615375046,
+            "motionD": 0.16035537142342518,
+            "visualD": 0.10877629645776941,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "c3a1b3df-8aff-4136-a663-16068f4313bc",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.21767494817678637,
+            "shapeD": 0.3303037428545857,
+            "motionD": 0.13052962893440898,
+            "visualD": 0.1267531745219071,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "73085133-78be-43b7-9156-f5bebb5f80d3",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.21703168367445927,
+            "shapeD": 0.2817918299970249,
+            "motionD": 0.1998918404298078,
+            "visualD": 0.10541107960518743,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "9415cc7f-06a7-40e8-b2de-fae474d7749e",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "label": "HOLA",
+        "d": 0.12904756027053546,
+        "dynamic": true,
+        "best": {
+          "label": "HOLA",
+          "d": 0.12904756027053546,
+          "shapeD": 0.14911606691437249,
+          "motionD": 0.09146799713338603,
+          "visualD": 0.11464647409545434,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "15dd8dab-846f-470b-bdfd-f8881cbbef3e",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          },
+          "voteCount": 2,
+          "requiredVotes": 2
+        },
+        "margin": null,
+        "eventComplete": true,
+        "reason": "Secuencia temporal respaldada por dos capturas"
+      },
+      "confirmed": true
+    },
+    {
+      "index": 3,
+      "label": "HOLA",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          1,
+          0.038461538461538464
+        ],
+        "identityCoverage": 0.9615384615384616,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "candidate",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.16711251818603673,
+            "shapeD": 0.14153945816704203,
+            "motionD": 0.2499320041434172,
+            "visualD": 0.07429817550454024,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "d642a93e-ddf1-42a0-81f4-bc39ad564f45",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.12972531526489706,
+            "shapeD": 0.11061713853297829,
+            "motionD": 0.16932118144072306,
+            "visualD": 0.10049074495863154,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "a7e833e1-3ca4-45a1-ae87-a45a87485fd8",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.43335256613364914,
+            "shapeD": 0.4120415069287764,
+            "motionD": 0.5741648224577841,
+            "visualD": 0.22677483500092588,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "fbf8eb13-9155-4bcf-9d8c-d4ea1666395c",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2823672372741237,
+            "shapeD": 0.3371673023975806,
+            "motionD": 0.2640395803676459,
+            "visualD": 0.1947968764341788,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "c8392998-5da1-45c8-b49d-a5dbb8f74807",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.34049840636604933,
+            "shapeD": 0.3513747511137433,
+            "motionD": 0.3825300997644553,
+            "visualD": 0.24091339980399185,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "5e93f50d-c6d8-404b-b015-1ba318fd5b4d",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "label": "HOLA",
+        "d": 0.1484189167254669,
+        "dynamic": true,
+        "best": {
+          "label": "HOLA",
+          "d": 0.1484189167254669,
+          "shapeD": 0.11061713853297829,
+          "motionD": 0.16932118144072306,
+          "visualD": 0.10049074495863154,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "a7e833e1-3ca4-45a1-ae87-a45a87485fd8",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              1,
+              0.038461538461538464
+            ],
+            "identityCoverage": 0.9615384615384616,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          },
+          "voteCount": 2,
+          "requiredVotes": 2
+        },
+        "margin": null,
+        "eventComplete": true,
+        "reason": "Secuencia temporal respaldada por dos capturas"
+      },
+      "segmentedMatch": {
+        "kind": "candidate",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.16711251818603673,
+            "shapeD": 0.14153945816704203,
+            "motionD": 0.2499320041434172,
+            "visualD": 0.07429817550454024,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "d642a93e-ddf1-42a0-81f4-bc39ad564f45",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.12972531526489706,
+            "shapeD": 0.11061713853297829,
+            "motionD": 0.16932118144072306,
+            "visualD": 0.10049074495863154,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "a7e833e1-3ca4-45a1-ae87-a45a87485fd8",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.43335256613364914,
+            "shapeD": 0.4120415069287764,
+            "motionD": 0.5741648224577841,
+            "visualD": 0.22677483500092588,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "fbf8eb13-9155-4bcf-9d8c-d4ea1666395c",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2823672372741237,
+            "shapeD": 0.3371673023975806,
+            "motionD": 0.2640395803676459,
+            "visualD": 0.1947968764341788,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "c8392998-5da1-45c8-b49d-a5dbb8f74807",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.34049840636604933,
+            "shapeD": 0.3513747511137433,
+            "motionD": 0.3825300997644553,
+            "visualD": 0.24091339980399185,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "5e93f50d-c6d8-404b-b015-1ba318fd5b4d",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "label": "HOLA",
+        "d": 0.1484189167254669,
+        "dynamic": true,
+        "best": {
+          "label": "HOLA",
+          "d": 0.1484189167254669,
+          "shapeD": 0.11061713853297829,
+          "motionD": 0.16932118144072306,
+          "visualD": 0.10049074495863154,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "a7e833e1-3ca4-45a1-ae87-a45a87485fd8",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              1,
+              0.038461538461538464
+            ],
+            "identityCoverage": 0.9615384615384616,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          },
+          "voteCount": 2,
+          "requiredVotes": 2
+        },
+        "margin": null,
+        "eventComplete": true,
+        "reason": "Secuencia temporal respaldada por dos capturas"
+      },
+      "confirmed": true
+    },
+    {
+      "index": 4,
+      "label": "HOLA",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0.9583333333333334,
+          0.08333333333333333
+        ],
+        "identityCoverage": 0.9583333333333334,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.16711251818603673,
+            "shapeD": 0.14153945816704203,
+            "motionD": 0.2499320041434172,
+            "visualD": 0.07429817550454024,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "35756370-edc5-45f4-83a4-43870d82050a",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9583333333333334,
+                0.08333333333333333
+              ],
+              "identityCoverage": 0.9583333333333334,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.18888451222036037,
+            "shapeD": 0.08819191251986111,
+            "motionD": 0.3876390719187519,
+            "visualD": 0.0526500241043539,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "a7e833e1-3ca4-45a1-ae87-a45a87485fd8",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9583333333333334,
+                0.08333333333333333
+              ],
+              "identityCoverage": 0.9583333333333334,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2741053697553393,
+            "shapeD": 0.35452487783565695,
+            "motionD": 0.2695763447489748,
+            "visualD": 0.10533469699009629,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "c8392998-5da1-45c8-b49d-a5dbb8f74807",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9583333333333334,
+                0.08333333333333333
+              ],
+              "identityCoverage": 0.9583333333333334,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2974982890348056,
+            "shapeD": 0.3527187099357743,
+            "motionD": 0.30646212243166593,
+            "visualD": 0.1598784629383255,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "5e93f50d-c6d8-404b-b015-1ba318fd5b4d",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9583333333333334,
+                0.08333333333333333
+              ],
+              "identityCoverage": 0.9583333333333334,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "HOLA",
+          "d": 0.16711251818603673,
+          "shapeD": 0.14153945816704203,
+          "motionD": 0.2499320041434172,
+          "visualD": 0.07429817550454024,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "35756370-edc5-45f4-83a4-43870d82050a",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0.9583333333333334,
+              0.08333333333333333
+            ],
+            "identityCoverage": 0.9583333333333334,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: falta un segundo ejemplo coincidente de esta variante"
+      },
+      "segmentedMatch": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.16711251818603673,
+            "shapeD": 0.14153945816704203,
+            "motionD": 0.2499320041434172,
+            "visualD": 0.07429817550454024,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "35756370-edc5-45f4-83a4-43870d82050a",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9583333333333334,
+                0.08333333333333333
+              ],
+              "identityCoverage": 0.9583333333333334,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.18888451222036037,
+            "shapeD": 0.08819191251986111,
+            "motionD": 0.3876390719187519,
+            "visualD": 0.0526500241043539,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "a7e833e1-3ca4-45a1-ae87-a45a87485fd8",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9583333333333334,
+                0.08333333333333333
+              ],
+              "identityCoverage": 0.9583333333333334,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2741053697553393,
+            "shapeD": 0.35452487783565695,
+            "motionD": 0.2695763447489748,
+            "visualD": 0.10533469699009629,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "c8392998-5da1-45c8-b49d-a5dbb8f74807",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9583333333333334,
+                0.08333333333333333
+              ],
+              "identityCoverage": 0.9583333333333334,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2974982890348056,
+            "shapeD": 0.3527187099357743,
+            "motionD": 0.30646212243166593,
+            "visualD": 0.1598784629383255,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "5e93f50d-c6d8-404b-b015-1ba318fd5b4d",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9583333333333334,
+                0.08333333333333333
+              ],
+              "identityCoverage": 0.9583333333333334,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "HOLA",
+          "d": 0.16711251818603673,
+          "shapeD": 0.14153945816704203,
+          "motionD": 0.2499320041434172,
+          "visualD": 0.07429817550454024,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "35756370-edc5-45f4-83a4-43870d82050a",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0.9583333333333334,
+              0.08333333333333333
+            ],
+            "identityCoverage": 0.9583333333333334,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: falta un segundo ejemplo coincidente de esta variante"
+      },
+      "confirmed": false
+    },
+    {
+      "index": 5,
+      "label": "HOLA",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          1,
+          0.038461538461538464
+        ],
+        "identityCoverage": 0.9615384615384616,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.12972531526489706,
+            "shapeD": 0.11061713853297829,
+            "motionD": 0.16932118144072306,
+            "visualD": 0.10049074495863154,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "35756370-edc5-45f4-83a4-43870d82050a",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.18888451222036037,
+            "shapeD": 0.08819191251986111,
+            "motionD": 0.3876390719187519,
+            "visualD": 0.0526500241043539,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "d642a93e-ddf1-42a0-81f4-bc39ad564f45",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.46103265609706,
+            "shapeD": 0.37823931656190296,
+            "motionD": 0.7326245880260557,
+            "visualD": 0.15431252560221329,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "fbf8eb13-9155-4bcf-9d8c-d4ea1666395c",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.30777729099193507,
+            "shapeD": 0.3045136500184993,
+            "motionD": 0.4276006648336353,
+            "visualD": 0.09927522821843351,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "c8392998-5da1-45c8-b49d-a5dbb8f74807",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.35819706592736417,
+            "shapeD": 0.31670448141100016,
+            "motionD": 0.5147785111471728,
+            "visualD": 0.16763415046770921,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "5e93f50d-c6d8-404b-b015-1ba318fd5b4d",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "HOLA",
+          "d": 0.12972531526489706,
+          "shapeD": 0.11061713853297829,
+          "motionD": 0.16932118144072306,
+          "visualD": 0.10049074495863154,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "35756370-edc5-45f4-83a4-43870d82050a",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              1,
+              0.038461538461538464
+            ],
+            "identityCoverage": 0.9615384615384616,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: falta un segundo ejemplo coincidente de esta variante"
+      },
+      "segmentedMatch": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.12972531526489706,
+            "shapeD": 0.11061713853297829,
+            "motionD": 0.16932118144072306,
+            "visualD": 0.10049074495863154,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "35756370-edc5-45f4-83a4-43870d82050a",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.18888451222036037,
+            "shapeD": 0.08819191251986111,
+            "motionD": 0.3876390719187519,
+            "visualD": 0.0526500241043539,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "d642a93e-ddf1-42a0-81f4-bc39ad564f45",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.46103265609706,
+            "shapeD": 0.37823931656190296,
+            "motionD": 0.7326245880260557,
+            "visualD": 0.15431252560221329,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "fbf8eb13-9155-4bcf-9d8c-d4ea1666395c",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.30777729099193507,
+            "shapeD": 0.3045136500184993,
+            "motionD": 0.4276006648336353,
+            "visualD": 0.09927522821843351,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "c8392998-5da1-45c8-b49d-a5dbb8f74807",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.35819706592736417,
+            "shapeD": 0.31670448141100016,
+            "motionD": 0.5147785111471728,
+            "visualD": 0.16763415046770921,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "5e93f50d-c6d8-404b-b015-1ba318fd5b4d",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.038461538461538464
+              ],
+              "identityCoverage": 0.9615384615384616,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "HOLA",
+          "d": 0.12972531526489706,
+          "shapeD": 0.11061713853297829,
+          "motionD": 0.16932118144072306,
+          "visualD": 0.10049074495863154,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "35756370-edc5-45f4-83a4-43870d82050a",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              1,
+              0.038461538461538464
+            ],
+            "identityCoverage": 0.9615384615384616,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: falta un segundo ejemplo coincidente de esta variante"
+      },
+      "confirmed": false
+    },
+    {
+      "index": 6,
+      "label": "HOLA",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0.9285714285714286,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.2684236116428154,
+            "shapeD": 0.17402069781223012,
+            "motionD": 0.45305266457424054,
+            "visualD": 0.1437777267935377,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "2cfe22fc-86b1-4de3-8b32-f66eef0b1202",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9285714285714286,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.372256069965947,
+            "shapeD": 0.09029473553444431,
+            "motionD": 0.7883491174966601,
+            "visualD": 0.2436035201599689,
+            "dynamic": true,
+            "motionComplete": false,
+            "acceptable": false,
+            "id": "dd3081b2-9e7c-4cc2-9546-c2e5cf735018",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9285714285714286,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.34218680842426974,
+            "shapeD": 0.19817169735127924,
+            "motionD": 0.4672635680031723,
+            "visualD": 0.43388188554282386,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "a35e6681-1b95-456b-897d-360312774f8b",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9285714285714286,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.3324179021070775,
+            "shapeD": 0.2588800944460978,
+            "motionD": 0.3297755279704591,
+            "visualD": 0.49895735240714584,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "5626d755-d77c-4825-a6dc-593f69408d95",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9285714285714286,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2840377697684117,
+            "shapeD": 0.1951130518117221,
+            "motionD": 0.24832850397810624,
+            "visualD": 0.5439488276956786,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "f5f76336-cc40-4e4c-a273-84edc5340169",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9285714285714286,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "HOLA",
+          "d": 0.2684236116428154,
+          "shapeD": 0.17402069781223012,
+          "motionD": 0.45305266457424054,
+          "visualD": 0.1437777267935377,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": false,
+          "id": "2cfe22fc-86b1-4de3-8b32-f66eef0b1202",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0.9285714285714286,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: no coincide trayectoria, distancia total"
+      },
+      "segmentedMatch": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.2684236116428154,
+            "shapeD": 0.17402069781223012,
+            "motionD": 0.45305266457424054,
+            "visualD": 0.1437777267935377,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "2cfe22fc-86b1-4de3-8b32-f66eef0b1202",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9285714285714286,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.372256069965947,
+            "shapeD": 0.09029473553444431,
+            "motionD": 0.7883491174966601,
+            "visualD": 0.2436035201599689,
+            "dynamic": true,
+            "motionComplete": false,
+            "acceptable": false,
+            "id": "dd3081b2-9e7c-4cc2-9546-c2e5cf735018",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9285714285714286,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.34218680842426974,
+            "shapeD": 0.19817169735127924,
+            "motionD": 0.4672635680031723,
+            "visualD": 0.43388188554282386,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "a35e6681-1b95-456b-897d-360312774f8b",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9285714285714286,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.3324179021070775,
+            "shapeD": 0.2588800944460978,
+            "motionD": 0.3297755279704591,
+            "visualD": 0.49895735240714584,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "5626d755-d77c-4825-a6dc-593f69408d95",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9285714285714286,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2840377697684117,
+            "shapeD": 0.1951130518117221,
+            "motionD": 0.24832850397810624,
+            "visualD": 0.5439488276956786,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "f5f76336-cc40-4e4c-a273-84edc5340169",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9285714285714286,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "HOLA",
+          "d": 0.2684236116428154,
+          "shapeD": 0.17402069781223012,
+          "motionD": 0.45305266457424054,
+          "visualD": 0.1437777267935377,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": false,
+          "id": "2cfe22fc-86b1-4de3-8b32-f66eef0b1202",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0.9285714285714286,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: no coincide trayectoria, distancia total"
+      },
+      "confirmed": false
+    },
+    {
+      "index": 7,
+      "label": "HOLA",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          1,
+          0.9375
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.2684236116428154,
+            "shapeD": 0.17402069781223012,
+            "motionD": 0.45305266457424054,
+            "visualD": 0.1437777267935377,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "837f0947-fbc0-4844-8eb3-35a04f6eefd0",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.9375
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.38990496037988653,
+            "shapeD": 0.13904330222402264,
+            "motionD": 0.8292248233008287,
+            "visualD": 0.15102485506509078,
+            "dynamic": true,
+            "motionComplete": false,
+            "acceptable": false,
+            "id": "dd3081b2-9e7c-4cc2-9546-c2e5cf735018",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.9375
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.3325468462587544,
+            "shapeD": 0.28138197006032717,
+            "motionD": 0.3774743863803007,
+            "visualD": 0.36424000167651094,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "a35e6681-1b95-456b-897d-360312774f8b",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.9375
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.3701917558269072,
+            "shapeD": 0.3442061420896288,
+            "motionD": 0.37886195477094486,
+            "visualD": 0.41175374794965164,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "5626d755-d77c-4825-a6dc-593f69408d95",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.9375
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.3420858228497987,
+            "shapeD": 0.2853029571881197,
+            "motionD": 0.34660928671513463,
+            "visualD": 0.4588658923478874,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "f5f76336-cc40-4e4c-a273-84edc5340169",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.9375
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "HOLA",
+          "d": 0.2684236116428154,
+          "shapeD": 0.17402069781223012,
+          "motionD": 0.45305266457424054,
+          "visualD": 0.1437777267935377,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": false,
+          "id": "837f0947-fbc0-4844-8eb3-35a04f6eefd0",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              1,
+              0.9375
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: no coincide trayectoria, distancia total"
+      },
+      "segmentedMatch": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.2684236116428154,
+            "shapeD": 0.17402069781223012,
+            "motionD": 0.45305266457424054,
+            "visualD": 0.1437777267935377,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "837f0947-fbc0-4844-8eb3-35a04f6eefd0",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.9375
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.38990496037988653,
+            "shapeD": 0.13904330222402264,
+            "motionD": 0.8292248233008287,
+            "visualD": 0.15102485506509078,
+            "dynamic": true,
+            "motionComplete": false,
+            "acceptable": false,
+            "id": "dd3081b2-9e7c-4cc2-9546-c2e5cf735018",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.9375
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.3325468462587544,
+            "shapeD": 0.28138197006032717,
+            "motionD": 0.3774743863803007,
+            "visualD": 0.36424000167651094,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "a35e6681-1b95-456b-897d-360312774f8b",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.9375
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.3701917558269072,
+            "shapeD": 0.3442061420896288,
+            "motionD": 0.37886195477094486,
+            "visualD": 0.41175374794965164,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "5626d755-d77c-4825-a6dc-593f69408d95",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.9375
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.3420858228497987,
+            "shapeD": 0.2853029571881197,
+            "motionD": 0.34660928671513463,
+            "visualD": 0.4588658923478874,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "f5f76336-cc40-4e4c-a273-84edc5340169",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0.9375
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "HOLA",
+          "d": 0.2684236116428154,
+          "shapeD": 0.17402069781223012,
+          "motionD": 0.45305266457424054,
+          "visualD": 0.1437777267935377,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": false,
+          "id": "837f0947-fbc0-4844-8eb3-35a04f6eefd0",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              1,
+              0.9375
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: no coincide trayectoria, distancia total"
+      },
+      "confirmed": false
+    },
+    {
+      "index": 8,
+      "label": "HOLA",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0.9655172413793104,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.372256069965947,
+            "shapeD": 0.09029473553444431,
+            "motionD": 0.7883491174966601,
+            "visualD": 0.2436035201599689,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "837f0947-fbc0-4844-8eb3-35a04f6eefd0",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.38990496037988653,
+            "shapeD": 0.13904330222402264,
+            "motionD": 0.8292248233008287,
+            "visualD": 0.15102485506509078,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "2cfe22fc-86b1-4de3-8b32-f66eef0b1202",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.3603292385712796,
+            "shapeD": 0.2001809088028761,
+            "motionD": 0.5650110109212229,
+            "visualD": 0.34422837383186916,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "a35e6681-1b95-456b-897d-360312774f8b",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.5420217651097223,
+            "shapeD": 0.2587386522576657,
+            "motionD": 0.9654331374919018,
+            "visualD": 0.4031041430963232,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "5626d755-d77c-4825-a6dc-593f69408d95",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.5085784188228157,
+            "shapeD": 0.2018931187986147,
+            "motionD": 0.9172965186151568,
+            "visualD": 0.4475934992498441,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "f5f76336-cc40-4e4c-a273-84edc5340169",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.3603292385712796,
+          "shapeD": 0.2001809088028761,
+          "motionD": 0.5650110109212229,
+          "visualD": 0.34422837383186916,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": false,
+          "id": "a35e6681-1b95-456b-897d-360312774f8b",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0.9655172413793104,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: no coincide trayectoria, distancia total"
+      },
+      "segmentedMatch": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.372256069965947,
+            "shapeD": 0.09029473553444431,
+            "motionD": 0.7883491174966601,
+            "visualD": 0.2436035201599689,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "837f0947-fbc0-4844-8eb3-35a04f6eefd0",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.38990496037988653,
+            "shapeD": 0.13904330222402264,
+            "motionD": 0.8292248233008287,
+            "visualD": 0.15102485506509078,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "2cfe22fc-86b1-4de3-8b32-f66eef0b1202",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.3603292385712796,
+            "shapeD": 0.2001809088028761,
+            "motionD": 0.5650110109212229,
+            "visualD": 0.34422837383186916,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "a35e6681-1b95-456b-897d-360312774f8b",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.5420217651097223,
+            "shapeD": 0.2587386522576657,
+            "motionD": 0.9654331374919018,
+            "visualD": 0.4031041430963232,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "5626d755-d77c-4825-a6dc-593f69408d95",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.5085784188228157,
+            "shapeD": 0.2018931187986147,
+            "motionD": 0.9172965186151568,
+            "visualD": 0.4475934992498441,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "f5f76336-cc40-4e4c-a273-84edc5340169",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.3603292385712796,
+          "shapeD": 0.2001809088028761,
+          "motionD": 0.5650110109212229,
+          "visualD": 0.34422837383186916,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": false,
+          "id": "a35e6681-1b95-456b-897d-360312774f8b",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0.9655172413793104,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: no coincide trayectoria, distancia total"
+      },
+      "confirmed": false
+    },
+    {
+      "index": 9,
+      "label": "GRACIAS",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.24752729312973581,
+            "shapeD": 0.359965959780882,
+            "motionD": 0.1473644142612353,
+            "visualD": 0.18045540846051483,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "15dd8dab-846f-470b-bdfd-f8881cbbef3e",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.27069834276815613,
+            "shapeD": 0.35390195261386054,
+            "motionD": 0.24829972615552423,
+            "visualD": 0.12796791101034366,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "c3a1b3df-8aff-4136-a663-16068f4313bc",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.21767494817678637,
+            "shapeD": 0.3303037428545857,
+            "motionD": 0.13052962893440898,
+            "visualD": 0.1267531745219071,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "ee833d9c-fec4-41cb-bef6-75f218d116cb",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.17577849535244175,
+            "shapeD": 0.15935647053274424,
+            "motionD": 0.2267781233025975,
+            "visualD": 0.12010761964549589,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "9415cc7f-06a7-40e8-b2de-fae474d7749e",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.14410516646505517,
+            "shapeD": 0.2221812213994839,
+            "motionD": 0.04455242602335177,
+            "visualD": 0.1515327784043779,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "550e13ec-936b-48da-af5f-b872a6f53855",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.14410516646505517,
+          "shapeD": 0.2221812213994839,
+          "motionD": 0.04455242602335177,
+          "visualD": 0.1515327784043779,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": false,
+          "id": "550e13ec-936b-48da-af5f-b872a6f53855",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: no coincide forma"
+      },
+      "segmentedMatch": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.24752729312973581,
+            "shapeD": 0.359965959780882,
+            "motionD": 0.1473644142612353,
+            "visualD": 0.18045540846051483,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "15dd8dab-846f-470b-bdfd-f8881cbbef3e",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.27069834276815613,
+            "shapeD": 0.35390195261386054,
+            "motionD": 0.24829972615552423,
+            "visualD": 0.12796791101034366,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "c3a1b3df-8aff-4136-a663-16068f4313bc",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.21767494817678637,
+            "shapeD": 0.3303037428545857,
+            "motionD": 0.13052962893440898,
+            "visualD": 0.1267531745219071,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "ee833d9c-fec4-41cb-bef6-75f218d116cb",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.17577849535244175,
+            "shapeD": 0.15935647053274424,
+            "motionD": 0.2267781233025975,
+            "visualD": 0.12010761964549589,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "9415cc7f-06a7-40e8-b2de-fae474d7749e",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.14410516646505517,
+            "shapeD": 0.2221812213994839,
+            "motionD": 0.04455242602335177,
+            "visualD": 0.1515327784043779,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "550e13ec-936b-48da-af5f-b872a6f53855",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.14410516646505517,
+          "shapeD": 0.2221812213994839,
+          "motionD": 0.04455242602335177,
+          "visualD": 0.1515327784043779,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": false,
+          "id": "550e13ec-936b-48da-af5f-b872a6f53855",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: no coincide forma"
+      },
+      "confirmed": false
+    },
+    {
+      "index": 10,
+      "label": "GRACIAS",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.2688922742705049,
+            "shapeD": 0.2949126821937415,
+            "motionD": 0.28860872131389465,
+            "visualD": 0.17615777216128245,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "15dd8dab-846f-470b-bdfd-f8881cbbef3e",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.2899770471429749,
+            "shapeD": 0.2845733520338181,
+            "motionD": 0.4017888418622971,
+            "visualD": 0.10060394588833971,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "c3a1b3df-8aff-4136-a663-16068f4313bc",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.21703168367445927,
+            "shapeD": 0.2817918299970249,
+            "motionD": 0.1998918404298078,
+            "visualD": 0.10541107960518743,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "ee833d9c-fec4-41cb-bef6-75f218d116cb",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.17577849535244175,
+            "shapeD": 0.15935647053274424,
+            "motionD": 0.2267781233025975,
+            "visualD": 0.12010761964549589,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "73085133-78be-43b7-9156-f5bebb5f80d3",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.23056248411992408,
+            "shapeD": 0.27917813658029,
+            "motionD": 0.19195753640690671,
+            "visualD": 0.19309695459055023,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "550e13ec-936b-48da-af5f-b872a6f53855",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.17577849535244175,
+          "shapeD": 0.15935647053274424,
+          "motionD": 0.2267781233025975,
+          "visualD": 0.12010761964549589,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "73085133-78be-43b7-9156-f5bebb5f80d3",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: falta un segundo ejemplo coincidente de esta variante"
+      },
+      "segmentedMatch": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.2688922742705049,
+            "shapeD": 0.2949126821937415,
+            "motionD": 0.28860872131389465,
+            "visualD": 0.17615777216128245,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "15dd8dab-846f-470b-bdfd-f8881cbbef3e",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.2899770471429749,
+            "shapeD": 0.2845733520338181,
+            "motionD": 0.4017888418622971,
+            "visualD": 0.10060394588833971,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "c3a1b3df-8aff-4136-a663-16068f4313bc",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.21703168367445927,
+            "shapeD": 0.2817918299970249,
+            "motionD": 0.1998918404298078,
+            "visualD": 0.10541107960518743,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "ee833d9c-fec4-41cb-bef6-75f218d116cb",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.17577849535244175,
+            "shapeD": 0.15935647053274424,
+            "motionD": 0.2267781233025975,
+            "visualD": 0.12010761964549589,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "73085133-78be-43b7-9156-f5bebb5f80d3",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.23056248411992408,
+            "shapeD": 0.27917813658029,
+            "motionD": 0.19195753640690671,
+            "visualD": 0.19309695459055023,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "550e13ec-936b-48da-af5f-b872a6f53855",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.17577849535244175,
+          "shapeD": 0.15935647053274424,
+          "motionD": 0.2267781233025975,
+          "visualD": 0.12010761964549589,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "73085133-78be-43b7-9156-f5bebb5f80d3",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: falta un segundo ejemplo coincidente de esta variante"
+      },
+      "confirmed": false
+    },
+    {
+      "index": 11,
+      "label": "GRACIAS",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "GRACIAS",
+            "d": 0.14410516646505517,
+            "shapeD": 0.2221812213994839,
+            "motionD": 0.04455242602335177,
+            "visualD": 0.1515327784043779,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "73085133-78be-43b7-9156-f5bebb5f80d3",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.23056248411992408,
+            "shapeD": 0.27917813658029,
+            "motionD": 0.19195753640690671,
+            "visualD": 0.19309695459055023,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "9415cc7f-06a7-40e8-b2de-fae474d7749e",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.14410516646505517,
+          "shapeD": 0.2221812213994839,
+          "motionD": 0.04455242602335177,
+          "visualD": 0.1515327784043779,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": false,
+          "id": "73085133-78be-43b7-9156-f5bebb5f80d3",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: no coincide forma"
+      },
+      "segmentedMatch": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "GRACIAS",
+            "d": 0.14410516646505517,
+            "shapeD": 0.2221812213994839,
+            "motionD": 0.04455242602335177,
+            "visualD": 0.1515327784043779,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "73085133-78be-43b7-9156-f5bebb5f80d3",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.23056248411992408,
+            "shapeD": 0.27917813658029,
+            "motionD": 0.19195753640690671,
+            "visualD": 0.19309695459055023,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "9415cc7f-06a7-40e8-b2de-fae474d7749e",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.14410516646505517,
+          "shapeD": 0.2221812213994839,
+          "motionD": 0.04455242602335177,
+          "visualD": 0.1515327784043779,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": false,
+          "id": "73085133-78be-43b7-9156-f5bebb5f80d3",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: no coincide forma"
+      },
+      "confirmed": false
+    },
+    {
+      "index": 12,
+      "label": "GRACIAS",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          1,
+          0
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.43335256613364914,
+            "shapeD": 0.4120415069287764,
+            "motionD": 0.5741648224577841,
+            "visualD": 0.22677483500092588,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "35756370-edc5-45f4-83a4-43870d82050a",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.371741998325947,
+            "shapeD": 0.410677787578603,
+            "motionD": 0.4488023503124119,
+            "visualD": 0.14737462839446674,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "d642a93e-ddf1-42a0-81f4-bc39ad564f45",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.46103265609706,
+            "shapeD": 0.37823931656190296,
+            "motionD": 0.7326245880260557,
+            "visualD": 0.15431252560221329,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "a7e833e1-3ca4-45a1-ae87-a45a87485fd8",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2191410936410536,
+            "shapeD": 0.1806312814041624,
+            "motionD": 0.34842938626112985,
+            "visualD": 0.07114375384607693,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "c8392998-5da1-45c8-b49d-a5dbb8f74807",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.0907392765598479,
+            "shapeD": 0.09833341215099081,
+            "motionD": 0.08904690301743133,
+            "visualD": 0.07707845063568323,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "5e93f50d-c6d8-404b-b015-1ba318fd5b4d",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.0907392765598479,
+          "shapeD": 0.09833341215099081,
+          "motionD": 0.08904690301743133,
+          "visualD": 0.07707845063568323,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "5e93f50d-c6d8-404b-b015-1ba318fd5b4d",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              1,
+              0
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: falta un segundo ejemplo coincidente de esta variante"
+      },
+      "segmentedMatch": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.43335256613364914,
+            "shapeD": 0.4120415069287764,
+            "motionD": 0.5741648224577841,
+            "visualD": 0.22677483500092588,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "35756370-edc5-45f4-83a4-43870d82050a",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.371741998325947,
+            "shapeD": 0.410677787578603,
+            "motionD": 0.4488023503124119,
+            "visualD": 0.14737462839446674,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "d642a93e-ddf1-42a0-81f4-bc39ad564f45",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.46103265609706,
+            "shapeD": 0.37823931656190296,
+            "motionD": 0.7326245880260557,
+            "visualD": 0.15431252560221329,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "a7e833e1-3ca4-45a1-ae87-a45a87485fd8",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2191410936410536,
+            "shapeD": 0.1806312814041624,
+            "motionD": 0.34842938626112985,
+            "visualD": 0.07114375384607693,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "c8392998-5da1-45c8-b49d-a5dbb8f74807",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.0907392765598479,
+            "shapeD": 0.09833341215099081,
+            "motionD": 0.08904690301743133,
+            "visualD": 0.07707845063568323,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "5e93f50d-c6d8-404b-b015-1ba318fd5b4d",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.0907392765598479,
+          "shapeD": 0.09833341215099081,
+          "motionD": 0.08904690301743133,
+          "visualD": 0.07707845063568323,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "5e93f50d-c6d8-404b-b015-1ba318fd5b4d",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              1,
+              0
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: falta un segundo ejemplo coincidente de esta variante"
+      },
+      "confirmed": false
+    },
+    {
+      "index": 13,
+      "label": "GRACIAS",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0.9655172413793104,
+          0.06896551724137931
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.2823672372741237,
+            "shapeD": 0.3371673023975806,
+            "motionD": 0.2640395803676459,
+            "visualD": 0.1947968764341788,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "35756370-edc5-45f4-83a4-43870d82050a",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                0.06896551724137931
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.2741053697553393,
+            "shapeD": 0.35452487783565695,
+            "motionD": 0.2695763447489748,
+            "visualD": 0.10533469699009629,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "d642a93e-ddf1-42a0-81f4-bc39ad564f45",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                0.06896551724137931
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.30777729099193507,
+            "shapeD": 0.3045136500184993,
+            "motionD": 0.4276006648336353,
+            "visualD": 0.09927522821843351,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "a7e833e1-3ca4-45a1-ae87-a45a87485fd8",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                0.06896551724137931
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2191410936410536,
+            "shapeD": 0.1806312814041624,
+            "motionD": 0.34842938626112985,
+            "visualD": 0.07114375384607693,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "fbf8eb13-9155-4bcf-9d8c-d4ea1666395c",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                0.06896551724137931
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.1704125940549807,
+            "shapeD": 0.1676342556314335,
+            "motionD": 0.22944323698846766,
+            "visualD": 0.0702697813065078,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "5e93f50d-c6d8-404b-b015-1ba318fd5b4d",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                0.06896551724137931
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.1704125940549807,
+          "shapeD": 0.1676342556314335,
+          "motionD": 0.22944323698846766,
+          "visualD": 0.0702697813065078,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "5e93f50d-c6d8-404b-b015-1ba318fd5b4d",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0.9655172413793104,
+              0.06896551724137931
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: falta un segundo ejemplo coincidente de esta variante"
+      },
+      "segmentedMatch": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.2823672372741237,
+            "shapeD": 0.3371673023975806,
+            "motionD": 0.2640395803676459,
+            "visualD": 0.1947968764341788,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "35756370-edc5-45f4-83a4-43870d82050a",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                0.06896551724137931
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.2741053697553393,
+            "shapeD": 0.35452487783565695,
+            "motionD": 0.2695763447489748,
+            "visualD": 0.10533469699009629,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "d642a93e-ddf1-42a0-81f4-bc39ad564f45",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                0.06896551724137931
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.30777729099193507,
+            "shapeD": 0.3045136500184993,
+            "motionD": 0.4276006648336353,
+            "visualD": 0.09927522821843351,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "a7e833e1-3ca4-45a1-ae87-a45a87485fd8",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                0.06896551724137931
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2191410936410536,
+            "shapeD": 0.1806312814041624,
+            "motionD": 0.34842938626112985,
+            "visualD": 0.07114375384607693,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "fbf8eb13-9155-4bcf-9d8c-d4ea1666395c",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                0.06896551724137931
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.1704125940549807,
+            "shapeD": 0.1676342556314335,
+            "motionD": 0.22944323698846766,
+            "visualD": 0.0702697813065078,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "5e93f50d-c6d8-404b-b015-1ba318fd5b4d",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9655172413793104,
+                0.06896551724137931
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.1704125940549807,
+          "shapeD": 0.1676342556314335,
+          "motionD": 0.22944323698846766,
+          "visualD": 0.0702697813065078,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "5e93f50d-c6d8-404b-b015-1ba318fd5b4d",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0.9655172413793104,
+              0.06896551724137931
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: falta un segundo ejemplo coincidente de esta variante"
+      },
+      "confirmed": false
+    },
+    {
+      "index": 14,
+      "label": "GRACIAS",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          1,
+          0
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "candidate",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.34049840636604933,
+            "shapeD": 0.3513747511137433,
+            "motionD": 0.3825300997644553,
+            "visualD": 0.24091339980399185,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "35756370-edc5-45f4-83a4-43870d82050a",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.2974982890348056,
+            "shapeD": 0.3527187099357743,
+            "motionD": 0.30646212243166593,
+            "visualD": 0.1598784629383255,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "d642a93e-ddf1-42a0-81f4-bc39ad564f45",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.35819706592736417,
+            "shapeD": 0.31670448141100016,
+            "motionD": 0.5147785111471728,
+            "visualD": 0.16763415046770921,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "a7e833e1-3ca4-45a1-ae87-a45a87485fd8",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.0907392765598479,
+            "shapeD": 0.09833341215099081,
+            "motionD": 0.08904690301743133,
+            "visualD": 0.07707845063568323,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "fbf8eb13-9155-4bcf-9d8c-d4ea1666395c",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.1704125940549807,
+            "shapeD": 0.1676342556314335,
+            "motionD": 0.22944323698846766,
+            "visualD": 0.0702697813065078,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "c8392998-5da1-45c8-b49d-a5dbb8f74807",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "label": "GRACIAS",
+        "d": 0.1305759353074143,
+        "dynamic": true,
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.1305759353074143,
+          "shapeD": 0.09833341215099081,
+          "motionD": 0.08904690301743133,
+          "visualD": 0.07707845063568323,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "fbf8eb13-9155-4bcf-9d8c-d4ea1666395c",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              1,
+              0
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          },
+          "voteCount": 2,
+          "requiredVotes": 2
+        },
+        "margin": null,
+        "eventComplete": true,
+        "reason": "Secuencia temporal respaldada por dos capturas"
+      },
+      "segmentedMatch": {
+        "kind": "candidate",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.34049840636604933,
+            "shapeD": 0.3513747511137433,
+            "motionD": 0.3825300997644553,
+            "visualD": 0.24091339980399185,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "35756370-edc5-45f4-83a4-43870d82050a",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.2974982890348056,
+            "shapeD": 0.3527187099357743,
+            "motionD": 0.30646212243166593,
+            "visualD": 0.1598784629383255,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "d642a93e-ddf1-42a0-81f4-bc39ad564f45",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.35819706592736417,
+            "shapeD": 0.31670448141100016,
+            "motionD": 0.5147785111471728,
+            "visualD": 0.16763415046770921,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "a7e833e1-3ca4-45a1-ae87-a45a87485fd8",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.0907392765598479,
+            "shapeD": 0.09833341215099081,
+            "motionD": 0.08904690301743133,
+            "visualD": 0.07707845063568323,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "fbf8eb13-9155-4bcf-9d8c-d4ea1666395c",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.1704125940549807,
+            "shapeD": 0.1676342556314335,
+            "motionD": 0.22944323698846766,
+            "visualD": 0.0702697813065078,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "c8392998-5da1-45c8-b49d-a5dbb8f74807",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                1,
+                0
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "label": "GRACIAS",
+        "d": 0.1305759353074143,
+        "dynamic": true,
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.1305759353074143,
+          "shapeD": 0.09833341215099081,
+          "motionD": 0.08904690301743133,
+          "visualD": 0.07707845063568323,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "fbf8eb13-9155-4bcf-9d8c-d4ea1666395c",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              1,
+              0
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          },
+          "voteCount": 2,
+          "requiredVotes": 2
+        },
+        "margin": null,
+        "eventComplete": true,
+        "reason": "Secuencia temporal respaldada por dos capturas"
+      },
+      "confirmed": true
+    },
+    {
+      "index": 15,
+      "label": "GRACIAS",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0.9090909090909091,
+          1
+        ],
+        "identityCoverage": 0.9696969696969697,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.34218680842426974,
+            "shapeD": 0.19817169735127924,
+            "motionD": 0.4672635680031723,
+            "visualD": 0.43388188554282386,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "837f0947-fbc0-4844-8eb3-35a04f6eefd0",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9090909090909091,
+                1
+              ],
+              "identityCoverage": 0.9696969696969697,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.3325468462587544,
+            "shapeD": 0.28138197006032717,
+            "motionD": 0.3774743863803007,
+            "visualD": 0.36424000167651094,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "2cfe22fc-86b1-4de3-8b32-f66eef0b1202",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9090909090909091,
+                1
+              ],
+              "identityCoverage": 0.9696969696969697,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.3603292385712796,
+            "shapeD": 0.2001809088028761,
+            "motionD": 0.5650110109212229,
+            "visualD": 0.34422837383186916,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "dd3081b2-9e7c-4cc2-9546-c2e5cf735018",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9090909090909091,
+                1
+              ],
+              "identityCoverage": 0.9696969696969697,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.31464276408540603,
+            "shapeD": 0.1771323055480123,
+            "motionD": 0.536834864066369,
+            "visualD": 0.21721999290193897,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "5626d755-d77c-4825-a6dc-593f69408d95",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9090909090909091,
+                1
+              ],
+              "identityCoverage": 0.9696969696969697,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2765600391978988,
+            "shapeD": 0.09541197588059738,
+            "motionD": 0.5053179805408419,
+            "visualD": 0.2633214840786644,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "f5f76336-cc40-4e4c-a273-84edc5340169",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9090909090909091,
+                1
+              ],
+              "identityCoverage": 0.9696969696969697,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.2765600391978988,
+          "shapeD": 0.09541197588059738,
+          "motionD": 0.5053179805408419,
+          "visualD": 0.2633214840786644,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": false,
+          "id": "f5f76336-cc40-4e4c-a273-84edc5340169",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0.9090909090909091,
+              1
+            ],
+            "identityCoverage": 0.9696969696969697,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: no coincide trayectoria, distancia total"
+      },
+      "segmentedMatch": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.34218680842426974,
+            "shapeD": 0.19817169735127924,
+            "motionD": 0.4672635680031723,
+            "visualD": 0.43388188554282386,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "837f0947-fbc0-4844-8eb3-35a04f6eefd0",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9090909090909091,
+                1
+              ],
+              "identityCoverage": 0.9696969696969697,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.3325468462587544,
+            "shapeD": 0.28138197006032717,
+            "motionD": 0.3774743863803007,
+            "visualD": 0.36424000167651094,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "2cfe22fc-86b1-4de3-8b32-f66eef0b1202",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9090909090909091,
+                1
+              ],
+              "identityCoverage": 0.9696969696969697,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.3603292385712796,
+            "shapeD": 0.2001809088028761,
+            "motionD": 0.5650110109212229,
+            "visualD": 0.34422837383186916,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "dd3081b2-9e7c-4cc2-9546-c2e5cf735018",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9090909090909091,
+                1
+              ],
+              "identityCoverage": 0.9696969696969697,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.31464276408540603,
+            "shapeD": 0.1771323055480123,
+            "motionD": 0.536834864066369,
+            "visualD": 0.21721999290193897,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "5626d755-d77c-4825-a6dc-593f69408d95",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9090909090909091,
+                1
+              ],
+              "identityCoverage": 0.9696969696969697,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2765600391978988,
+            "shapeD": 0.09541197588059738,
+            "motionD": 0.5053179805408419,
+            "visualD": 0.2633214840786644,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "f5f76336-cc40-4e4c-a273-84edc5340169",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9090909090909091,
+                1
+              ],
+              "identityCoverage": 0.9696969696969697,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.2765600391978988,
+          "shapeD": 0.09541197588059738,
+          "motionD": 0.5053179805408419,
+          "visualD": 0.2633214840786644,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": false,
+          "id": "f5f76336-cc40-4e4c-a273-84edc5340169",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0.9090909090909091,
+              1
+            ],
+            "identityCoverage": 0.9696969696969697,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: no coincide trayectoria, distancia total"
+      },
+      "confirmed": false
+    },
+    {
+      "index": 16,
+      "label": "GRACIAS",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0.9230769230769231,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.3324179021070775,
+            "shapeD": 0.2588800944460978,
+            "motionD": 0.3297755279704591,
+            "visualD": 0.49895735240714584,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "837f0947-fbc0-4844-8eb3-35a04f6eefd0",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9230769230769231,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.3701917558269072,
+            "shapeD": 0.3442061420896288,
+            "motionD": 0.37886195477094486,
+            "visualD": 0.41175374794965164,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "2cfe22fc-86b1-4de3-8b32-f66eef0b1202",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9230769230769231,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.5420217651097223,
+            "shapeD": 0.2587386522576657,
+            "motionD": 0.9654331374919018,
+            "visualD": 0.4031041430963232,
+            "dynamic": true,
+            "motionComplete": false,
+            "acceptable": false,
+            "id": "dd3081b2-9e7c-4cc2-9546-c2e5cf735018",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9230769230769231,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.31464276408540603,
+            "shapeD": 0.1771323055480123,
+            "motionD": 0.536834864066369,
+            "visualD": 0.21721999290193897,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "a35e6681-1b95-456b-897d-360312774f8b",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9230769230769231,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.15605637522138616,
+            "shapeD": 0.1583709261148828,
+            "motionD": 0.19582183258271926,
+            "visualD": 0.07938654000529405,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "f5f76336-cc40-4e4c-a273-84edc5340169",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9230769230769231,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.15605637522138616,
+          "shapeD": 0.1583709261148828,
+          "motionD": 0.19582183258271926,
+          "visualD": 0.07938654000529405,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "f5f76336-cc40-4e4c-a273-84edc5340169",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0.9230769230769231,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: falta un segundo ejemplo coincidente de esta variante"
+      },
+      "segmentedMatch": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.3324179021070775,
+            "shapeD": 0.2588800944460978,
+            "motionD": 0.3297755279704591,
+            "visualD": 0.49895735240714584,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "837f0947-fbc0-4844-8eb3-35a04f6eefd0",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9230769230769231,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.3701917558269072,
+            "shapeD": 0.3442061420896288,
+            "motionD": 0.37886195477094486,
+            "visualD": 0.41175374794965164,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "2cfe22fc-86b1-4de3-8b32-f66eef0b1202",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9230769230769231,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.5420217651097223,
+            "shapeD": 0.2587386522576657,
+            "motionD": 0.9654331374919018,
+            "visualD": 0.4031041430963232,
+            "dynamic": true,
+            "motionComplete": false,
+            "acceptable": false,
+            "id": "dd3081b2-9e7c-4cc2-9546-c2e5cf735018",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9230769230769231,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.31464276408540603,
+            "shapeD": 0.1771323055480123,
+            "motionD": 0.536834864066369,
+            "visualD": 0.21721999290193897,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "a35e6681-1b95-456b-897d-360312774f8b",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9230769230769231,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.15605637522138616,
+            "shapeD": 0.1583709261148828,
+            "motionD": 0.19582183258271926,
+            "visualD": 0.07938654000529405,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "f5f76336-cc40-4e4c-a273-84edc5340169",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9230769230769231,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.15605637522138616,
+          "shapeD": 0.1583709261148828,
+          "motionD": 0.19582183258271926,
+          "visualD": 0.07938654000529405,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "f5f76336-cc40-4e4c-a273-84edc5340169",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0.9230769230769231,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: falta un segundo ejemplo coincidente de esta variante"
+      },
+      "confirmed": false
+    },
+    {
+      "index": 17,
+      "label": "GRACIAS",
+      "quality": {
+        "handCoverage": 1,
+        "handSlotCoverage": [
+          0.9428571428571428,
+          1
+        ],
+        "identityCoverage": 1,
+        "poseCoverage": 1,
+        "faceCoverage": 1
+      },
+      "starts": 1,
+      "ends": 1,
+      "match": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.2840377697684117,
+            "shapeD": 0.1951130518117221,
+            "motionD": 0.24832850397810624,
+            "visualD": 0.5439488276956786,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "837f0947-fbc0-4844-8eb3-35a04f6eefd0",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9428571428571428,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.3420858228497987,
+            "shapeD": 0.2853029571881197,
+            "motionD": 0.34660928671513463,
+            "visualD": 0.4588658923478874,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "2cfe22fc-86b1-4de3-8b32-f66eef0b1202",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9428571428571428,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.5085784188228157,
+            "shapeD": 0.2018931187986147,
+            "motionD": 0.9172965186151568,
+            "visualD": 0.4475934992498441,
+            "dynamic": true,
+            "motionComplete": false,
+            "acceptable": false,
+            "id": "dd3081b2-9e7c-4cc2-9546-c2e5cf735018",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9428571428571428,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2765600391978988,
+            "shapeD": 0.09541197588059738,
+            "motionD": 0.5053179805408419,
+            "visualD": 0.2633214840786644,
+            "dynamic": true,
+            "motionComplete": false,
+            "acceptable": false,
+            "id": "a35e6681-1b95-456b-897d-360312774f8b",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9428571428571428,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.15605637522138616,
+            "shapeD": 0.1583709261148828,
+            "motionD": 0.19582183258271926,
+            "visualD": 0.07938654000529405,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "5626d755-d77c-4825-a6dc-593f69408d95",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9428571428571428,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.15605637522138616,
+          "shapeD": 0.1583709261148828,
+          "motionD": 0.19582183258271926,
+          "visualD": 0.07938654000529405,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "5626d755-d77c-4825-a6dc-593f69408d95",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0.9428571428571428,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: falta un segundo ejemplo coincidente de esta variante"
+      },
+      "segmentedMatch": {
+        "kind": "uncertain",
+        "comparisons": [
+          {
+            "label": "HOLA",
+            "d": 0.2840377697684117,
+            "shapeD": 0.1951130518117221,
+            "motionD": 0.24832850397810624,
+            "visualD": 0.5439488276956786,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "837f0947-fbc0-4844-8eb3-35a04f6eefd0",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9428571428571428,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.3420858228497987,
+            "shapeD": 0.2853029571881197,
+            "motionD": 0.34660928671513463,
+            "visualD": 0.4588658923478874,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": false,
+            "id": "2cfe22fc-86b1-4de3-8b32-f66eef0b1202",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9428571428571428,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "HOLA",
+            "d": 0.5085784188228157,
+            "shapeD": 0.2018931187986147,
+            "motionD": 0.9172965186151568,
+            "visualD": 0.4475934992498441,
+            "dynamic": true,
+            "motionComplete": false,
+            "acceptable": false,
+            "id": "dd3081b2-9e7c-4cc2-9546-c2e5cf735018",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9428571428571428,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.2765600391978988,
+            "shapeD": 0.09541197588059738,
+            "motionD": 0.5053179805408419,
+            "visualD": 0.2633214840786644,
+            "dynamic": true,
+            "motionComplete": false,
+            "acceptable": false,
+            "id": "a35e6681-1b95-456b-897d-360312774f8b",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9428571428571428,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          },
+          {
+            "label": "GRACIAS",
+            "d": 0.15605637522138616,
+            "shapeD": 0.1583709261148828,
+            "motionD": 0.19582183258271926,
+            "visualD": 0.07938654000529405,
+            "dynamic": true,
+            "motionComplete": true,
+            "acceptable": true,
+            "id": "5626d755-d77c-4825-a6dc-593f69408d95",
+            "variant": "principal",
+            "quality": {
+              "handCoverage": 1,
+              "handSlotCoverage": [
+                0.9428571428571428,
+                1
+              ],
+              "identityCoverage": 1,
+              "poseCoverage": 1,
+              "faceCoverage": 1
+            }
+          }
+        ],
+        "best": {
+          "label": "GRACIAS",
+          "d": 0.15605637522138616,
+          "shapeD": 0.1583709261148828,
+          "motionD": 0.19582183258271926,
+          "visualD": 0.07938654000529405,
+          "dynamic": true,
+          "motionComplete": true,
+          "acceptable": true,
+          "id": "5626d755-d77c-4825-a6dc-593f69408d95",
+          "variant": "principal",
+          "quality": {
+            "handCoverage": 1,
+            "handSlotCoverage": [
+              0.9428571428571428,
+              1
+            ],
+            "identityCoverage": 1,
+            "poseCoverage": 1,
+            "faceCoverage": 1
+          }
+        },
+        "reason": "DESCONOCIDO: falta un segundo ejemplo coincidente de esta variante"
+      },
+      "confirmed": false
+    }
+  ]
+}
