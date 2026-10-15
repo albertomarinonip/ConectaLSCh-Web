@@ -60,7 +60,7 @@ async function startCamera(){
  try{
  pauseRecognition();loopId++;if(rafId!==null)cancelAnimationFrame(rafId);latestDetection=null;lastVideoTime=-1;lastSampleAt=0;lastCompletedAt=0;bufferTimes=[];liveLandmarksBuffer=[];liveObservations=[];observationClock.reset();handTracker.reset();
  if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;
- opened=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing},audio:false});
+ opened=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing,width:{ideal:1280},height:{ideal:720},frameRate:{ideal:30,max:30}},audio:false});
  if(request!==cameraRequest){opened.getTracks().forEach(t=>t.stop());return false}
  stream=opened;camera.srcObject=stream;await camera.play();if(request!==cameraRequest||!stream)return false;cameraBtn.disabled=false;$('#cameraEmpty').hidden=true;$('.videoWrap').classList.remove('idle');fitCamera();$('.videoWrap').classList.toggle('rear',facing==='environment');
  cameraBtn.textContent='⏹ Cámara OFF';cameraStatus.textContent='🟢 Cámara activa';flipBtn.disabled=false;$('#handsStatus').textContent='Preparando detección…';

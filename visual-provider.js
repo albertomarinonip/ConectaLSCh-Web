@@ -11,7 +11,7 @@ export function visionContext(){
 }
 export function handModel(){
  if(!handPromise)handPromise=(async()=>{const {lib,files}=await visionContext();
- const options={numHands:2,runningMode:'VIDEO',minHandDetectionConfidence:.55,minHandPresenceConfidence:.60,minTrackingConfidence:.55};
+ const options={numHands:2,runningMode:'VIDEO',minHandDetectionConfidence:.5,minHandPresenceConfidence:.5,minTrackingConfidence:.5};
  const modelAssetPath='https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task';
  try{return await lib.HandLandmarker.createFromOptions(files,{...options,baseOptions:{modelAssetPath,delegate:'GPU'}})}
  catch{return lib.HandLandmarker.createFromOptions(files,{...options,baseOptions:{modelAssetPath,delegate:'CPU'}})}
