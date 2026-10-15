@@ -31,3 +31,16 @@ button{min-height:48px;font-size:16px;padding:12px 16px;border-radius:14px;touch
 @media(max-width:380px){header>.chip{display:none}.app{padding-inline:12px}.dictionary{grid-template-columns:1fr}.section-heading h2{font-size:23px}.result-top{flex-wrap:wrap}}
 @media(max-width:759px) and (orientation:landscape){.sign-layout{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}.result-card{margin-top:0}}
 @media(prefers-reduced-motion:reduce){.capture-progress span{transition:none}}
+
+/* v1.6.4 — legibilidad y toque en celular */
+button{min-height:48px;font-size:15px}
+.chip,.hand-badge,.eyebrow,.small,.result-card p,#cameraEmpty p,.muted{font-size:13px}
+.hand-badge{padding:6px 10px}
+.eyebrow{letter-spacing:.6px}
+.videoWrap{height:clamp(240px,38svh,420px)}
+.bigResult{font-size:clamp(30px,8vw,44px);line-height:1.2;min-height:48px}
+.primary,.wide{min-height:56px;font-size:17px}
+.switch-row button{min-height:44px}
+.main-nav button{font-size:13px}
+.feedback{font-size:14px;line-height:1.5}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}

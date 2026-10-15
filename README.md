@@ -1,3 +1,20 @@
+# ConectaLSCh
+
+Prototipo web (PWA) para comunicación con lengua de señas chilena: **señas → texto y voz**, **voz → subtítulos**.
+Estado: alfa. Reconocimiento experimental por ejemplos; aún no hay un modelo LSCh entrenado.
+
+## Estructura
+
+- Raíz: archivos de la app (`index.html`, `app.js`, módulos `.js`, `style.css`, `sw.js`, íconos). GitHub Pages los sirve desde aquí.
+- `tests/`: pruebas automáticas (`npm test`).
+- `training/`: entrenamiento Python (PyTorch → ONNX).
+- `adapters/`: adaptador ONNX (aún no conectado a la app).
+- `audit/`: datos y reportes de revisión.
+- `docs/`: arquitectura, validación, revisiones. `docs/historial/`: versiones antiguas.
+- `material/`: videos y fotos de grabaciones (no los usa la app).
+
+---
+
 # Entrenar el primer modelo en PC
 
 Las herramientas incluidas preparan un **clasificador de señas aisladas**, no un traductor de conversación continua. No hay pesos LSCh en este paquete. El entrenador PyTorch/ONNX está preparado pero no ejecutado en esta entrega: faltan las dependencias y, sobre todo, datos reales etiquetados.
