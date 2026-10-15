@@ -44,3 +44,4 @@ button{min-height:48px;font-size:15px}
 .main-nav button{font-size:13px}
 .feedback{font-size:14px;line-height:1.5}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.plan button{font-size:15px;padding:12px}.plan button span{display:block;font-size:13px;color:var(--muted)}.plan .plan-done{background:#234b43;color:var(--mint)}.plan .plan-done span{color:var(--mint)}

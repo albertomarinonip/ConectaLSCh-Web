@@ -1,4 +1,5 @@
 import {feature} from './recognition-math.js';
+import {renderPlan} from './sign-plan.js';
 import {ObservationClock} from './recognition-clock.js';
 import {isDynamicTemplate} from './temporal-sequence.js';
 import {MotionEventSegmenter} from './motion-event.js';
@@ -183,6 +184,7 @@ function refreshDictionary(){
  const counts=new Map();for(const t of personalSamples)counts.set(t.label,(counts.get(t.label)||0)+1);
  const list=$('#signDictionary');list.replaceChildren();
  for(const [label,count] of [...counts].sort((a,b)=>a[0].localeCompare(b[0],'es'))){const li=document.createElement('li'),button=document.createElement('button'),small=document.createElement('span');button.textContent=signSettings[label]?.alias||label;small.textContent=count+(count===1?' ejemplo':' ejemplos')+(signSettings[label]?.enabled===false?' · personales OFF':'');button.append(small);button.onclick=()=>{$('#signName').value=label;$('#trainingDetails').open=true;$('#signName').focus()};li.append(button);list.append(li)}
+ renderPlan($('#planSummary'),$('#signPlan'),personalSamples,label=>{$('#signName').value=label;$('#trainingDetails').open=true;$('#signName').focus()});
  refreshManager();
  renderDiagnostic();
  $('#startRecognition').disabled=!hasSignTemplates();
