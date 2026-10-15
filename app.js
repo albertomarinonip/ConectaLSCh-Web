@@ -45,6 +45,7 @@ function updateHands(result){
  const valid=(result.landmarks||[]).filter(h=>h.length===21&&h.every(p=>[p.x,p.y,p.z].every(Number.isFinite)));
  const channels=observation({...result,landmarks:valid},performance.now());
  Object.assign(channels,visualTracking.snapshot(performance.now()));
+ $('.videoWrap').classList.toggle('hands-on',valid.length>0);
  $('#handsStatus').textContent=valid.length?`🟢 Manos detectadas · ${valid.length}`:'⚫ No se detectan manos';
  drawHands($('#handCanvas'),camera,channels,overlayEnabled);
  if(overlayEnabled)drawVisualTracking($('#handCanvas'),channels);

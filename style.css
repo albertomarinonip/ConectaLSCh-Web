@@ -45,3 +45,28 @@ button{min-height:48px;font-size:15px}
 .feedback{font-size:14px;line-height:1.5}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 .plan button{font-size:15px;padding:12px}.plan button span{display:block;font-size:13px;color:var(--muted)}.plan .plan-done{background:#234b43;color:var(--mint)}.plan .plan-done span{color:var(--mint)}
+
+/* v1.6.7 — diseño: señales visuales claras */
+:root{--amber:#f5b94a;--ok:#4ad9a6}
+.app{max-width:960px}
+header{margin-bottom:14px}
+h1{font-size:24px}
+.section-heading h2{font-size:24px}
+.card,.camera-card{border-radius:20px}
+/* La cámara avisa con color: sin manos = ámbar, con manos = verde */
+.videoWrap::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;border:4px solid transparent;border-radius:inherit;transition:border-color .15s}
+.videoWrap:not(.idle)::after{border-color:var(--amber)}
+.videoWrap.hands-on::after{border-color:var(--ok)}
+.videoWrap.hands-on .hand-badge{background:#1d5f4b;color:#fff;border-color:var(--ok);font-weight:700}
+.videoWrap:not(.idle):not(.hands-on) .hand-badge{background:#4a3a14;color:#ffe2a3;border-color:var(--amber);font-weight:700}
+/* El resultado es lo principal */
+.result-card{background:#0f2a3b;border:2px solid #3d6b73;padding:14px 16px 16px}
+.bigResult{color:#fff}
+/* Botón principal siempre a mano */
+#startRecognition{background:linear-gradient(135deg,#88ebd1,#6fd8f2);color:#06302c;box-shadow:0 6px 20px #0007;position:sticky;bottom:calc(92px + env(safe-area-inset-bottom));z-index:5}
+.details summary{min-height:48px;display:flex;align-items:center;font-size:16px;font-weight:650;cursor:pointer}
+input,select,textarea{font-size:16px;min-height:48px;border-radius:12px}
+textarea{min-height:84px}
+.main-nav button{border:1px solid transparent;border-radius:14px}
+.main-nav button[aria-selected=true]{box-shadow:inset 0 3px 0 var(--mint)}
+.subtitlePanel{border:1px solid var(--line);color:#fff}
