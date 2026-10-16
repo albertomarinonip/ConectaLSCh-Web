@@ -5,9 +5,9 @@ export function checkCapture(frames,mode,requiredChannels=[]){
   if(frames.length<12)throw Error('Pocos fotogramas válidos. Repite con mejor luz o un dispositivo más rápido.');
   const os=frames.map(f=>f.multimodal),q=sequenceQuality(os);
   if(mode!=='background'){
-    if(q.handCoverage<.9)throw Error('Las manos no estuvieron visibles durante toda la seña.');
+    if(q.handCoverage<.8)throw Error('Las manos salieron de la cámara. Aléjate un poco y deja las manos dentro de la imagen.');
     if(q.identityCoverage<.8)throw Error('No pude seguir la identidad de las manos. Repite con las manos separadas al comenzar.');
-    if(q.handSlotCoverage.some(c=>c>=.5&&c<.9))throw Error('Una mano se perdió en parte de la seña. Repite con ambas manos visibles.');
+    if(q.handSlotCoverage.some(c=>c>=.5&&c<.8))throw Error('Una mano se perdió en parte de la seña. Repite con ambas manos visibles.');
     if(requiredChannels.includes('face')&&q.faceCoverage<.8)throw Error('Esta seña requiere rostro visible; faltó seguimiento facial.');
     if(requiredChannels.includes('pose')&&q.poseCoverage<.8)throw Error('Esta seña requiere cuerpo visible; muestra hombros y brazos.');
   }

@@ -265,7 +265,7 @@ async function capturePersonalExample(label){
   trainingStatus.textContent=`Captura de ${label}: ${frames.length} fotogramas. Guarda al menos dos ejemplos de cada variante y mano.`;
   trainingMonitor({hands:frames.at(-1).hands.length,frames:frames.length,face:quality.faceCoverage>=.8,pose:quality.poseCoverage>=.8,continuity:quality.handCoverage,state:'COMPLETE',quality:'La captura pasó el control de seguimiento. Aún no mide precisión de reconocimiento.'});
   $('#monitorScore').textContent='Identidad manos: '+Math.round(quality.identityCoverage*100)+'%';$('#captureReview').hidden=false;
- }catch(e){if(id===captureId){setCaptureStage('Repite la captura','error');trainingStatus.textContent=`No se guardó: ${e.message}`;trainingMonitor({quality:e.message})}}
+ }catch(e){if(id===captureId){setCaptureStage('Repite la captura','error');$('#captureStage').dataset.reason=String(e.message||'').replace(/\s*Repite la captura\.?$/,'');trainingStatus.textContent=`No se guardó: ${e.message}`;trainingMonitor({quality:e.message})}}
  finally{if(id===captureId){capturing=false;recordBtn.disabled=false;$('#startRecognition').disabled=!hasSignTemplates()}}
 }
 recordBtn.onclick=async()=>{
