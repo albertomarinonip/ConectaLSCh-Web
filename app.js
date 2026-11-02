@@ -14,11 +14,16 @@ import {HandIdentityTracker} from './hand-tracker.js';
 import {multimodalFrame,recordedMultimodalSample,trainingDataset,sequenceQuality} from './multimodal-frame.js';
 import {matchPersonalWindow} from './temporal-multimodal.js';
 import {collectCapture,checkCapture} from './capture-session.js';
+import {HandRecovery} from './hand-recovery.js';
+import {CameraCoach} from './camera-coach.js';
 const $=s=>document.querySelector(s), camera=$("#camera"), resultEl=$("#signResult"), confEl=$("#confidence"), status=$("#modelStatus");
 let stream=null,facing="user",videoHands=null,templates=[],recognizing=false,liveBuffer=[],liveLandmarksBuffer=[],lastVideoTime=-1;
 function hasSignTemplates(){return templates.some(t=>t.metadata?.captureMode!=='background')}
 const motionEvent=new MotionEventSegmenter();
 const handTracker=new HandIdentityTracker();
+// v1.8.0: mantiene la mano si se pierde un instante (borrosa) y suaviza el temblor.
+const handRecovery=new HandRecovery({maxGapMs:300});
+const coach=new CameraCoach();
 let liveObservations=[];
 let signVoiceEnabled=true;
 const signTranscript=[];
@@ -46,23 +51,25 @@ function updateHands(result){
  const channels=observation({...result,landmarks:valid},performance.now());
  Object.assign(channels,visualTracking.snapshot(performance.now()));
  $('.videoWrap').classList.toggle('hands-on',valid.length>0);
- $('#handsStatus').textContent=valid.length?`🟢 Manos detectadas · ${valid.length}`:'⚫ No se detectan manos';
+ $('#handsStatus').textContent=valid.length?(result.recovered?`🟡 Siguiendo la mano…`:`🟢 Manos detectadas · ${valid.length}`):'⚫ No se detectan manos';
+ const advice=stream?coach.advice(camera,valid,performance.now()):null,coachEl=$('#cameraCoach');
+ if(coachEl){coachEl.hidden=!advice;if(advice){coachEl.textContent=advice.text;coachEl.dataset.kind=advice.kind}}
  drawHands($('#handCanvas'),camera,channels,overlayEnabled);
  if(overlayEnabled)drawVisualTracking($('#handCanvas'),channels);
  $('#visualStatus').textContent=visualTracking.status;
 }
 $('#toggleOverlay').onclick=()=>{overlayEnabled=!overlayEnabled;$('#toggleOverlay').setAttribute('aria-checked',String(overlayEnabled));$('#toggleOverlay').textContent=overlayEnabled?'ON':'OFF';updateHands(latestDetection?.result||{landmarks:[]})};
 function stopCamera(){
- cameraRequest++;visualTracking.clear();cancelCapture();visualTracking.clear();pauseRecognition();loopId++;if(rafId!==null)cancelAnimationFrame(rafId);rafId=null;latestDetection=null;lastVideoTime=-1;lastSampleAt=0;lastCompletedAt=0;bufferTimes=[];liveLandmarksBuffer=[];liveObservations=[];observationClock.reset();handTracker.reset();
+ cameraRequest++;visualTracking.clear();cancelCapture();visualTracking.clear();pauseRecognition();loopId++;if(rafId!==null)cancelAnimationFrame(rafId);rafId=null;latestDetection=null;lastVideoTime=-1;lastSampleAt=0;lastCompletedAt=0;bufferTimes=[];liveLandmarksBuffer=[];liveObservations=[];observationClock.reset();handTracker.reset();handRecovery.reset();coach.reset();
  if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}camera.srcObject=null;
  cameraBtn.textContent='📷 Cámara ON';cameraStatus.textContent='⚫ Cámara desactivada';flipBtn.disabled=true;$('#cameraEmpty').hidden=false;$('.videoWrap').classList.add('idle');updateHands({landmarks:[]});
 }
 async function startCamera(){
  if(cameraBusy)return false;cameraBusy=true;cameraBtn.disabled=true;const request=++cameraRequest;let opened=null;
  try{
- pauseRecognition();loopId++;if(rafId!==null)cancelAnimationFrame(rafId);latestDetection=null;lastVideoTime=-1;lastSampleAt=0;lastCompletedAt=0;bufferTimes=[];liveLandmarksBuffer=[];liveObservations=[];observationClock.reset();handTracker.reset();
+ pauseRecognition();loopId++;if(rafId!==null)cancelAnimationFrame(rafId);latestDetection=null;lastVideoTime=-1;lastSampleAt=0;lastCompletedAt=0;bufferTimes=[];liveLandmarksBuffer=[];liveObservations=[];observationClock.reset();handTracker.reset();handRecovery.reset();coach.reset();
  if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;
- opened=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing,width:{ideal:1280},height:{ideal:720},frameRate:{ideal:30,max:30}},audio:false});
+ opened=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing,width:{ideal:1280},height:{ideal:720},frameRate:{ideal:60}},audio:false});
  if(request!==cameraRequest){opened.getTracks().forEach(t=>t.stop());return false}
  stream=opened;camera.srcObject=stream;await camera.play();if(request!==cameraRequest||!stream)return false;cameraBtn.disabled=false;$('#cameraEmpty').hidden=true;$('.videoWrap').classList.remove('idle');fitCamera();$('.videoWrap').classList.toggle('rear',facing==='environment');
  cameraBtn.textContent='⏹ Cámara OFF';cameraStatus.textContent='🟢 Cámara activa';flipBtn.disabled=false;$('#handsStatus').textContent='Preparando detección…';
@@ -74,7 +81,7 @@ async function startCamera(){
 cameraBtn.onclick=()=>stream?stopCamera():startCamera();
 flipBtn.onclick=async()=>{if(!stream||cameraBusy)return;cancelCapture();facing=facing==='user'?'environment':'user';await startCamera()};
 let previousVideoAspect=null;
-function fitCamera(){if(camera.videoWidth&&camera.videoHeight){const aspect=camera.videoWidth/camera.videoHeight;if(previousVideoAspect&&Math.abs(aspect-previousVideoAspect)>.001){visualTracking.clear();handTracker.reset();liveBuffer=[];bufferTimes=[];liveLandmarksBuffer=[];liveObservations=[];signGate.interrupt();cancelCapture()}previousVideoAspect=aspect;$('.videoWrap').style.aspectRatio=camera.videoWidth+'/'+camera.videoHeight}}
+function fitCamera(){if(camera.videoWidth&&camera.videoHeight){const aspect=camera.videoWidth/camera.videoHeight;if(previousVideoAspect&&Math.abs(aspect-previousVideoAspect)>.001){visualTracking.clear();handTracker.reset();handRecovery.reset();coach.reset();liveBuffer=[];bufferTimes=[];liveLandmarksBuffer=[];liveObservations=[];signGate.interrupt();cancelCapture()}previousVideoAspect=aspect;$('.videoWrap').style.aspectRatio=camera.videoWidth+'/'+camera.videoHeight}}
 camera.addEventListener('resize',fitCamera);
 function renderSignTranscript(){
  if(!signTranscript.length){resultEl.textContent='Esperando seña…';return}
@@ -114,10 +121,10 @@ function loop(id){
  if(!stream||id!==loopId)return;
  try{
  const now=performance.now();
- if(lastCompletedAt&&now-lastCompletedAt>LIMITS.maxGapMs){visualTracking.clear();handTracker.reset();liveBuffer=[];bufferTimes=[];liveLandmarksBuffer=[];liveObservations=[];motionEvent.reset();latestDetection=null;signGate.interrupt();updateHands({landmarks:[]});lastDiagnostic={reason:'Interrupción de fotogramas; esperando una secuencia nueva'};renderDiagnostic();if(recognizing)showRecognition({kind:'waiting'})}
- if(now-lastSampleAt>=50&&camera.readyState>=2&&camera.currentTime!==lastVideoTime){
+ if(lastCompletedAt&&now-lastCompletedAt>LIMITS.maxGapMs){visualTracking.clear();handTracker.reset();handRecovery.reset();coach.reset();liveBuffer=[];bufferTimes=[];liveLandmarksBuffer=[];liveObservations=[];motionEvent.reset();latestDetection=null;signGate.interrupt();updateHands({landmarks:[]});lastDiagnostic={reason:'Interrupción de fotogramas; esperando una secuencia nueva'};renderDiagnostic();if(recognizing)showRecognition({kind:'waiting'})}
+ if(now-lastSampleAt>=33&&camera.readyState>=2&&camera.currentTime!==lastVideoTime){
  lastSampleAt=now;lastVideoTime=camera.currentTime;
- const result=videoHands.detectForVideo(camera,now),completed=performance.now();
+ const result=handRecovery.process(videoHands.detectForVideo(camera,now),now),completed=performance.now();
  const clock=observationClock.observe(now,completed);lastCompletedAt=completed;
  if(clock.interrupted){liveBuffer=[];bufferTimes=[];liveLandmarksBuffer=[];liveObservations=[];signGate.interrupt()}
  visualTracking.process(camera,now,{enabled:visualTracking.enabled&&(overlayEnabled||recognizing||capturing),handMs:completed-now});
@@ -129,7 +136,7 @@ function loop(id){
  const liveVisual=visualDescriptor(visualTracking.snapshot(performance.now()));
  const event=motionEvent.push({feature:f,hands:result.landmarks,time:now,aspectRatio:aspect,visual:liveVisual,multimodal:observed});
  if(!f){liveBuffer=[];bufferTimes=[];liveLandmarksBuffer=[];liveObservations=[];match.reason='No se detectan manos'}else{
-   liveBuffer.push(f);bufferTimes.push(now);liveObservations.push(observed);liveLandmarksBuffer.push(result.landmarks.map(h=>h.map(p=>({x:p.x,y:p.y,z:p.z}))));if(liveBuffer.length>60){liveBuffer.shift();bufferTimes.shift();liveLandmarksBuffer.shift();liveObservations.shift()}
+   liveBuffer.push(f);bufferTimes.push(now);liveObservations.push(observed);liveLandmarksBuffer.push(result.landmarks.map(h=>h.map(p=>({x:p.x,y:p.y,z:p.z}))));if(liveBuffer.length>90){liveBuffer.shift();bufferTimes.shift();liveLandmarksBuffer.shift();liveObservations.shift()}
    // Static signs may still use a stable hold. Dynamic signs are classified only
    // when their complete movement event ends, preventing held-pose false positives.
    const staticTemplates=templates.filter(t=>!isDynamicTemplate(t,aspect));

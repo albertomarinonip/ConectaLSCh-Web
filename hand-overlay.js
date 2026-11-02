@@ -6,7 +6,7 @@ export function drawHands(canvas,video,data,on){
  if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height}
  const ctx=canvas.getContext('2d');ctx.clearRect(0,0,width,height);let count=0;
  if(on)for(const hand of data?.hands||[]){if(hand.length!==21||hand.some(p=>![p.x,p.y,p.z].every(Number.isFinite)))continue;
- ctx.strokeStyle=count?'#a5b8ff':'#83edd4';ctx.fillStyle='#f6fffd';ctx.lineWidth=Math.max(1.5,width/320);
+ ctx.strokeStyle=count?'#6cc7ff':'#ff8f4d';ctx.fillStyle='#f6fffd';ctx.lineWidth=Math.max(1.5,width/320);
  ctx.beginPath();for(const [a,b] of CONNECTIONS){ctx.moveTo(hand[a].x*width,hand[a].y*height);ctx.lineTo(hand[b].x*width,hand[b].y*height)}ctx.stroke();
  for(const p of hand){ctx.beginPath();ctx.arc(p.x*width,p.y*height,Math.max(2,width/220),0,Math.PI*2);ctx.fill()}count++;
  }
